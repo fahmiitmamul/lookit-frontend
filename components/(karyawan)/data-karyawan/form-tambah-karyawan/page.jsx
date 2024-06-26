@@ -329,7 +329,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const postEmployee = useMutation({
         mutationFn: (data) => {
             const form = new FormData()
-
+            console.log(100)
+            console.log(data.name)
             if (selectedPicture) {
                 form.append('profile_photo', selectedPicture)
             }
@@ -812,6 +813,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     }
     const onSubmitInsurance = (data) => {
         setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+        setShowAddModal(false)
+        dispatch(setLoading(true))
         postEmployee.mutate(employeeContent)
     }
 
