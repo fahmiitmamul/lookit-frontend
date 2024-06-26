@@ -326,7 +326,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
 
     const queryClient = useQueryClient()
 
-    const editEmployee = useMutation({
+    const postEmployee = useMutation({
         mutationFn: (data) => {
             const form = new FormData()
 
@@ -812,6 +812,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     }
     const onSubmitInsurance = (data) => {
         setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+        postEmployee.mutate(employeeContent)
     }
 
     const nextStep = async () => {
