@@ -32,6 +32,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const [domicileVillageValue, setDomicileVillageValue] = useState([])
     const [selectedPicture, setSelectedPicture] = useState(null)
     const [pictureURI, setPictureURI] = useState('')
+    const [employeeContent, setEmployeeContent] = useState({})
     const dispatch = useDispatch()
 
     const validateProfile = yup.object({
@@ -717,12 +718,6 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         }),
     }
 
-    const onSubmit = (data) => {
-        setShowAddModal(false)
-        editEmployee.mutate(data)
-        dispatch(setLoading(true))
-    }
-
     const handleFileChange = (e) => {
         const file = e.target.files[0]
         setSelectedPicture(file)
@@ -788,16 +783,37 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         { id: 10 },
     ]
 
-    const onSubmitProfile = (data) => {}
-    const onSubmitEmergency = (data) => {}
-    const onSubmitAddress = (data) => {}
-    const onSubmitEducation = (data) => {}
-    const onSubmitEmployeeProfile = (data) => {}
-    const onSubmitSocialMedia = (data) => {}
-    const onSubmitWorkHistory = (data) => {}
-    const onSubmitBankAccount = (data) => {}
-    const onSubmitBpjs = (data) => {}
-    const onSubmitInsurance = (data) => {}
+    const onSubmitProfile = (data) => {
+        setEmployeeContent(data)
+    }
+    const onSubmitEmergency = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitAddress = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitEducation = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitEmployeeProfile = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitSocialMedia = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitWorkHistory = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitBankAccount = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitBpjs = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitInsurance = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+        console.log(employeeContent)
+    }
 
     const nextStep = async () => {
         if (currentStep === 0) {
@@ -866,7 +882,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         if (currentStep === 9) {
             const triggerInsuranceData = await triggerInsurance()
             if (triggerInsuranceData) {
-                if (currentStep === totalSteps.length < 1) {
+                if (currentStep === totalSteps.length - 1) {
                     handleSubmitProfile(onSubmitProfile)()
                     handleSubmitEmergency(onSubmitEmergency)()
                     handleSubmitAddress(onSubmitAddress)()
