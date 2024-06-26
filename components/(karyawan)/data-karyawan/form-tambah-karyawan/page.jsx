@@ -812,7 +812,6 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     }
     const onSubmitInsurance = (data) => {
         setEmployeeContent((prevData) => ({ ...prevData, ...data }))
-        console.log(employeeContent)
     }
 
     const nextStep = async () => {
