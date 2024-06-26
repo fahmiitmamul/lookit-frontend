@@ -152,16 +152,32 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     })
 
     const {
+        control: controlProfile,
+        register: registerProfile,
+        handleSubmit: handleSubmitProfile,
+        watch: watchProfile,
+        getValues: getValuesProfile,
+        trigger: triggerProfile,
+        formState: { errors: errorsProfile },
+    } = useForm({
+        resolver: yupResolver(validateProfile),
+        mode: 'all',
+    })
+
+    const {
         control: controlEmployeeProfile,
         register: registerEmployeeProfile,
         trigger: triggerEmployeeProfile,
         handleSubmit: handleSumbitEmployeeProfile,
         watch: watchEmployeeProfile,
+        getValues: getValuesEmployeeProfile,
         formState: { errors: errorsEmployeeProfile },
     } = useForm({
         resolver: yupResolver(validateEmployeeProfile),
         mode: 'all',
     })
+
+    const employeeData = getValuesEmployeeProfile()
 
     const {
         control: controlEmergency,
@@ -188,10 +204,36 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     })
 
     const {
+        control: controlSocialMedia,
+        register: registerSocialMedia,
+        trigger: triggerSocialMedia,
+        handleSubmit: handleSubmitSocialMedia,
+        watch: watchSocialMedia,
+        formState: { errors: errorsSocialMedia },
+    } = useForm({
+        resolver: yupResolver(validateSocialMedia),
+        mode: 'all',
+    })
+
+    const {
+        control: controlBankAccount,
+        register: registerBankAccount,
+        trigger: triggerBankAccount,
+        handleSubmit: handleSubmitBankAccount,
+        watch: watchBankAccount,
+        formState: { errors: errorsBankAccount },
+    } = useForm({
+        resolver: yupResolver(validateBankAccount),
+        mode: 'all',
+    })
+
+    const {
         control: controlEducation,
         watch: watchEducation,
         register: registerEducation,
         getValues: getValuesEducation,
+        trigger: triggerEducation,
+        handleSubmit: handleSubmitEducation,
         formState: { errors: errorsEducation },
     } = useForm({
         defaultValues: {
@@ -213,6 +255,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         watch: watchWorkHistory,
         register: registerWorkHistory,
         getValues: getValuesWorkHistory,
+        trigger: triggerWorkHistory,
+        handleSubmit: handleSubmitWorkHistory,
         formState: { errors: errorsWorkHistory },
     } = useForm({
         defaultValues: {
@@ -226,6 +270,38 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             ],
         },
         resolver: yupResolver(validateWorkHistory),
+        mode: 'all',
+    })
+
+    const {
+        control: controlBpjs,
+        watch: watchBpjs,
+        register: registerBpjs,
+        getValues: getValuesBpjs,
+        trigger: triggerBpjs,
+        handleSubmit: handleSubmitBpjs,
+        formState: { errors: errorsBpjs },
+    } = useForm({
+        defaultValues: {
+            bpjs: [{ bpjs_name: '', bpjs_number: '' }],
+        },
+        resolver: yupResolver(validateBPJS),
+        mode: 'all',
+    })
+
+    const {
+        control: controlInsurance,
+        watch: watchInsurance,
+        register: registerInsurance,
+        getValues: getValuesInsurance,
+        trigger: triggerInsurance,
+        handleSubmit: handleSubmitInsurance,
+        formState: { errors: errorsInsurance },
+    } = useForm({
+        defaultValues: {
+            insurance: [{ insurance_name: '', insurance_number: '' }],
+        },
+        resolver: yupResolver(validateInsurance),
         mode: 'all',
     })
 
@@ -245,6 +321,24 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     } = useFieldArray({
         control: controlWorkHistory,
         name: 'work_history',
+    })
+
+    const {
+        fields: bpjsFields,
+        append: appendBpjs,
+        remove: removeBpjs,
+    } = useFieldArray({
+        control: controlBpjs,
+        name: 'bpjs',
+    })
+
+    const {
+        fields: insuranceFields,
+        append: appendInsurance,
+        remove: removeInsurance,
+    } = useFieldArray({
+        control: controlInsurance,
+        name: 'insurance',
     })
 
     const queryClient = useQueryClient()
@@ -641,26 +735,6 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         }),
     }
 
-    const {
-        fields: bpjsFields,
-        append: appendBpjs,
-        remove: removeBpjs,
-    } = useFieldArray({
-        control: controlBpjs,
-        name: 'bpjs',
-    })
-
-    const {
-        fields: insuranceFields,
-        append: appendInsurance,
-        remove: removeInsurance,
-    } = useFieldArray({
-        control: controlInsurance,
-        name: 'insurance',
-    })
-
-    const employeeData = getValues()
-
     const onSubmit = (data) => {
         setShowAddModal(false)
         editEmployee.mutate(data)
@@ -681,13 +755,13 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         reader.readAsDataURL(file)
     }
 
-    const selectedEktpProvince = watch('e_ktp_province_id')
-    const selectedEktpRegency = watch('e_ktp_regency_id')
-    const selectedEktpDistrict = watch('e_ktp_district_id')
+    const selectedEktpProvince = watchAddress('e_ktp_province_id')
+    const selectedEktpRegency = watchAddress('e_ktp_regency_id')
+    const selectedEktpDistrict = watchAddress('e_ktp_district_id')
 
-    const selectedDomicileProvince = watch('domicile_province_id')
-    const selectedDomicileRegency = watch('domicile_regency_id')
-    const selectedDomicileDistrict = watch('domicile_district_id')
+    const selectedDomicileProvince = watchAddress('domicile_province_id')
+    const selectedDomicileRegency = watchAddress('domicile_regency_id')
+    const selectedDomicileDistrict = watchAddress('domicile_district_id')
 
     useEffect(() => {
         if (selectedEktpProvince) {
@@ -732,8 +806,98 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         { id: 10 },
     ]
 
+    const onSubmitProfile = (data) => {}
+    const onSubmitEmergency = (data) => {}
+    const onSubmitAddress = (data) => {}
+    const onSubmitEducation = (data) => {}
+    const onSubmitEmployeeProfile = (data) => {}
+    const onSubmitSocialMedia = (data) => {}
+    const onSubmitWorkHistory = (data) => {}
+    const onSubmitBankAccount = (data) => {}
+    const onSubmitBpjs = (data) => {}
+    const onSubmitInsurance = (data) => {}
+
     const nextStep = async () => {
-        setCurrentStep(currentStep + 1)
+        if (currentStep === 0) {
+            const triggerProfileData = await triggerProfile()
+            if (triggerProfileData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 1) {
+            const triggerEmergencyData = await triggerEmergency()
+            if (triggerEmergencyData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 2) {
+            const triggerAddressData = await triggerAddress()
+            if (triggerAddressData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 3) {
+            const triggerEducationData = await triggerEducation()
+            if (triggerEducationData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 4) {
+            const triggerEmployeeProfileData = await triggerEmployeeProfile()
+            if (triggerEmployeeProfileData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 5) {
+            const triggerSocialMediaData = await triggerSocialMedia()
+            if (triggerSocialMediaData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 6) {
+            const triggerWorkHistoryData = await triggerWorkHistory()
+            if (triggerWorkHistoryData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 7) {
+            const triggerBankAccountData = await triggerBankAccount()
+            if (triggerBankAccountData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 8) {
+            const triggerBpjsData = await triggerBpjs()
+            if (triggerBpjsData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 9) {
+            const triggerInsuranceData = await triggerInsurance()
+            if (triggerInsuranceData) {
+                if (currentStep === totalSteps) {
+                    handleSubmitProfile(onSubmitProfile())
+                    handleSubmitEmergency(onSubmitEmergency())
+                    handleSubmitAddress(onSubmitAddress())
+                    handleSubmitEducation(onSubmitEducation())
+                    handleSubmitWorkHistory(onSubmitWorkHistory())
+                    handleSubmitBankAccount(onSubmitBankAccount())
+                    handleSubmitBpjs(onSubmitBpjs())
+                    handleSubmitInsurance(onSubmitInsurance())
+                } else {
+                    setCurrentStep(currentStep + 1)
+                }
+            }
+        }
     }
 
     const prevStep = () => {
@@ -750,14 +914,14 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
                     selectedPicture={selectedPicture}
                     pictureURI={pictureURI}
                     handleFileChange={handleFileChange}
-                    register={register}
-                    errors={errors}
+                    register={registerProfile}
+                    errors={errorsProfile}
                     genderOptions={genderOptions}
                     religionOptions={religionOptions}
                     maritalOptions={maritalOptions}
                     bloodOptions={bloodOptions}
                     vaccineData={vaccineData}
-                    control={control}
+                    control={controlProfile}
                     driverLicenseOptions={driverLicenseOptions}
                     styles={styles}
                     steps={totalSteps}
@@ -766,8 +930,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             )}
             {currentStep === 1 && (
                 <FormKontakDarurat
-                    register={register}
-                    errors={errors}
+                    register={registerEmergency}
+                    errors={errorsEmergency}
                     steps={totalSteps}
                     stepNumber={currentStep}
                 />
@@ -775,8 +939,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             {currentStep === 2 && (
                 <FormAlamat
                     styles={styles}
-                    register={register}
-                    errors={errors}
+                    register={registerAddress}
+                    errors={errorsAddress}
                     provinceData={provinceData}
                     regencyValue={regencyValue}
                     districtValue={districtValue}
@@ -792,10 +956,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             {currentStep === 3 && (
                 <FormPendidikan
                     educationFields={educationFields}
-                    register={register}
-                    errors={errors}
+                    register={registerEducation}
+                    errors={errorsEducation}
                     schoolLevelOptions={schoolLevelOptions}
-                    control={control}
+                    control={controlEducation}
                     graduationStatus={graduationStatus}
                     appendEducation={appendEducation}
                     removeEducation={removeEducation}
@@ -806,11 +970,11 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             )}
             {currentStep === 4 && (
                 <FormInfoKaryawan
-                    register={register}
-                    errors={errors}
+                    register={registerEmployeeProfile}
+                    errors={errorsEmployeeProfile}
                     styles={styles}
                     employeeStatus={employeeStatus}
-                    control={control}
+                    control={controlEmployeeProfile}
                     areaData={areaData}
                     branchData={branchData}
                     divisionData={divisionData}
@@ -822,8 +986,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             )}
             {currentStep === 5 && (
                 <FormSosialMedia
-                    register={register}
-                    errors={errors}
+                    register={registerSocialMedia}
+                    errors={errorsSocialMedia}
                     steps={totalSteps}
                     stepNumber={currentStep}
                 />
@@ -831,10 +995,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             {currentStep === 6 && (
                 <FormPengalamanKerja
                     workHistoryFields={workHistoryFields}
-                    register={register}
-                    errors={errors}
+                    register={registerWorkHistory}
+                    errors={errorsWorkHistory}
                     styles={styles}
-                    control={control}
+                    control={controlWorkHistory}
                     workStatusData={workStatusData}
                     positionData={positionData}
                     appendWorkHistory={appendWorkHistory}
@@ -845,8 +1009,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             )}
             {currentStep === 7 && (
                 <FormInputBank
-                    register={register}
-                    errors={errors}
+                    register={registerBankAccount}
+                    errors={errorsBankAccount}
                     bankData={bankData}
                     styles={styles}
                     steps={totalSteps}
@@ -857,8 +1021,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
                 <FormInputBpjs
                     bpjsFields={bpjsFields}
                     bpjsData={bpjsData}
-                    register={register}
-                    errors={errors}
+                    register={registerBpjs}
+                    errors={errorsBpjs}
                     appendBpjs={appendBpjs}
                     removeBpjs={removeBpjs}
                     styles={styles}
@@ -869,12 +1033,12 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             {currentStep === 9 && (
                 <FormInputAsuransi
                     insuranceFields={insuranceFields}
-                    register={register}
+                    register={registerInsurance}
                     insuranceData={insuranceData}
                     appendInsurance={appendInsurance}
                     removeInsurance={removeInsurance}
                     styles={styles}
-                    errors={errors}
+                    errors={errorsInsurance}
                     steps={totalSteps}
                     stepNumber={currentStep}
                 />
