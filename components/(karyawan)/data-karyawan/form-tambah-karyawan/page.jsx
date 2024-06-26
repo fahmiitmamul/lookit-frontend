@@ -155,8 +155,6 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         control: controlProfile,
         register: registerProfile,
         handleSubmit: handleSubmitProfile,
-        watch: watchProfile,
-        getValues: getValuesProfile,
         trigger: triggerProfile,
         formState: { errors: errorsProfile },
     } = useForm({
@@ -168,8 +166,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         control: controlEmployeeProfile,
         register: registerEmployeeProfile,
         trigger: triggerEmployeeProfile,
-        handleSubmit: handleSumbitEmployeeProfile,
-        watch: watchEmployeeProfile,
+        handleSubmit: handleSubmitEmployeeProfile,
         getValues: getValuesEmployeeProfile,
         formState: { errors: errorsEmployeeProfile },
     } = useForm({
@@ -180,11 +177,9 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const employeeData = getValuesEmployeeProfile()
 
     const {
-        control: controlEmergency,
         register: registerEmergency,
         trigger: triggerEmergency,
         handleSubmit: handleSubmitEmergency,
-        watch: watchEmergency,
         formState: { errors: errorsEmergency },
     } = useForm({
         resolver: yupResolver(validateEmergency),
@@ -192,7 +187,6 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     })
 
     const {
-        control: controlAddress,
         register: registerAddress,
         trigger: triggerAddress,
         handleSubmit: handleSubmitAddress,
@@ -204,11 +198,9 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     })
 
     const {
-        control: controlSocialMedia,
         register: registerSocialMedia,
         trigger: triggerSocialMedia,
         handleSubmit: handleSubmitSocialMedia,
-        watch: watchSocialMedia,
         formState: { errors: errorsSocialMedia },
     } = useForm({
         resolver: yupResolver(validateSocialMedia),
@@ -216,11 +208,9 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     })
 
     const {
-        control: controlBankAccount,
         register: registerBankAccount,
         trigger: triggerBankAccount,
         handleSubmit: handleSubmitBankAccount,
-        watch: watchBankAccount,
         formState: { errors: errorsBankAccount },
     } = useForm({
         resolver: yupResolver(validateBankAccount),
@@ -229,9 +219,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
 
     const {
         control: controlEducation,
-        watch: watchEducation,
         register: registerEducation,
-        getValues: getValuesEducation,
         trigger: triggerEducation,
         handleSubmit: handleSubmitEducation,
         formState: { errors: errorsEducation },
@@ -252,9 +240,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
 
     const {
         control: controlWorkHistory,
-        watch: watchWorkHistory,
         register: registerWorkHistory,
-        getValues: getValuesWorkHistory,
         trigger: triggerWorkHistory,
         handleSubmit: handleSubmitWorkHistory,
         formState: { errors: errorsWorkHistory },
@@ -275,9 +261,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
 
     const {
         control: controlBpjs,
-        watch: watchBpjs,
         register: registerBpjs,
-        getValues: getValuesBpjs,
         trigger: triggerBpjs,
         handleSubmit: handleSubmitBpjs,
         formState: { errors: errorsBpjs },
@@ -291,9 +275,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
 
     const {
         control: controlInsurance,
-        watch: watchInsurance,
         register: registerInsurance,
-        getValues: getValuesInsurance,
         trigger: triggerInsurance,
         handleSubmit: handleSubmitInsurance,
         formState: { errors: errorsInsurance },
@@ -884,15 +866,17 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         if (currentStep === 9) {
             const triggerInsuranceData = await triggerInsurance()
             if (triggerInsuranceData) {
-                if (currentStep === totalSteps) {
-                    handleSubmitProfile(onSubmitProfile())
-                    handleSubmitEmergency(onSubmitEmergency())
-                    handleSubmitAddress(onSubmitAddress())
-                    handleSubmitEducation(onSubmitEducation())
-                    handleSubmitWorkHistory(onSubmitWorkHistory())
-                    handleSubmitBankAccount(onSubmitBankAccount())
-                    handleSubmitBpjs(onSubmitBpjs())
-                    handleSubmitInsurance(onSubmitInsurance())
+                if (currentStep === totalSteps.length < 1) {
+                    handleSubmitProfile(onSubmitProfile)()
+                    handleSubmitEmergency(onSubmitEmergency)()
+                    handleSubmitAddress(onSubmitAddress)()
+                    handleSubmitEducation(onSubmitEducation)()
+                    handleSubmitEmployeeProfile(onSubmitEmployeeProfile)()
+                    handleSubmitSocialMedia(onSubmitSocialMedia)()
+                    handleSubmitWorkHistory(onSubmitWorkHistory)()
+                    handleSubmitBankAccount(onSubmitBankAccount)()
+                    handleSubmitBpjs(onSubmitBpjs)()
+                    handleSubmitInsurance(onSubmitInsurance)()
                 } else {
                     setCurrentStep(currentStep + 1)
                 }
