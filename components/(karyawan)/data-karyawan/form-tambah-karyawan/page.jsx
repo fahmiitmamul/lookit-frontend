@@ -36,6 +36,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const dispatch = useDispatch()
 
     const validateProfile = yup.object({
+        profile_photo: yup.string().required('Harap diisi'),
         nik_ktp: yup.string().required('Harap diisi'),
         npwp: yup.string().required('Harap diisi'),
         gender: yup.string().required('Harap diisi'),
@@ -157,6 +158,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         register: registerProfile,
         handleSubmit: handleSubmitProfile,
         trigger: triggerProfile,
+        setValue: setProfileValue,
         formState: { errors: errorsProfile },
     } = useForm({
         resolver: yupResolver(validateProfile),
@@ -329,8 +331,6 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const postEmployee = useMutation({
         mutationFn: (data) => {
             const form = new FormData()
-            console.log(100)
-            console.log(data.name)
             if (selectedPicture) {
                 form.append('profile_photo', selectedPicture)
             }
@@ -722,6 +722,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0]
         setSelectedPicture(file)
+        setProfileValue('profile_photo', 'Has a value')
         fileToDataUrl(file)
     }
 
@@ -821,6 +822,9 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const nextStep = async () => {
         if (currentStep === 0) {
             const triggerProfileData = await triggerProfile()
+            if (errorsProfile.profile_photo) {
+                alert('Foto Profil Harap diisi')
+            }
             if (triggerProfileData) {
                 setCurrentStep(currentStep + 1)
             }
