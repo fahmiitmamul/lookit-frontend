@@ -261,8 +261,8 @@ const EditEmployeeForm = ({ setShowEditModal }) => {
                 const { data } = await http(token).get(
                     `/employee/${employeeId}`
                 )
-                return data.results
-                    ? data.results
+                return data.results.educations
+                    ? data.results.educations
                     : {
                           educations: [
                               {
@@ -291,8 +291,8 @@ const EditEmployeeForm = ({ setShowEditModal }) => {
                 const { data } = await http(token).get(
                     `/employee/${employeeId}`
                 )
-                return data.results
-                    ? data.results
+                return data.results.work_history
+                    ? data.results.work_history
                     : {
                           work_history: [
                               {
@@ -321,8 +321,8 @@ const EditEmployeeForm = ({ setShowEditModal }) => {
                 const { data } = await http(token).get(
                     `/employee/${employeeId}`
                 )
-                return data.results
-                    ? data.results
+                return data.results.bpjs
+                    ? data.results.bpjs
                     : {
                           bpjs: [
                               {
@@ -349,8 +349,8 @@ const EditEmployeeForm = ({ setShowEditModal }) => {
                 const { data } = await http(token).get(
                     `/employee/${employeeId}`
                 )
-                return data.results
-                    ? data.results
+                return data.results.insurance
+                    ? data.results.insurance
                     : {
                           insurance: [
                               {
