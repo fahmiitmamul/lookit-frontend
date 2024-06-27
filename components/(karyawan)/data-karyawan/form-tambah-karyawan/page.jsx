@@ -158,7 +158,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         register: registerProfile,
         handleSubmit: handleSubmitProfile,
         trigger: triggerProfile,
-        setValue: setProfileValue,
+        clearErrors: clearErrorsProfile,
         formState: { errors: errorsProfile },
     } = useForm({
         resolver: yupResolver(validateProfile),
@@ -722,7 +722,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0]
         setSelectedPicture(file)
-        setProfileValue('profile_photo', 'Has a value')
+        clearErrorsProfile('profile_photo')
         fileToDataUrl(file)
     }
 
@@ -818,13 +818,13 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         dispatch(setLoading(true))
         postEmployee.mutate(employeeContent)
     }
-
+    console.log(errorsProfile.profile_photo)
     const nextStep = async () => {
+        if (errorsProfile.profile_photo) {
+            alert('Foto Profil harap diisi')
+        }
         if (currentStep === 0) {
             const triggerProfileData = await triggerProfile()
-            if (errorsProfile.profile_photo) {
-                alert('Foto Profil Harap diisi')
-            }
             if (triggerProfileData) {
                 setCurrentStep(currentStep + 1)
             }
