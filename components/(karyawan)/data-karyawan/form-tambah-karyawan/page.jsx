@@ -820,7 +820,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         dispatch(setLoading(true))
         postEmployee.mutate(employeeContent)
     }
-    console.log(errorsProfile.profile_photo)
+
     const nextStep = async () => {
         if (errorsProfile.profile_photo) {
             alert('Foto Profil harap diisi')
