@@ -1,21 +1,26 @@
-import React from 'react'
-import Textinput from '@/components/ui/Textinput'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import React, { useEffect } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { useState } from 'react'
-import Flatpickr from 'react-flatpickr'
-import Select from '@/components/ui/Select'
-import ReactSelect from 'react-select'
-import Textarea from '@/components/ui/Textarea'
 import http from '@/app/helpers/http.helper'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getCookie } from 'cookies-next'
-import Button from '@/components/ui/Button'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useSelector } from 'react-redux'
-import Image from 'next/image'
-import Fileinput from '@/components/ui/Fileinput'
+import { useDispatch, useSelector } from 'react-redux'
+import { useMutation } from '@tanstack/react-query'
+import { setLoading } from '@/store/loadingReducer'
+import { toast } from 'react-toastify'
 import Card from '@/components/ui/Card'
+import EmployeeBiodataForm from '../form-biodata-karyawan/page'
+import FormKontakDarurat from '../form-kontak-darurat/page'
+import FormAlamat from '../form-alamat-sesuai-ktp/page'
+import FormPendidikan from '../form-pendidikan/page'
+import FormInfoKaryawan from '../form-info-karyawan/page'
+import FormSosialMedia from '../form-sosial-media/page'
+import FormPengalamanKerja from '../form-input-perusahaan/page'
+import FormInputBank from '../form-input-bank/page'
+import FormInputBpjs from '../form-input-bpjs/page'
+import FormInputAsuransi from '../form-input-asuransi/page'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const DetailEmployeeForm = ({ setShowViewModal }) => {
     const token = getCookie('token')
@@ -25,25 +30,47 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
     const [domicileRegencyValue, setDomicileRegencyValue] = useState([])
     const [domicileDistrictValue, setDomicileDistrictValue] = useState([])
     const [domicileVillageValue, setDomicileVillageValue] = useState([])
-    const [selectedDriverLicense, setSelectedDriverLicense] = useState([])
     const [selectedPicture, setSelectedPicture] = useState(null)
+    const [pictureURI, setPictureURI] = useState('')
+    const [employeeContent, setEmployeeContent] = useState({})
+    const dispatch = useDispatch()
+
     const employeeId = useSelector(
         (state) => state.employee.employee.employee_id
     )
 
-    const FormValidationSchema = yup.object({
+    const validateProfile = yup.object({
+        profile_photo: yup.string().required('Harap diisi'),
+        nik_ktp: yup.string().required('Harap diisi'),
         npwp: yup.string().required('Harap diisi'),
-        account_number: yup.string().required('Harap diisi'),
-        area_id: yup.string().required('Harap diisi'),
-        bank_name: yup.string().required('Harap diisi'),
-        bank_owner_name: yup.string().required('Harap diisi'),
-        bank_branch_name: yup.string().required('Harap diisi'),
-        batch: yup.string().required('Harap diisi'),
-        age: yup.string().required('Harap diisi'),
+        gender: yup.string().required('Harap diisi'),
+        name: yup.string().required('Harap diisi'),
         birth_place: yup.string().required('Harap diisi'),
+        religion: yup.string().required('Harap diisi'),
+        email: yup.string().required('Harap diisi'),
+        password: yup.string().required('Harap diisi'),
+        employee_weight: yup.string().required('Harap diisi'),
+        employee_height: yup.string().required('Harap diisi'),
+        age: yup.string().required('Harap diisi'),
+        marital_status: yup.string().required('Harap diisi'),
         blood_type: yup.string().required('Harap diisi'),
-        branch_id: yup.string().required('Harap diisi'),
-        departement_id: yup.string().required('Harap diisi'),
+        vaccine_status: yup.string().required('Harap diisi'),
+        phone_number: yup.string().required('Harap diisi'),
+        driver_license: yup
+            .array()
+            .min(1, 'Harap diisi')
+            .required('Harap diisi'),
+    })
+
+    const validateEmergency = yup.object({
+        urgent_full_name: yup.string().required('Harap diisi'),
+        urgent_brother: yup.string().required('Harap diisi'),
+        urgent_brother_number: yup.string().required('Harap diisi'),
+        urgent_phone_number: yup.string().required('Harap diisi'),
+        urgent_full_address: yup.string().required('Harap diisi'),
+    })
+
+    const validateAddress = yup.object({
         domicile_district_id: yup.string().required('Harap diisi'),
         domicile_postal_code: yup.string().required('Harap diisi'),
         domicile_province_id: yup.string().required('Harap diisi'),
@@ -54,45 +81,12 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         e_ktp_province_id: yup.string().required('Harap diisi'),
         e_ktp_regency_id: yup.string().required('Harap diisi'),
         e_ktp_village_id: yup.string().required('Harap diisi'),
-        email: yup.string().required('Harap diisi'),
-        employee_nik: yup.string().required('Harap diisi'),
-        employee_status: yup.string().required('Harap diisi'),
-        employee_weight: yup.string().required('Harap diisi'),
-        employee_height: yup.string().required('Harap diisi'),
-        end_date: yup.string().required('Harap diisi'),
-        facebook: yup.string().required('Harap diisi'),
-        gender: yup.string().required('Harap diisi'),
-        instagram: yup.string().required('Harap diisi'),
-        join_date: yup.string().required('Harap diisi'),
-        end_date: yup.string().required('Harap diisi'),
-        level_id: yup.string().required('Harap diisi'),
-        line: yup.string().required('Harap diisi'),
-        linkedin: yup.string().required('Harap diisi'),
-        marital_status: yup.string().required('Harap diisi'),
-        name: yup.string().required('Harap diisi'),
-        nik_ktp: yup.string().required('Harap diisi'),
-        npwp: yup.string().required('Harap diisi'),
-        phone_number: yup.string().required('Harap diisi'),
-        religion: yup.string().required('Harap diisi'),
-        resign_applied_date: yup.string().required('Harap diisi'),
-        resign_date: yup.string().required('Harap diisi'),
-        resign_reason: yup.string().required('Harap diisi'),
-        telegram: yup.string().required('Harap diisi'),
-        twitter: yup.string().required('Harap diisi'),
-        tiktok: yup.string().required('Harap diisi'),
-        urgent_brother: yup.string().required('Harap diisi'),
-        urgent_brother_number: yup.string().required('Harap diisi'),
-        urgent_full_address: yup.string().required('Harap diisi'),
-        urgent_full_name: yup.string().required('Harap diisi'),
-        urgent_phone_number: yup.string().required('Harap diisi'),
-        vaccine_status: yup.string().required('Harap diisi'),
-        position_id: yup.string().required('Harap diisi'),
-        driver_license: yup
-            .array()
-            .min(1, 'Harap diisi')
-            .required('Harap diisi'),
+        domicile_full_address: yup.string().required('Harap diisi'),
+        e_ktp_full_address: yup.string().required('Harap diisi'),
+    })
 
-        education: yup.array().of(
+    const validateEducation = yup.object({
+        educations: yup.array().of(
             yup.object().shape({
                 school_name: yup.string().required('Harap diisi'),
                 school_level: yup.string().required('Harap diisi'),
@@ -101,6 +95,9 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
                 graduation_status: yup.string().required('Harap diisi'),
             })
         ),
+    })
+
+    const validateWorkHistory = yup.object({
         work_history: yup.array().of(
             yup.object().shape({
                 company_name: yup.string().required('Harap diisi'),
@@ -110,18 +107,453 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
                 work_status: yup.string().required('Harap diisi'),
             })
         ),
+    })
+
+    const validateEmployeeProfile = yup.object({
+        employee_nik: yup.string().required('Harap diisi'),
+        employee_status: yup.string().required('Harap diisi'),
+        join_date: yup.string().required('Harap diisi'),
+        end_date: yup.string().required('Harap diisi'),
+        area_id: yup.string().required('Harap diisi'),
+        branch_id: yup.string().required('Harap diisi'),
+        batch: yup.string().required('Harap diisi'),
+        departement_id: yup.string().required('Harap diisi'),
+        position_id: yup.string().required('Harap diisi'),
+        level_id: yup.string().required('Harap diisi'),
+    })
+
+    const validateSocialMedia = yup.object({
+        facebook: yup.string().required('Harap diisi'),
+        instagram: yup.string().required('Harap diisi'),
+        line: yup.string().required('Harap diisi'),
+        linkedin: yup.string().required('Harap diisi'),
+        telegram: yup.string().required('Harap diisi'),
+        twitter: yup.string().required('Harap diisi'),
+        tiktok: yup.string().required('Harap diisi'),
+    })
+
+    const validateBankAccount = yup.object({
+        account_number: yup.string().required('Harap diisi'),
+        bank_name: yup.string().required('Harap diisi'),
+        bank_owner_name: yup.string().required('Harap diisi'),
+        bank_branch_name: yup.string().required('Harap diisi'),
+    })
+
+    const validateBPJS = yup.object({
         bpjs: yup.array().of(
             yup.object().shape({
-                bpjs_name: yup.string().required('Harap diisi'),
+                bpjs_type: yup.string().required('Harap diisi'),
                 bpjs_number: yup.string().required('Harap diisi'),
             })
         ),
+    })
+
+    const validateInsurance = yup.object({
         insurance: yup.array().of(
             yup.object().shape({
                 insurance_name: yup.string().required('Harap diisi'),
                 insurance_number: yup.string().required('Harap diisi'),
             })
         ),
+    })
+
+    const {
+        control: controlProfile,
+        register: registerProfile,
+        handleSubmit: handleSubmitProfile,
+        trigger: triggerProfile,
+        setValue: setProfileValue,
+        clearErrors: clearErrorsProfile,
+        formState: { errors: errorsProfile },
+    } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
+        resolver: yupResolver(validateProfile),
+        mode: 'all',
+    })
+
+    const {
+        control: controlEmployeeProfile,
+        register: registerEmployeeProfile,
+        trigger: triggerEmployeeProfile,
+        handleSubmit: handleSubmitEmployeeProfile,
+        getValues: getValuesEmployeeProfile,
+        formState: { errors: errorsEmployeeProfile },
+    } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
+        resolver: yupResolver(validateEmployeeProfile),
+        mode: 'all',
+    })
+
+    const employeeData = getValuesEmployeeProfile()
+
+    const {
+        register: registerEmergency,
+        trigger: triggerEmergency,
+        handleSubmit: handleSubmitEmergency,
+        formState: { errors: errorsEmergency },
+    } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
+        resolver: yupResolver(validateEmergency),
+        mode: 'all',
+    })
+
+    const {
+        register: registerAddress,
+        trigger: triggerAddress,
+        handleSubmit: handleSubmitAddress,
+        watch: watchAddress,
+        formState: { errors: errorsAddress },
+    } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
+        resolver: yupResolver(validateAddress),
+        mode: 'all',
+    })
+
+    const {
+        register: registerSocialMedia,
+        trigger: triggerSocialMedia,
+        handleSubmit: handleSubmitSocialMedia,
+        formState: { errors: errorsSocialMedia },
+    } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
+        resolver: yupResolver(validateSocialMedia),
+        mode: 'all',
+    })
+
+    const {
+        register: registerBankAccount,
+        trigger: triggerBankAccount,
+        handleSubmit: handleSubmitBankAccount,
+        formState: { errors: errorsBankAccount },
+    } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
+        resolver: yupResolver(validateBankAccount),
+        mode: 'all',
+    })
+
+    const {
+        control: controlEducation,
+        register: registerEducation,
+        trigger: triggerEducation,
+        handleSubmit: handleSubmitEducation,
+        formState: { errors: errorsEducation },
+    } = useForm({
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          educations: [
+                              {
+                                  school_name: '',
+                                  school_level: '',
+                                  education_start_date: '',
+                                  education_end_date: '',
+                              },
+                          ],
+                      }
+            }
+        },
+        resolver: yupResolver(validateEducation),
+        mode: 'all',
+    })
+
+    const {
+        control: controlWorkHistory,
+        register: registerWorkHistory,
+        trigger: triggerWorkHistory,
+        handleSubmit: handleSubmitWorkHistory,
+        formState: { errors: errorsWorkHistory },
+    } = useForm({
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          work_history: [
+                              {
+                                  company_name: '',
+                                  position_name: '',
+                                  work_history_start_date: '',
+                                  work_history_end_date: '',
+                              },
+                          ],
+                      }
+            }
+        },
+        resolver: yupResolver(validateWorkHistory),
+        mode: 'all',
+    })
+
+    const {
+        control: controlBpjs,
+        register: registerBpjs,
+        trigger: triggerBpjs,
+        handleSubmit: handleSubmitBpjs,
+        formState: { errors: errorsBpjs },
+    } = useForm({
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          bpjs: [
+                              {
+                                  bpjs_name: '',
+                                  bpjs_number: '',
+                              },
+                          ],
+                      }
+            }
+        },
+        resolver: yupResolver(validateBPJS),
+        mode: 'all',
+    })
+
+    const {
+        control: controlInsurance,
+        register: registerInsurance,
+        trigger: triggerInsurance,
+        handleSubmit: handleSubmitInsurance,
+        formState: { errors: errorsInsurance },
+    } = useForm({
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          insurance: [
+                              {
+                                  insurance_name: '',
+                                  insurance_number: '',
+                              },
+                          ],
+                      }
+            }
+        },
+        resolver: yupResolver(validateInsurance),
+        mode: 'all',
+    })
+
+    const {
+        fields: educationFields,
+        append: appendEducation,
+        remove: removeEducation,
+    } = useFieldArray({
+        control: controlEducation,
+        name: 'educations',
+    })
+
+    const {
+        fields: workHistoryFields,
+        append: appendWorkHistory,
+        remove: removeWorkHistory,
+    } = useFieldArray({
+        control: controlWorkHistory,
+        name: 'work_history',
+    })
+
+    const {
+        fields: bpjsFields,
+        append: appendBpjs,
+        remove: removeBpjs,
+    } = useFieldArray({
+        control: controlBpjs,
+        name: 'bpjs',
+    })
+
+    const {
+        fields: insuranceFields,
+        append: appendInsurance,
+        remove: removeInsurance,
+    } = useFieldArray({
+        control: controlInsurance,
+        name: 'insurance',
+    })
+
+    const queryClient = useQueryClient()
+
+    const editEmployee = useMutation({
+        mutationFn: () => {
+            const form = new FormData()
+            if (selectedPicture) {
+                form.append('profile_photo', selectedPicture)
+            }
+            form.append('name', employeeContent.name)
+            form.append('nik_ktp', employeeContent.nik_ktp)
+            form.append('employee_nik', employeeContent.employee_nik)
+            form.append('npwp', employeeContent.npwp)
+            form.append('birth_place', employeeContent.birth_place)
+            form.append('age', employeeContent.age)
+            form.append('religion', employeeContent.religion)
+            form.append('gender', employeeContent.gender)
+            form.append('email', employeeContent.email)
+            form.append('password', employeeContent.password)
+            form.append('phone_number', employeeContent.phone_number)
+            form.append('marital_status', employeeContent.marital_status)
+            form.append('employee_height', employeeContent.employee_height)
+            form.append('employee_weight', employeeContent.employee_weight)
+            form.append('blood_type', employeeContent.blood_type)
+            form.append('batch', employeeContent.batch)
+            form.append(
+                'e_ktp_province_id',
+                parseInt(employeeContent.e_ktp_province_id)
+            )
+            form.append(
+                'e_ktp_regency_id',
+                parseInt(employeeContent.e_ktp_regency_id)
+            )
+            form.append(
+                'e_ktp_district_id',
+                parseInt(employeeContent.e_ktp_district_id)
+            )
+            form.append(
+                'e_ktp_village_id',
+                parseInt(employeeContent.e_ktp_village_id)
+            )
+            form.append(
+                'e_ktp_full_address',
+                employeeContent.e_ktp_full_address
+            )
+            form.append('e_ktp_postal_code', employeeContent.e_ktp_postal_code)
+            form.append(
+                'domicile_province_id',
+                parseInt(employeeContent.domicile_province_id)
+            )
+            form.append(
+                'domicile_regency_id',
+                parseInt(employeeContent.domicile_regency_id)
+            )
+            form.append(
+                'domicile_district_id',
+                parseInt(employeeContent.domicile_district_id)
+            )
+            form.append(
+                'domicile_village_id',
+                parseInt(employeeContent.domicile_village_id)
+            )
+            form.append(
+                'domicile_full_address',
+                employeeContent.domicile_full_address
+            )
+            form.append(
+                'domicile_postal_code',
+                employeeContent.domicile_postal_code
+            )
+            form.append('vaccine_status', employeeContent.vaccine_status)
+            form.append('urgent_full_name', employeeContent.urgent_full_name)
+            form.append(
+                'urgent_phone_number',
+                employeeContent.urgent_phone_number
+            )
+            form.append(
+                'urgent_full_address',
+                employeeContent.urgent_full_address
+            )
+            form.append('area_id', parseInt(employeeContent.area_id))
+            form.append('branch_id', parseInt(employeeContent.branch_id))
+            form.append(
+                'departement_id',
+                parseInt(employeeContent.departement_id)
+            )
+            form.append('position_id', parseInt(employeeContent.position_id))
+            form.append('level_id', parseInt(employeeContent.level_id))
+            form.append('employee_status', employeeContent.employee_status)
+            form.append(
+                'educations',
+                JSON.stringify(
+                    { educations: employeeContent.educations },
+                    null,
+                    2
+                )
+            )
+            form.append(
+                'work_history',
+                JSON.stringify(
+                    { work_history: employeeContent.work_history },
+                    null,
+                    2
+                )
+            )
+            form.append('urgent_brother', employeeContent.urgent_brother)
+            form.append(
+                'urgent_brother_number',
+                employeeContent.urgent_brother_number
+            )
+            form.append(
+                'bpjs',
+                JSON.stringify({ bpjs: employeeContent.bpjs }, null, 2)
+            )
+            form.append(
+                'insurance',
+                JSON.stringify(
+                    { insurance: employeeContent.insurance },
+                    null,
+                    2
+                )
+            )
+            form.append('join_date', employeeContent.join_date)
+            form.append('end_date', employeeContent.end_date)
+            form.append('bank_name', employeeContent.bank_name)
+            form.append('account_number', employeeContent.account_number)
+            form.append('bank_owner_name', employeeContent.bank_owner_name)
+            form.append('bank_branch_name', employeeContent.bank_branch_name)
+            form.append(
+                'driver_license',
+                JSON.stringify(employeeContent.driver_license, null, 2)
+            )
+            form.append('resign_date', '')
+            form.append('resign_applied_date', '')
+            form.append('resign_reason', '')
+            form.append('facebook', employeeContent.facebook)
+            form.append('instagram', employeeContent.instagram)
+            form.append('telegram', employeeContent.telegram)
+            form.append('twitter', employeeContent.twitter)
+            form.append('line', employeeContent.line)
+            form.append('linkedin', employeeContent.linkedin)
+            form.append('tiktok', employeeContent.tiktok)
+            form.append('isEmployeeActive', 1)
+            return http(token).patch(`/employee/${employeeId}`, form)
+        },
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['active-employee'] })
+            dispatch(setLoading(false))
+            toast.success('Berhasil menambah karyawan')
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.message)
+            dispatch(setLoading(false))
+        },
     })
 
     const religionOptions = [
@@ -169,20 +601,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         {
             value: 'B',
             label: 'B',
-        },
-    ]
-    const vaccineOptions = [
-        {
-            value: 'Vaksin Pertama (I)',
-            label: 'Vaksin Pertama (I)',
-        },
-        {
-            value: 'Vaksin Kedua (II)',
-            label: 'Vaksin Kedua (II)',
-        },
-        {
-            value: 'Vaksin Ketiga (III)',
-            label: 'Vaksin Ketiga (III)',
         },
     ]
 
@@ -381,89 +799,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         cacheTime: 60 * 60 * 1000,
     })
 
-    const styles = {
-        option: (provided, state) => ({
-            ...provided,
-            fontSize: '14px',
-        }),
-    }
-
-    const {
-        control,
-        register,
-        getValues,
-        formState: { errors },
-    } = useForm({
-        defaultValues: async () => {
-            try {
-                const { data } = await http(token).get(
-                    `/employee/${employeeId}`
-                )
-                await Promise.all([
-                    fetchRegencyById(data.results.e_ktp_province_id),
-                    fetchDistrictById(data.results.e_ktp_regency_id),
-                    fetchVillageById(data.results.e_ktp_district_id),
-                    fetchDomicileRegencyById(data.results.domicile_province_id),
-                    fetchDomicileDistrictById(data.results.domicile_regency_id),
-                    fetchDomicileVillageById(data.results.domicile_district_id),
-                ])
-
-                const parsedData = {
-                    ...data.results,
-                    educations: data.results.educations.educations,
-                    work_history: data.results.work_history.work_history,
-                    bpjs: data.results.bpjs.bpjs,
-                    insurance: data.results.insurance.insurance,
-                    driver_license: data.results.driver_license,
-                }
-                setSelectedDriverLicense(data.results.driver_license)
-                return parsedData
-            } catch (err) {
-                console.log('Error')
-            }
-        },
-        resolver: yupResolver(FormValidationSchema),
-        mode: 'onChange',
-    })
-
-    const {
-        fields: educationFields,
-        append: appendEducation,
-        remove: removeEducation,
-    } = useFieldArray({
-        control: control,
-        name: 'educations',
-    })
-
-    const {
-        fields: workHistoryFields,
-        append: appendWorkHistory,
-        remove: removeWorkHistory,
-    } = useFieldArray({
-        control: control,
-        name: 'work_history',
-    })
-
-    const {
-        fields: bpjsFields,
-        append: appendBpjs,
-        remove: removeBpjs,
-    } = useFieldArray({
-        control: control,
-        name: 'bpjs',
-    })
-
-    const {
-        fields: insuranceFields,
-        append: appendInsurance,
-        remove: removeInsurance,
-    } = useFieldArray({
-        control: control,
-        name: 'insurance',
-    })
-
-    const employeeData = getValues()
-
     async function fetchBpjs() {
         const { data } = await http(token).get('/bpjs?limit=100')
         return data.results
@@ -500,1403 +835,361 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         cacheTime: 60 * 60 * 1000,
     })
 
+    const styles = {
+        option: (provided, state) => ({
+            ...provided,
+            fontSize: '14px',
+        }),
+    }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0]
+        setSelectedPicture(file)
+        setProfileValue('profile_photo', 'Has a value')
+        clearErrorsProfile('profile_photo')
+        fileToDataUrl(file)
+    }
+
+    const fileToDataUrl = (file) => {
+        const reader = new FileReader()
+        reader.addEventListener('load', () => {
+            setPictureURI(reader.result)
+        })
+        reader.readAsDataURL(file)
+    }
+
+    const selectedEktpProvince = watchAddress('e_ktp_province_id')
+    const selectedEktpRegency = watchAddress('e_ktp_regency_id')
+    const selectedEktpDistrict = watchAddress('e_ktp_district_id')
+
+    const selectedDomicileProvince = watchAddress('domicile_province_id')
+    const selectedDomicileRegency = watchAddress('domicile_regency_id')
+    const selectedDomicileDistrict = watchAddress('domicile_district_id')
+
+    useEffect(() => {
+        if (selectedEktpProvince) {
+            fetchRegencyById(parseInt(selectedEktpProvince))
+        }
+        if (selectedEktpRegency) {
+            fetchDistrictById(parseInt(selectedEktpRegency))
+        }
+        if (selectedEktpDistrict) {
+            fetchVillageById(parseInt(selectedEktpDistrict))
+        }
+        if (selectedDomicileProvince) {
+            fetchDomicileRegencyById(parseInt(selectedDomicileProvince))
+        }
+        if (selectedDomicileRegency) {
+            fetchDomicileDistrictById(parseInt(selectedDomicileRegency))
+        }
+        if (selectedDomicileDistrict) {
+            fetchDomicileVillageById(parseInt(selectedDomicileDistrict))
+        }
+    }, [
+        selectedEktpProvince,
+        selectedEktpRegency,
+        selectedEktpDistrict,
+        selectedDomicileProvince,
+        selectedDomicileRegency,
+        selectedDomicileDistrict,
+    ])
+
+    const [currentStep, setCurrentStep] = useState(0)
+
+    const totalSteps = [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+        { id: 6 },
+        { id: 7 },
+        { id: 8 },
+        { id: 9 },
+        { id: 10 },
+    ]
+
+    const onSubmitProfile = (data) => {
+        setEmployeeContent(data)
+    }
+    const onSubmitEmergency = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitAddress = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitEducation = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitEmployeeProfile = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitSocialMedia = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitWorkHistory = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitBankAccount = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitBpjs = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+    }
+    const onSubmitInsurance = (data) => {
+        setEmployeeContent((prevData) => ({ ...prevData, ...data }))
+        setShowViewModal(false)
+        dispatch(setLoading(true))
+        editEmployee.mutate()
+    }
+
+    const nextStep = async () => {
+        if (errorsProfile.profile_photo) {
+            alert('Foto Profil harap diisi')
+        }
+        if (currentStep === 0) {
+            const triggerProfileData = await triggerProfile()
+            if (triggerProfileData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 1) {
+            const triggerEmergencyData = await triggerEmergency()
+            if (triggerEmergencyData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 2) {
+            const triggerAddressData = await triggerAddress()
+            if (triggerAddressData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 3) {
+            const triggerEducationData = await triggerEducation()
+            if (triggerEducationData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 4) {
+            const triggerEmployeeProfileData = await triggerEmployeeProfile()
+            if (triggerEmployeeProfileData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 5) {
+            const triggerSocialMediaData = await triggerSocialMedia()
+            if (triggerSocialMediaData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 6) {
+            const triggerWorkHistoryData = await triggerWorkHistory()
+            if (triggerWorkHistoryData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 7) {
+            const triggerBankAccountData = await triggerBankAccount()
+            if (triggerBankAccountData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 8) {
+            const triggerBpjsData = await triggerBpjs()
+            if (triggerBpjsData) {
+                setCurrentStep(currentStep + 1)
+            }
+        }
+
+        if (currentStep === 9) {
+            const triggerInsuranceData = await triggerInsurance()
+            if (triggerInsuranceData) {
+                if (currentStep === totalSteps.length - 1) {
+                    handleSubmitProfile(onSubmitProfile)()
+                    handleSubmitEmergency(onSubmitEmergency)()
+                    handleSubmitAddress(onSubmitAddress)()
+                    handleSubmitEducation(onSubmitEducation)()
+                    handleSubmitEmployeeProfile(onSubmitEmployeeProfile)()
+                    handleSubmitSocialMedia(onSubmitSocialMedia)()
+                    handleSubmitWorkHistory(onSubmitWorkHistory)()
+                    handleSubmitBankAccount(onSubmitBankAccount)()
+                    handleSubmitBpjs(onSubmitBpjs)()
+                    handleSubmitInsurance(onSubmitInsurance)()
+                } else {
+                    setCurrentStep(currentStep + 1)
+                }
+            }
+        }
+    }
+
+    const prevStep = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1)
+        }
+    }
+
     return (
         <Card>
-            <form className="lg:grid-cols-1 grid gap-5 grid-cols-1 rounded-md">
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <div>
-                        <h6 className="font-bold">Profil Karyawan</h6>
-                    </div>
-                    <div></div>
-                    <div className="flex gap-5">
-                        <div className="flex flex-col justify-center items-center gap-5 max-w-48">
-                            <div>
-                                {employeeData?.profile_photo &&
-                                !selectedPicture ? (
-                                    <div>
-                                        <Image
-                                            src={`https://res.cloudinary.com/dxnewldiy/image/upload/v1701582842/${employeeData?.profile_photo}`}
-                                            width={200}
-                                            height={200}
-                                            alt=""
-                                            className="object-cover w-full h-full"
-                                        ></Image>
-                                    </div>
-                                ) : selectedPicture ? (
-                                    <div>
-                                        <Image
-                                            src={pictureURI}
-                                            width={200}
-                                            height={200}
-                                            alt=""
-                                            className="object-cover w-full h-full"
-                                        ></Image>
-                                    </div>
-                                ) : (
-                                    <div className="border w-[160px] h-[160px] flex justify-center items-center">
-                                        Pilih File
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2 w-full">
-                            <Textinput
-                                label="NIK"
-                                type="number"
-                                placeholder="Masukkan NIK"
-                                name="nik_ktp"
-                                register={register}
-                                error={errors.nik_ktp}
-                            />
-                            <Textinput
-                                label="NPWP"
-                                type="number"
-                                placeholder="Masukkan NPWP"
-                                name="npwp"
-                                register={register}
-                                error={errors.npwp}
-                            />
-
-                            <div>
-                                <label htmlFor="gender" className="form-label">
-                                    Jenis Kelamin
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    name="gender"
-                                    register={register}
-                                    options={genderOptions}
-                                    styles={styles}
-                                    id="gender"
-                                    error={errors.gender}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <Textinput
-                            label="Nama"
-                            type="text"
-                            disabled
-                            placeholder="Masukkan Nama"
-                            name="name"
-                            register={register}
-                            error={errors.name}
-                        />
-                        <Textinput
-                            label="Tempat Tanggal Lahir"
-                            type="text"
-                            disabled
-                            placeholder="Masukkan Tempat Tanggal Lahir"
-                            name="birth_place"
-                            register={register}
-                            error={errors.birth_place}
-                        />
-                        <div>
-                            <label htmlFor="religion" className="form-label">
-                                Agama
-                            </label>
-                            <Select
-                                className="react-select"
-                                disabled
-                                name="religion"
-                                register={register}
-                                options={religionOptions}
-                                styles={styles}
-                                id="religion"
-                                error={errors.religion}
-                            />
-                        </div>
-                    </div>
-                    <Textinput
-                        label="Nomor Telepon"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Nomor Telepon"
-                        name="phone_number"
-                        register={register}
-                        error={errors.phone_number}
-                    />
-                    <Textinput
-                        label="Email"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Email"
-                        name="email"
-                        register={register}
-                        error={errors.email}
-                    />
-                    <Textinput
-                        label="Berat Badan"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Berat Badan"
-                        name="employee_weight"
-                        register={register}
-                        error={errors.employee_weight}
-                    />
-                    <Textinput
-                        label="Tinggi Badan"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Tinggi Badan"
-                        name="employee_height"
-                        register={register}
-                        error={errors.employee_height}
-                    />
-                    <Textinput
-                        label="Umur"
-                        type="number"
-                        placeholder="Masukkan Umur"
-                        name="age"
-                        register={register}
-                        error={errors.age}
-                    />
-                    <div>
-                        <label htmlFor="marital_status" className="form-label">
-                            Status Nikah
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            name="marital_status"
-                            register={register}
-                            options={maritalOptions}
-                            styles={styles}
-                            id="marital_status"
-                            error={errors.marital_status}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="blood_type" className="form-label">
-                            Golongan Darah
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            name="blood_type"
-                            register={register}
-                            options={bloodOptions}
-                            styles={styles}
-                            id="blood_type"
-                            error={errors.blood_type}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="vaccine_status" className="form-label">
-                            Status Vaksin
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            name="vaccine_status"
-                            register={register}
-                            options={vaccineOptions}
-                            styles={styles}
-                            id="vaccine_status"
-                            error={errors.vaccine_status}
-                        />
-                    </div>
-                    <div>
-                        <label className="form-label" htmlFor="driver_license">
-                            SIM
-                        </label>
-                        <Controller
-                            name="driver_license"
-                            control={control}
-                            render={({
-                                field: { onChange },
-                                ...fieldProps
-                            }) => (
-                                <ReactSelect
-                                    {...fieldProps}
-                                    styles={styles}
-                                    isMulti
-                                    isDisabled
-                                    value={employeeData.driver_license}
-                                    name="driver_license"
-                                    options={driverLicenseOptions}
-                                    className={
-                                        errors?.driver_license
-                                            ? 'border-danger-500 border rounded-md'
-                                            : 'react-select'
-                                    }
-                                    id="driver_license"
-                                    onChange={(selectedOptions) => {
-                                        onChange(selectedOptions)
-                                    }}
-                                />
-                            )}
-                        />
-                        {errors?.driver_license && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.driver_license?.message}
-                            </div>
-                        )}
-                    </div>
-                    <div></div>
-                </div>
-                <div>
-                    <h6 className="font-bold">Pendidikan</h6>
-                </div>
-                <div></div>
-                <div>
-                    {educationFields.map((item, index) => (
-                        <div
-                            className="lg:grid-cols-5 md:grid-cols-2 grid-cols-1 grid gap-5 mb-5 last:mb-0"
-                            key={item.id}
-                        >
-                            <Textinput
-                                label="Nama"
-                                type="text"
-                                disabled
-                                placeholder="Nama Sekolah"
-                                register={register}
-                                name={`education[${index}].school_name`}
-                                error={errors?.education?.[index]?.school_name}
-                                defaultValue={item.school_name}
-                            />
-                            <div>
-                                <label
-                                    htmlFor="school_level"
-                                    className="form-label"
-                                >
-                                    Pendidikan
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    disabled
-                                    register={register}
-                                    name={`education[${index}].school_level`}
-                                    defaultValue={item.school_level}
-                                    options={schoolLevelOptions}
-                                    styles={styles}
-                                    id="school_level"
-                                    error={
-                                        errors?.education?.[index]?.school_level
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="default-picker"
-                                    className=" form-label"
-                                >
-                                    Waktu Mulai
-                                </label>
-                                <Controller
-                                    disabled
-                                    name={`education[${index}].education_start_date`}
-                                    defaultValue={item.education_start_date}
-                                    control={control}
-                                    render={({
-                                        field: { onChange, ...fieldProps },
-                                    }) => (
-                                        <Flatpickr
-                                            {...fieldProps}
-                                            className={
-                                                errors?.education?.[index]
-                                                    ?.education_start_date
-                                                    ? 'border-danger-500 border date-picker-control py-2'
-                                                    : 'date-picker-control date-picker-control py-2'
-                                            }
-                                            onChange={(selectedDate, dateStr) =>
-                                                onChange(dateStr)
-                                            }
-                                            options={{
-                                                dateFormat: 'd-m-Y',
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors?.education?.[index]
-                                    ?.education_start_date && (
-                                    <div
-                                        className={
-                                            'mt-2 text-danger-500 block text-sm'
-                                        }
-                                    >
-                                        {
-                                            errors?.education?.[index]
-                                                ?.education_start_date?.message
-                                        }
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="default-picker"
-                                    className=" form-label"
-                                >
-                                    Waktu Akhir
-                                </label>
-                                <Controller
-                                    disabled
-                                    name={`education[${index}].education_end_date`}
-                                    defaultValue={item.education_end_date}
-                                    control={control}
-                                    render={({
-                                        field: { onChange, ...fieldProps },
-                                    }) => (
-                                        <Flatpickr
-                                            {...fieldProps}
-                                            className={
-                                                errors?.education?.[index]
-                                                    ?.education_end_date
-                                                    ? 'border-danger-500 border date-picker-control py-2'
-                                                    : 'date-picker-control date-picker-control py-2'
-                                            }
-                                            onChange={(selectedDate, dateStr) =>
-                                                onChange(dateStr)
-                                            }
-                                            options={{
-                                                dateFormat: 'd-m-Y',
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors?.education?.[index]
-                                    ?.education_end_date && (
-                                    <div
-                                        className={
-                                            'mt-2 text-danger-500 block text-sm'
-                                        }
-                                    >
-                                        {
-                                            errors?.education?.[index]
-                                                ?.education_end_date?.message
-                                        }
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="graduation_status"
-                                    className="form-label"
-                                >
-                                    Status
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    disabled
-                                    name={`education[${index}].graduation_status`}
-                                    defaultValue={item.graduation_status}
-                                    register={register}
-                                    options={graduationStatus}
-                                    styles={styles}
-                                    id="graduation_status"
-                                    error={
-                                        errors?.education?.[index]
-                                            ?.graduation_status
-                                    }
-                                />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <h6 className="font-bold">Pengalaman Kerja</h6>
-                </div>
-                <div></div>
-                <div>
-                    {workHistoryFields.map((item, index) => (
-                        <div
-                            className="lg:grid-cols-5 md:grid-cols-2 grid-cols-1 grid gap-5 mb-5 last:mb-0"
-                            key={index}
-                        >
-                            <Textinput
-                                label="Nama Perusahaan"
-                                type="text"
-                                disabled
-                                id="company_name"
-                                placeholder="Nama Perusahaan"
-                                register={register}
-                                name={`work_history[${index}].company_name`}
-                                defaultValue={item.company_name}
-                                error={
-                                    errors?.work_history?.[index]?.company_name
-                                }
-                            />
-                            <div>
-                                <label
-                                    htmlFor="position_name"
-                                    className="form-label"
-                                >
-                                    Jabatan
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    disabled
-                                    styles={styles}
-                                    name={`work_history[${index}].position_name`}
-                                    defaultValue={item.position_name}
-                                    register={register}
-                                    options={[
-                                        ...(positionData?.data?.map((item) => ({
-                                            value: item?.position_name,
-                                            label: item?.position_name,
-                                        })) || []),
-                                    ]}
-                                    id="position_name"
-                                    error={
-                                        errors?.work_history?.[index]
-                                            ?.position_name
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="default-picker"
-                                    className=" form-label"
-                                >
-                                    Waktu Mulai
-                                </label>
-                                <Controller
-                                    disabled
-                                    name={`work_history[${index}].work_history_start_date`}
-                                    defaultValue={item.work_history_start_date}
-                                    control={control}
-                                    render={({
-                                        field: { onChange, ...fieldProps },
-                                    }) => (
-                                        <Flatpickr
-                                            {...fieldProps}
-                                            className={
-                                                errors?.work_history?.[index]
-                                                    ?.work_history_start_date
-                                                    ? 'border-danger-500 border date-picker-control py-2'
-                                                    : 'date-picker-control date-picker-control py-2'
-                                            }
-                                            onChange={(selectedDate, dateStr) =>
-                                                onChange(dateStr)
-                                            }
-                                            options={{
-                                                dateFormat: 'd-m-Y',
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors?.work_history?.[index]
-                                    ?.work_history_start_date && (
-                                    <div
-                                        className={
-                                            'mt-2 text-danger-500 block text-sm'
-                                        }
-                                    >
-                                        {
-                                            errors?.work_history?.[index]
-                                                ?.work_history_start_date
-                                                ?.message
-                                        }
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="default-picker"
-                                    className=" form-label"
-                                >
-                                    Waktu Akhir
-                                </label>
-                                <Controller
-                                    disabled
-                                    name={`work_history[${index}].work_history_end_date`}
-                                    defaultValue={item.work_history_end_date}
-                                    control={control}
-                                    render={({
-                                        field: { onChange, ...fieldProps },
-                                    }) => (
-                                        <Flatpickr
-                                            {...fieldProps}
-                                            className={
-                                                errors?.work_history?.[index]
-                                                    ?.work_history_end_date
-                                                    ? 'border-danger-500 border date-picker-control py-2'
-                                                    : 'date-picker-control date-picker-control py-2'
-                                            }
-                                            onChange={(selectedDate, dateStr) =>
-                                                onChange(dateStr)
-                                            }
-                                            options={{
-                                                dateFormat: 'd-m-Y',
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors?.work_history?.[index]
-                                    ?.work_history_end_date && (
-                                    <div
-                                        className={
-                                            'mt-2 text-danger-500 block text-sm'
-                                        }
-                                    >
-                                        {
-                                            errors?.work_history?.[index]
-                                                ?.work_history_end_date?.message
-                                        }
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="work_status"
-                                    className="form-label"
-                                >
-                                    Status Kerja
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    disabled
-                                    options={workStatusData}
-                                    register={register}
-                                    name={`work_history[${index}].work_status`}
-                                    defaultValue={item.work_status}
-                                    styles={styles}
-                                    id="work_status"
-                                    error={
-                                        errors?.work_history?.[index]
-                                            ?.work_status
-                                    }
-                                />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                <div>
-                    <h6 className="font-bold">Akun Bank</h6>
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <div>
-                        <label htmlFor="bank_name" className="form-label">
-                            Pilih Bank
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            name="bank_name"
-                            register={register}
-                            options={[
-                                ...(bankData?.data?.map((item) => ({
-                                    value: item?.name,
-                                    label: item?.name,
-                                })) || []),
-                            ]}
-                            styles={styles}
-                            id="bank_name"
-                            error={errors.bank_name}
-                        />
-                    </div>
-                    <Textinput
-                        label="No Rekening"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan No Rekening"
-                        name="account_number"
-                        register={register}
-                        error={errors.account_number}
-                    />
-                    <Textinput
-                        label="Nama Bank"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Nama Bank"
-                        name="bank_branch_name"
-                        register={register}
-                        error={errors.bank_branch_name}
-                    />
-                    <Textinput
-                        label="Nama Pemilik Rekening"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Nama Pemilik Rekening"
-                        name="bank_owner_name"
-                        register={register}
-                        error={errors.bank_owner_name}
-                    />
-                </div>
-                <div>
-                    <h6 className="font-bold">Data BPJS</h6>
-                </div>
-                <div>
-                    {bpjsFields.map((item, index) => (
-                        <div
-                            className="lg:grid-cols-2 md:grid-cols-2 grid-cols-1 grid gap-5 mb-5 last:mb-0"
-                            key={index}
-                        >
-                            <div>
-                                <label
-                                    htmlFor={`bpjs[${index}].bpjs_type`}
-                                    className="form-label"
-                                >
-                                    Pilih Tipe Bpjs
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    register={register}
-                                    disabled
-                                    name={`bpjs[${index}].bpjs_type`}
-                                    defaultValue={item.bpjs_type}
-                                    options={[
-                                        ...(bpjsData?.data?.map((item) => ({
-                                            value: item?.bpjs_type || '',
-                                            label: item?.bpjs_type || '',
-                                        })) || []),
-                                    ]}
-                                    styles={styles}
-                                    id={`bpjs[${index}].bpjs_type`}
-                                    error={errors?.bpjs?.[index]?.bpjs_type}
-                                />
-                            </div>
-                            <div className="flex justify-between items-end space-x-5">
-                                <div className="w-full">
-                                    <Textinput
-                                        label="Nomor BPJS"
-                                        type="number"
-                                        id="bpjs_number"
-                                        disabled
-                                        placeholder="Nomor BPJS"
-                                        register={register}
-                                        name={`bpjs[${index}].bpjs_number`}
-                                        defaultValue={item.bpjs_number}
-                                        error={
-                                            errors?.bpjs?.[index]?.bpjs_number
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <h6 className="font-bold">Data Asuransi</h6>
-                </div>
-                <div>
-                    {insuranceFields.map((item, index) => (
-                        <div
-                            className="lg:grid-cols-2 md:grid-cols-2 grid-cols-1 grid gap-5 mb-5 last:mb-0"
-                            key={index}
-                        >
-                            <div>
-                                <label
-                                    htmlFor={`insurance[${index}].insurance_name`}
-                                    className="form-label"
-                                >
-                                    Pilih Tipe Asuransi
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    register={register}
-                                    disabled
-                                    name={`insurance[${index}].insurance_name`}
-                                    defaultValue={item.insurance_name}
-                                    options={[
-                                        ...(insuranceData?.data?.map(
-                                            (item) => ({
-                                                value:
-                                                    item?.insurance_name || '',
-                                                label:
-                                                    item?.insurance_name || '',
-                                            })
-                                        ) || []),
-                                    ]}
-                                    styles={styles}
-                                    id={`insurance[${index}].insurance_name`}
-                                    error={
-                                        errors?.insurance?.[index]
-                                            ?.insurance_name
-                                    }
-                                />
-                            </div>
-                            <div className="flex justify-between items-end space-x-5">
-                                <div className="w-full">
-                                    <Textinput
-                                        label="Nomor Asuransi"
-                                        type="text"
-                                        disabled
-                                        id="insurance_number"
-                                        placeholder="Nomor Asuransi"
-                                        register={register}
-                                        name={`insurance[${index}].insurance_number`}
-                                        defaultValue={item.insurance_number}
-                                        error={
-                                            errors?.insurance?.[index]
-                                                ?.insurance_number
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <h6 className="font-bold">Sosial Media</h6>
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <Textinput
-                        label="Facebook"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Facebook"
-                        name="facebook"
-                        register={register}
-                        error={errors.facebook}
-                    />
-                    <Textinput
-                        label="Instagram"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Instagram"
-                        name="instagram"
-                        register={register}
-                        error={errors.instagram}
-                    />
-                    <Textinput
-                        label="Telegram"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Telegram"
-                        name="telegram"
-                        register={register}
-                        error={errors.telegram}
-                    />
-                    <Textinput
-                        label="Twitter"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Twitter"
-                        name="twitter"
-                        register={register}
-                        error={errors.twitter}
-                    />
-                    <Textinput
-                        label="Line"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Line"
-                        name="line"
-                        register={register}
-                        error={errors.line}
-                    />
-                    <Textinput
-                        label="LinkedIn"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan LinkedIn"
-                        name="linkedin"
-                        register={register}
-                        error={errors.linkedin}
-                    />
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <div>
-                        <Textinput
-                            label="Tiktok"
-                            type="text"
-                            disabled
-                            placeholder="Masukkan Tiktok"
-                            name="tiktok"
-                            register={register}
-                            error={errors.tiktok}
-                        />
-                    </div>
-                    <div></div>
-                </div>
-                <div>
-                    <h6 className="font-bold">Kontak Darurat</h6>
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <Textinput
-                        label="Nama Orang Tua"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Nama Orang Tua"
-                        name="urgent_full_name"
-                        register={register}
-                        error={errors.urgent_full_name}
-                    />
-                    <Textinput
-                        label="Nama Saudara"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Nama Saudara"
-                        name="urgent_brother"
-                        register={register}
-                        error={errors.urgent_brother}
-                    />
-                    <Textinput
-                        label="Nomor Handphone Orang Tua"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Nomor Handphone Orang Tua"
-                        name="urgent_phone_number"
-                        register={register}
-                        error={errors.urgent_phone_number}
-                    />
-                    <Textinput
-                        label="Nomor Handphone Saudara"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan Nomor Handphone Saudara"
-                        name="urgent_brother_number"
-                        register={register}
-                        error={errors.urgent_brother_number}
-                    />
-                </div>
-                <div>
-                    <Textarea
-                        label="Alamat Lengkap"
-                        type="text"
-                        disabled
-                        name="urgent_full_address"
-                        register={register}
-                        id="df"
-                        placeholder="Alamat Lengkap"
-                        error={errors.urgent_full_address}
-                    />
-                </div>
-                <div>
-                    <h6 className="font-bold">Alamat Lengkap Sesuai E-KTP</h6>
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <div>
-                        <label
-                            htmlFor="e_ktp_province_id"
-                            className="form-label"
-                        >
-                            Provinsi
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            register={register}
-                            name="e_ktp_province_id"
-                            options={provinceData?.data?.map((item) => ({
-                                value: item?.id,
-                                label: item?.name,
-                            }))}
-                            styles={styles}
-                            id="e_ktp_province_id"
-                            error={errors.e_ktp_province_id}
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="e_ktp_regency_id"
-                            className="form-label"
-                        >
-                            Kota / Kabupaten
-                        </label>
-                        <Select
-                            className="react-select"
-                            register={register}
-                            name="e_ktp_regency_id"
-                            options={regencyValue?.map((item) => ({
-                                value: item?.id,
-                                label: item?.name,
-                            }))}
-                            disabled
-                            styles={styles}
-                            id="e_ktp_regency_id"
-                            error={errors.e_ktp_regency_id}
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="e_ktp_district_id"
-                            className="form-label"
-                        >
-                            Kecamatan
-                        </label>
-                        <Select
-                            className="react-select"
-                            register={register}
-                            name="e_ktp_district_id"
-                            disabled
-                            options={districtValue?.map((item) => ({
-                                value: item?.id,
-                                label: item?.name,
-                            }))}
-                            styles={styles}
-                            id="e_ktp_district_id"
-                            error={errors.e_ktp_district_id}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="e_ktp_village" className="form-label">
-                            Kelurahan
-                        </label>
-                        <Select
-                            className="react-select"
-                            register={register}
-                            name="e_ktp_village_id"
-                            disabled
-                            options={villageValue?.map((item) => ({
-                                value: item?.id,
-                                label: item?.name,
-                            }))}
-                            styles={styles}
-                            id="e_ktp_village"
-                            error={errors.e_ktp_village_id}
-                        />
-                    </div>
-                    <div>
-                        <Textinput
-                            label="Kode POS"
-                            type="text"
-                            disabled
-                            placeholder="Masukkan Kode POS"
-                            name="e_ktp_postal_code"
-                            register={register}
-                            error={errors.e_ktp_postal_code}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <Textarea
-                        label="Alamat Lengkap sesuai E-KTP"
-                        type="text"
-                        disabled
-                        name="e_ktp_full_address"
-                        register={register}
-                        id="df"
-                        placeholder="Alamat Lengkap sesuai E-KTP"
-                        error={errors.e_ktp_full_address}
-                    />
-                </div>
-                <div>
-                    <h6 className="font-bold">
-                        Alamat Lengkap Sesuai Domisili
-                    </h6>
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <div>
-                        <label
-                            htmlFor="domicile_province_id"
-                            className="form-label"
-                        >
-                            Provinsi
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            register={register}
-                            name="domicile_province_id"
-                            options={provinceDomicileData?.data?.map(
-                                (item) => ({
-                                    value: item?.id,
-                                    label: item?.name,
-                                })
-                            )}
-                            styles={styles}
-                            id="domicile_province_id"
-                            error={errors.domicile_province_id}
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="domicile_regency_id"
-                            className="form-label"
-                        >
-                            Kota / Kabupaten
-                        </label>
-                        <Select
-                            className="react-select"
-                            register={register}
-                            name="domicile_regency_id"
-                            disabled
-                            options={domicileRegencyValue?.map((item) => ({
-                                value: item?.id,
-                                label: item?.name,
-                            }))}
-                            styles={styles}
-                            id="domicile_regency_id"
-                            error={errors.domicile_regency_id}
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="domicile_district_id"
-                            className="form-label"
-                        >
-                            Kecamatan
-                        </label>
-                        <Select
-                            className="react-select"
-                            register={register}
-                            name="domicile_district_id"
-                            disabled
-                            options={domicileDistrictValue?.map((item) => ({
-                                value: item?.id,
-                                label: item?.name,
-                            }))}
-                            styles={styles}
-                            id="domicile_district_id"
-                            error={errors.domicile_district_id}
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="domicile_village_id"
-                            className="form-label"
-                        >
-                            Kelurahan
-                        </label>
-                        <Select
-                            className="react-select"
-                            register={register}
-                            name="domicile_village_id"
-                            disabled
-                            options={domicileVillageValue?.map((item) => ({
-                                value: item?.id,
-                                label: item?.name,
-                            }))}
-                            styles={styles}
-                            id="domicile_village_id"
-                            error={errors.domicile_village_id}
-                        />
-                    </div>
-                    <div>
-                        <Textinput
-                            label="Kode POS"
-                            type="text"
-                            disabled
-                            placeholder="Masukkan Kode POS"
-                            name="domicile_postal_code"
-                            register={register}
-                            error={errors.domicile_postal_code}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <Textarea
-                        label="Alamat Lengkap sesuai Domisili"
-                        type="text"
-                        disabled
-                        name="domicile_full_address"
-                        register={register}
-                        id="df"
-                        placeholder="Alamat Lengkap sesuai Domisili"
-                        error={errors.domicile_full_address}
-                    />
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <div>
-                        <h6 className="font-bold">Data Karyawan</h6>
-                    </div>
-                    <div></div>
-                    <Textinput
-                        label="NIK Karyawan"
-                        type="text"
-                        disabled
-                        placeholder="Masukkan NIK Karyawan"
-                        name="employee_nik"
-                        register={register}
-                        error={errors.employee_nik}
-                    />
-                    <div>
-                        <label htmlFor="employee_status" className="form-label">
-                            Status Karyawan
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            register={register}
-                            name="employee_status"
-                            options={employeeStatus}
-                            styles={styles}
-                            id="employee_status"
-                            error={errors.employee_status}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="default-picker" className=" form-label">
-                            Tanggal Masuk Kerja
-                        </label>
-                        <Controller
-                            disabled
-                            name="join_date"
-                            control={control}
-                            render={({
-                                field: { onChange, ...fieldProps },
-                            }) => (
-                                <Flatpickr
-                                    {...fieldProps}
-                                    className={
-                                        errors?.join_date
-                                            ? 'border-danger-500 border date-picker-control py-2'
-                                            : 'date-picker-control date-picker-control py-2'
-                                    }
-                                    onChange={(selectedDate, dateStr) =>
-                                        onChange(dateStr)
-                                    }
-                                    options={{
-                                        dateFormat: 'd-m-Y',
-                                    }}
-                                />
-                            )}
-                        />
-                        {errors?.join_date && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.join_date?.message}
-                            </div>
-                        )}
-                    </div>
-                    <div>
-                        <label htmlFor="default-picker" className=" form-label">
-                            Tanggal Berakhir Kerja
-                        </label>
-                        <Controller
-                            disabled
-                            name="end_date"
-                            control={control}
-                            render={({
-                                field: { onChange, ...fieldProps },
-                            }) => (
-                                <Flatpickr
-                                    {...fieldProps}
-                                    className={
-                                        errors?.end_date
-                                            ? 'border-danger-500 border date-picker-control py-2'
-                                            : 'date-picker-control date-picker-control py-2'
-                                    }
-                                    onChange={(selectedDate, dateStr) =>
-                                        onChange(dateStr)
-                                    }
-                                    options={{
-                                        dateFormat: 'd-m-Y',
-                                    }}
-                                />
-                            )}
-                        />
-                        {errors?.end_date && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.end_date?.message}
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div className="lg:grid-cols-3 grid gap-5 grid-cols-1">
-                    <div>
-                        <label htmlFor="area_id" className="form-label">
-                            Area
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            register={register}
-                            name="area_id"
-                            styles={styles}
-                            options={[
-                                ...(areaData?.data?.map((item) => ({
-                                    value: item?.area_code,
-                                    label: item?.area_name,
-                                })) || []),
-                            ]}
-                            id="area_id"
-                            error={errors.area_id}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="branch_id" className="form-label">
-                            Cabang
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            register={register}
-                            name="branch_id"
-                            styles={styles}
-                            options={[
-                                ...(branchData?.data?.map((item) => ({
-                                    value: item?.branch_code,
-                                    label: item?.branch_name,
-                                })) || []),
-                            ]}
-                            id="branch_id"
-                            error={errors.branch_id}
-                        />
-                    </div>
-                    <div>
-                        <Textinput
-                            label="Batch"
-                            type="text"
-                            disabled
-                            placeholder="Masukkan Batch"
-                            name="batch"
-                            register={register}
-                            error={errors.batch}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="division" className="form-label">
-                            Divisi
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            name="departement_id"
-                            register={register}
-                            styles={styles}
-                            options={[
-                                ...(divisionData?.data?.map((item) => ({
-                                    value: item?.division_code,
-                                    label: item?.division_name,
-                                })) || []),
-                            ]}
-                            id="division"
-                            error={errors.departement_id}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="position_id" className="form-label">
-                            Jabatan
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            name="position_id"
-                            register={register}
-                            styles={styles}
-                            options={[
-                                ...(positionData?.data?.map((item) => ({
-                                    value: item?.position_code,
-                                    label: item?.position_name,
-                                })) || []),
-                            ]}
-                            id="position_id"
-                            error={errors.position_id}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="level_id" className="form-label">
-                            Level
-                        </label>
-                        <Select
-                            className="react-select"
-                            disabled
-                            name="level_id"
-                            register={register}
-                            styles={styles}
-                            options={[
-                                ...(levelData?.data?.map((item) => ({
-                                    value: item?.level_code,
-                                    label: item?.level_name,
-                                })) || []),
-                            ]}
-                            id="level_id"
-                            error={errors.level_id}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <h6 className="font-bold">Data Resign</h6>
-                </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-                    <div>
-                        <label htmlFor="default-picker" className=" form-label">
-                            Tanggal Pengajuan
-                        </label>
-
-                        <Controller
-                            disabled
-                            name="resign_date"
-                            control={control}
-                            render={({
-                                field: { onChange, ...fieldProps },
-                            }) => (
-                                <Flatpickr
-                                    {...fieldProps}
-                                    className={
-                                        errors?.resign_date
-                                            ? 'border-danger-500 border date-picker-control py-2'
-                                            : 'date-picker-control py-2'
-                                    }
-                                    onChange={(selectedDate, dateStr) =>
-                                        onChange(dateStr)
-                                    }
-                                    options={{
-                                        dateFormat: 'd-m-Y',
-                                    }}
-                                />
-                            )}
-                        />
-                        {errors?.resign_date && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.resign_date?.message}
-                            </div>
-                        )}
-                    </div>
-                    <div>
-                        <label htmlFor="default-picker" className=" form-label">
-                            Tanggal Efektif
-                        </label>
-
-                        <Controller
-                            disabled
-                            name="resign_applied_date"
-                            control={control}
-                            render={({
-                                field: { onChange, ...fieldProps },
-                            }) => (
-                                <Flatpickr
-                                    {...fieldProps}
-                                    className={
-                                        errors?.resign_applied_date
-                                            ? 'border-danger-500 border date-picker-control py-2'
-                                            : 'date-picker-control py-2'
-                                    }
-                                    onChange={(selectedDate, dateStr) =>
-                                        onChange(dateStr)
-                                    }
-                                    options={{
-                                        dateFormat: 'd-m-Y',
-                                    }}
-                                />
-                            )}
-                        />
-                        {errors?.resign_applied_date && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.resign_applied_date?.message}
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <Textarea
-                            label="Alasan Resign"
-                            type="text"
-                            disabled
-                            register={register}
-                            id="df"
-                            name="resign_reason"
-                            placeholder="Alasan Resign"
-                            error={errors.resign_reason}
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-5 justify-end">
-                    <Button
-                        text="Batal"
-                        className="btn-danger"
-                        type="button"
-                        onClick={() => {
-                            setShowViewModal(false)
-                        }}
-                    />
-                </div>
-            </form>
+            {currentStep === 0 && (
+                <EmployeeBiodataForm
+                    employeeData={employeeData}
+                    selectedPicture={selectedPicture}
+                    pictureURI={pictureURI}
+                    handleFileChange={handleFileChange}
+                    register={registerProfile}
+                    errors={errorsProfile}
+                    genderOptions={genderOptions}
+                    religionOptions={religionOptions}
+                    maritalOptions={maritalOptions}
+                    bloodOptions={bloodOptions}
+                    vaccineData={vaccineData}
+                    control={controlProfile}
+                    driverLicenseOptions={driverLicenseOptions}
+                    styles={styles}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 1 && (
+                <FormKontakDarurat
+                    register={registerEmergency}
+                    errors={errorsEmergency}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 2 && (
+                <FormAlamat
+                    styles={styles}
+                    register={registerAddress}
+                    errors={errorsAddress}
+                    provinceData={provinceData}
+                    regencyValue={regencyValue}
+                    districtValue={districtValue}
+                    villageValue={villageValue}
+                    provinceDomicileData={provinceDomicileData}
+                    domicileRegencyValue={domicileRegencyValue}
+                    domicileDistrictValue={domicileDistrictValue}
+                    domicileVillageValue={domicileVillageValue}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 3 && (
+                <FormPendidikan
+                    educationFields={educationFields}
+                    register={registerEducation}
+                    errors={errorsEducation}
+                    schoolLevelOptions={schoolLevelOptions}
+                    control={controlEducation}
+                    graduationStatus={graduationStatus}
+                    appendEducation={appendEducation}
+                    removeEducation={removeEducation}
+                    styles={styles}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 4 && (
+                <FormInfoKaryawan
+                    register={registerEmployeeProfile}
+                    errors={errorsEmployeeProfile}
+                    styles={styles}
+                    employeeStatus={employeeStatus}
+                    control={controlEmployeeProfile}
+                    areaData={areaData}
+                    branchData={branchData}
+                    divisionData={divisionData}
+                    positionData={positionData}
+                    levelData={levelData}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 5 && (
+                <FormSosialMedia
+                    register={registerSocialMedia}
+                    errors={errorsSocialMedia}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 6 && (
+                <FormPengalamanKerja
+                    workHistoryFields={workHistoryFields}
+                    register={registerWorkHistory}
+                    errors={errorsWorkHistory}
+                    styles={styles}
+                    control={controlWorkHistory}
+                    workStatusData={workStatusData}
+                    positionData={positionData}
+                    appendWorkHistory={appendWorkHistory}
+                    removeWorkHistory={removeWorkHistory}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 7 && (
+                <FormInputBank
+                    register={registerBankAccount}
+                    errors={errorsBankAccount}
+                    bankData={bankData}
+                    styles={styles}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 8 && (
+                <FormInputBpjs
+                    bpjsFields={bpjsFields}
+                    bpjsData={bpjsData}
+                    register={registerBpjs}
+                    errors={errorsBpjs}
+                    appendBpjs={appendBpjs}
+                    removeBpjs={removeBpjs}
+                    styles={styles}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            {currentStep === 9 && (
+                <FormInputAsuransi
+                    insuranceFields={insuranceFields}
+                    register={registerInsurance}
+                    insuranceData={insuranceData}
+                    appendInsurance={appendInsurance}
+                    removeInsurance={removeInsurance}
+                    styles={styles}
+                    errors={errorsInsurance}
+                    steps={totalSteps}
+                    stepNumber={currentStep}
+                />
+            )}
+            <div className="w-full flex gap-5 mt-5 justify-end">
+                <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={prevStep}
+                >
+                    Kembali
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={nextStep}
+                >
+                    Selanjutnya
+                </button>
+            </div>
         </Card>
     )
 }
