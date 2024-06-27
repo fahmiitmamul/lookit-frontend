@@ -158,6 +158,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         register: registerProfile,
         handleSubmit: handleSubmitProfile,
         trigger: triggerProfile,
+        setValue: setProfileValue,
         clearErrors: clearErrorsProfile,
         formState: { errors: errorsProfile },
     } = useForm({
@@ -722,6 +723,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0]
         setSelectedPicture(file)
+        setProfileValue('profile_photo', 'Has a value')
         clearErrorsProfile('profile_photo')
         fileToDataUrl(file)
     }
