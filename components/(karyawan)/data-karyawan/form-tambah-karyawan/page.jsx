@@ -330,96 +330,144 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const queryClient = useQueryClient()
 
     const postEmployee = useMutation({
-        mutationFn: (data) => {
+        mutationFn: () => {
             const form = new FormData()
             if (selectedPicture) {
                 form.append('profile_photo', selectedPicture)
             }
-            form.append('name', data.name)
-            form.append('nik_ktp', data.nik_ktp)
-            form.append('employee_nik', data.employee_nik)
-            form.append('npwp', data.npwp)
-            form.append('birth_place', data.birth_place)
-            form.append('age', data.age)
-            form.append('religion', data.religion)
-            form.append('gender', data.gender)
-            form.append('email', data.email)
-            form.append('password', data.password)
-            form.append('phone_number', data.phone_number)
-            form.append('marital_status', data.marital_status)
-            form.append('employee_height', data.employee_height)
-            form.append('employee_weight', data.employee_weight)
-            form.append('blood_type', data.blood_type)
-            form.append('batch', data.batch)
-            form.append('e_ktp_province_id', parseInt(data.e_ktp_province_id))
-            form.append('e_ktp_regency_id', parseInt(data.e_ktp_regency_id))
-            form.append('e_ktp_district_id', parseInt(data.e_ktp_district_id))
-            form.append('e_ktp_village_id', parseInt(data.e_ktp_village_id))
-            form.append('e_ktp_full_address', data.e_ktp_full_address)
-            form.append('e_ktp_postal_code', data.e_ktp_postal_code)
+            form.append('name', employeeContent.name)
+            form.append('nik_ktp', employeeContent.nik_ktp)
+            form.append('employee_nik', employeeContent.employee_nik)
+            form.append('npwp', employeeContent.npwp)
+            form.append('birth_place', employeeContent.birth_place)
+            form.append('age', employeeContent.age)
+            form.append('religion', employeeContent.religion)
+            form.append('gender', employeeContent.gender)
+            form.append('email', employeeContent.email)
+            form.append('password', employeeContent.password)
+            form.append('phone_number', employeeContent.phone_number)
+            form.append('marital_status', employeeContent.marital_status)
+            form.append('employee_height', employeeContent.employee_height)
+            form.append('employee_weight', employeeContent.employee_weight)
+            form.append('blood_type', employeeContent.blood_type)
+            form.append('batch', employeeContent.batch)
+            form.append(
+                'e_ktp_province_id',
+                parseInt(employeeContent.e_ktp_province_id)
+            )
+            form.append(
+                'e_ktp_regency_id',
+                parseInt(employeeContent.e_ktp_regency_id)
+            )
+            form.append(
+                'e_ktp_district_id',
+                parseInt(employeeContent.e_ktp_district_id)
+            )
+            form.append(
+                'e_ktp_village_id',
+                parseInt(employeeContent.e_ktp_village_id)
+            )
+            form.append(
+                'e_ktp_full_address',
+                employeeContent.e_ktp_full_address
+            )
+            form.append('e_ktp_postal_code', employeeContent.e_ktp_postal_code)
             form.append(
                 'domicile_province_id',
-                parseInt(data.domicile_province_id)
+                parseInt(employeeContent.domicile_province_id)
             )
             form.append(
                 'domicile_regency_id',
-                parseInt(data.domicile_regency_id)
+                parseInt(employeeContent.domicile_regency_id)
             )
             form.append(
                 'domicile_district_id',
-                parseInt(data.domicile_district_id)
+                parseInt(employeeContent.domicile_district_id)
             )
             form.append(
                 'domicile_village_id',
-                parseInt(data.domicile_village_id)
+                parseInt(employeeContent.domicile_village_id)
             )
-            form.append('domicile_full_address', data.domicile_full_address)
-            form.append('domicile_postal_code', data.domicile_postal_code)
-            form.append('vaccine_status', data.vaccine_status)
-            form.append('urgent_full_name', data.urgent_full_name)
-            form.append('urgent_phone_number', data.urgent_phone_number)
-            form.append('urgent_full_address', data.urgent_full_address)
-            form.append('area_id', parseInt(data.area_id))
-            form.append('branch_id', parseInt(data.branch_id))
-            form.append('departement_id', parseInt(data.departement_id))
-            form.append('position_id', parseInt(data.position_id))
-            form.append('level_id', parseInt(data.level_id))
-            form.append('employee_status', data.employee_status)
+            form.append(
+                'domicile_full_address',
+                employeeContent.domicile_full_address
+            )
+            form.append(
+                'domicile_postal_code',
+                employeeContent.domicile_postal_code
+            )
+            form.append('vaccine_status', employeeContent.vaccine_status)
+            form.append('urgent_full_name', employeeContent.urgent_full_name)
+            form.append(
+                'urgent_phone_number',
+                employeeContent.urgent_phone_number
+            )
+            form.append(
+                'urgent_full_address',
+                employeeContent.urgent_full_address
+            )
+            form.append('area_id', parseInt(employeeContent.area_id))
+            form.append('branch_id', parseInt(employeeContent.branch_id))
+            form.append(
+                'departement_id',
+                parseInt(employeeContent.departement_id)
+            )
+            form.append('position_id', parseInt(employeeContent.position_id))
+            form.append('level_id', parseInt(employeeContent.level_id))
+            form.append('employee_status', employeeContent.employee_status)
             form.append(
                 'educations',
-                JSON.stringify({ educations: data.educations }, null, 2)
+                JSON.stringify(
+                    { educations: employeeContent.educations },
+                    null,
+                    2
+                )
             )
             form.append(
                 'work_history',
-                JSON.stringify({ work_history: data.work_history }, null, 2)
+                JSON.stringify(
+                    { work_history: employeeContent.work_history },
+                    null,
+                    2
+                )
             )
-            form.append('urgent_brother', data.urgent_brother)
-            form.append('urgent_brother_number', data.urgent_brother_number)
-            form.append('bpjs', JSON.stringify({ bpjs: data.bpjs }, null, 2))
+            form.append('urgent_brother', employeeContent.urgent_brother)
+            form.append(
+                'urgent_brother_number',
+                employeeContent.urgent_brother_number
+            )
+            form.append(
+                'bpjs',
+                JSON.stringify({ bpjs: employeeContent.bpjs }, null, 2)
+            )
             form.append(
                 'insurance',
-                JSON.stringify({ insurance: data.insurance }, null, 2)
+                JSON.stringify(
+                    { insurance: employeeContent.insurance },
+                    null,
+                    2
+                )
             )
-            form.append('join_date', data.join_date)
-            form.append('end_date', data.end_date)
-            form.append('bank_name', data.bank_name)
-            form.append('account_number', data.account_number)
-            form.append('bank_owner_name', data.bank_owner_name)
-            form.append('bank_branch_name', data.bank_branch_name)
+            form.append('join_date', employeeContent.join_date)
+            form.append('end_date', employeeContent.end_date)
+            form.append('bank_name', employeeContent.bank_name)
+            form.append('account_number', employeeContent.account_number)
+            form.append('bank_owner_name', employeeContent.bank_owner_name)
+            form.append('bank_branch_name', employeeContent.bank_branch_name)
             form.append(
                 'driver_license',
-                JSON.stringify(data.driver_license, null, 2)
+                JSON.stringify(employeeContent.driver_license, null, 2)
             )
             form.append('resign_date', '')
             form.append('resign_applied_date', '')
             form.append('resign_reason', '')
-            form.append('facebook', data.facebook)
-            form.append('instagram', data.instagram)
-            form.append('telegram', data.telegram)
-            form.append('twitter', data.twitter)
-            form.append('line', data.line)
-            form.append('linkedin', data.linkedin)
-            form.append('tiktok', data.tiktok)
+            form.append('facebook', employeeContent.facebook)
+            form.append('instagram', employeeContent.instagram)
+            form.append('telegram', employeeContent.telegram)
+            form.append('twitter', employeeContent.twitter)
+            form.append('line', employeeContent.line)
+            form.append('linkedin', employeeContent.linkedin)
+            form.append('tiktok', employeeContent.tiktok)
             form.append('isEmployeeActive', 1)
             return http(token).post('/employee', form)
         },
@@ -818,7 +866,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         setEmployeeContent((prevData) => ({ ...prevData, ...data }))
         setShowAddModal(false)
         dispatch(setLoading(true))
-        postEmployee.mutate(employeeContent)
+        postEmployee.mutate()
     }
 
     const nextStep = async () => {
