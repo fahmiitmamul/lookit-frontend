@@ -190,21 +190,25 @@ export default function DataKaryawan() {
                         ) : null}
                         <div>
                             {isClient && (
-                                <PDFDownloadLink
-                                    document={
-                                        <MyDocument
-                                            selectedData={selectedData}
-                                        />
-                                    }
-                                    fileName="data-karyawan.pdf"
+                                <Button
                                     className="bg-warning-500 text-white"
+                                    icon="heroicons-outline:newspaper"
                                 >
-                                    {({ blob, url, loading, error }) =>
-                                        loading
-                                            ? 'Loading document...'
-                                            : 'Download PDF'
-                                    }
-                                </PDFDownloadLink>
+                                    <PDFDownloadLink
+                                        document={
+                                            <MyDocument
+                                                selectedData={selectedData}
+                                            />
+                                        }
+                                        fileName="data-karyawan.pdf"
+                                    >
+                                        {({ blob, url, loading, error }) =>
+                                            loading
+                                                ? 'Loading document...'
+                                                : 'Download PDF'
+                                        }
+                                    </PDFDownloadLink>
+                                </Button>
                             )}
                         </div>
                         <div>
