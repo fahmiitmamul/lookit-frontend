@@ -49,7 +49,6 @@ import IndividualPresenceRecordsTable from './tabel-rekap-kehadiran/page'
 
 export default function Kehadiran() {
     const [isClient, setIsClient] = useState(false)
-    const [showAddOvertimeModal, setShowAddOvertimeModal] = useState(false)
     const [showDownloadPresenceModal, setShowDownloadPresenceModal] =
         useState(false)
     const [showDetailPresentModal, setShowDetailPresentModal] = useState(false)
@@ -84,11 +83,6 @@ export default function Kehadiran() {
     const [showDetailLeaveModal, setShowDetailLeaveModal] = useState(false)
     const [showEditLeaveModal, setShowEditLeaveModal] = useState(false)
     const [showDeleteLeaveModal, setShowDeleteLeaveModal] = useState(false)
-    const [showDetailOvertimeModal, setShowDetailOvertimeModal] =
-        useState(false)
-    const [showEditOvertimeModal, setShowEditOvertimeModal] = useState(false)
-    const [showDeleteOvertimeModal, setShowDeleteOvertimeModal] =
-        useState(false)
     const [showDetailHolidayModal, setShowDetailHolidayModal] = useState(false)
     const [showEditHolidayModal, setShowEditHolidayModal] = useState(false)
     const [showDeleteHolidayModal, setShowDeleteHolidayModal] = useState(false)
@@ -121,9 +115,6 @@ export default function Kehadiran() {
     const [holidayPage, setHolidayPage] = useState(1)
     const [holidayLimit, setHolidayLimit] = useState(5)
     const [holidaySearchData, setHolidaySearchData] = useState('')
-    const [overtimePage, setOvertimePage] = useState(1)
-    const [overtimeLimit, setOvertimeLimit] = useState(5)
-    const [overtimeSearchData, setOvertimeSearchData] = useState('')
     const [showEditPresenceModal, setShowEditPresenceModal] = useState(false)
     const [employeeData, setEmployeeData] = useState([])
     const selectedPresenceButton = useSelector(
@@ -354,20 +345,6 @@ export default function Kehadiran() {
         cacheTime: 60 * 60 * 1000,
     })
 
-    async function fetchOvertime() {
-        const { data } = await http(token).get(
-            `/presence/overtime?page=${overtimePage}&limit=${overtimeLimit}&search=${overtimeSearchData}&employee_id=${employee_id}`
-        )
-        return data.results
-    }
-
-    const { data: overtimeData } = useQuery({
-        queryKey: ['overtime', overtimePage, overtimeLimit, overtimeSearchData],
-        queryFn: () => fetchOvertime(),
-        staleTime: 10 * 60 * 1000,
-        cacheTime: 60 * 60 * 1000,
-    })
-
     return (
         <>
             <div>
@@ -508,7 +485,7 @@ export default function Kehadiran() {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-6">
-                    <Card title="Data Kehadiran">
+                    <Card>
                         <Tab.Group>
                             <Tab.List className="lg:space-x-8 md:space-x-4 space-x-0 rtl:space-x-reverse">
                                 {buttons.map((item, i) => (
@@ -547,7 +524,6 @@ export default function Kehadiran() {
                                             permissionData={permissionData}
                                             leaveData={leaveData}
                                             holidayData={holidayData}
-                                            overtimeData={overtimeData}
                                             setShowViewNotAbsentModal={
                                                 setShowDetailNotAbsentModal
                                             }
@@ -628,15 +604,6 @@ export default function Kehadiran() {
                                             }
                                             setShowDeleteHolidayModal={
                                                 setShowDeleteHolidayModal
-                                            }
-                                            setShowViewOvertimeModal={
-                                                setShowDetailOvertimeModal
-                                            }
-                                            setShowEditOvertimeModal={
-                                                setShowEditOvertimeModal
-                                            }
-                                            setShowDeleteOvertimeModal={
-                                                setShowDeleteOvertimeModal
                                             }
                                         />
                                     </div>
@@ -1193,47 +1160,6 @@ export default function Kehadiran() {
             >
                 <DeleteHolidayForm
                     setShowDeleteHolidayModal={setShowDeleteHolidayModal}
-                />
-            </Modal>
-            <Modal
-                title="Edit Kehadiran"
-                label="Edit Kehadiran"
-                className="max-w-3xl"
-                labelClass="btn-outline-dark"
-                activeModal={showEditOvertimeModal}
-                onClose={() => {
-                    setShowEditOvertimeModal(!showEditOvertimeModal)
-                }}
-            >
-                <EditOvertimeForm
-                    setShowEditOvertimeModal={setShowEditOvertimeModal}
-                />
-            </Modal>
-            <Modal
-                title="Detail Kehadiran"
-                label="Detail Kehadiran"
-                className="max-w-3xl"
-                labelClass="btn-outline-dark"
-                activeModal={showDetailOvertimeModal}
-                onClose={() => {
-                    setShowDetailOvertimeModal(!showDetailOvertimeModal)
-                }}
-            >
-                <DetailOvertimeForm
-                    setShowDetailOvertimeModal={setShowDetailOvertimeModal}
-                />
-            </Modal>
-            <Modal
-                title="Hapus Kehadiran"
-                label="Hapus Kehadiran"
-                labelClass="btn-outline-dark"
-                activeModal={showDeleteOvertimeModal}
-                onClose={() => {
-                    setShowDeleteOvertimeModal(!showDeleteOvertimeModal)
-                }}
-            >
-                <DeleteOvertimeForm
-                    setShowDeleteOvertimeModal={setShowDeleteOvertimeModal}
                 />
             </Modal>
             <Modal

@@ -276,7 +276,7 @@ export default function GuaranteeRecordTable() {
                     ) : null}
                 </div>
                 <div className="grid grid-cols-1 gap-6">
-                    <Card title="Data Garansi">
+                    <Card>
                         <Tab.Group>
                             <Tab.List className="lg:space-x-8 md:space-x-4 space-x-0 rtl:space-x-reverse">
                                 {buttons.map((item, i) => (
