@@ -201,31 +201,29 @@ export default function DataKaryawan() {
                                             )
                                     }}
                                     children={
-                                        selectedData?.length >= 1 && (
-                                            <div>
-                                                <PDFDownloadLink
-                                                    document={
-                                                        <MyDocument
-                                                            selectedData={
-                                                                selectedData
-                                                            }
-                                                        />
-                                                    }
-                                                    fileName="data-karyawan.pdf"
-                                                >
-                                                    {({
-                                                        blob,
-                                                        url,
-                                                        loading,
-                                                        error,
-                                                    }) =>
-                                                        loading
-                                                            ? 'Loading document...'
-                                                            : 'Download PDF'
-                                                    }
-                                                </PDFDownloadLink>
-                                            </div>
-                                        )
+                                        <div>
+                                            <PDFDownloadLink
+                                                document={
+                                                    <MyDocument
+                                                        selectedData={
+                                                            selectedData
+                                                        }
+                                                    />
+                                                }
+                                                fileName="data-karyawan.pdf"
+                                            >
+                                                {({
+                                                    blob,
+                                                    url,
+                                                    loading,
+                                                    error,
+                                                }) =>
+                                                    loading
+                                                        ? 'Loading document...'
+                                                        : 'Download PDF'
+                                                }
+                                            </PDFDownloadLink>
+                                        </div>
                                     }
                                 />
                             )}
