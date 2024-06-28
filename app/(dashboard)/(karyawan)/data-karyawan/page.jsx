@@ -190,42 +190,21 @@ export default function DataKaryawan() {
                         ) : null}
                         <div>
                             {isClient && (
-                                <Button
-                                    text="Download PDF"
-                                    icon="heroicons-outline:newspaper"
-                                    className="bg-warning-500 text-white"
-                                    onClick={() => {
-                                        selectedData?.length == 0 &&
-                                            toast.error(
-                                                'Silahkan ceklis data terlebih dahulu'
-                                            )
-                                    }}
-                                    children={
-                                        <div>
-                                            <PDFDownloadLink
-                                                document={
-                                                    <MyDocument
-                                                        selectedData={
-                                                            selectedData
-                                                        }
-                                                    />
-                                                }
-                                                fileName="data-karyawan.pdf"
-                                            >
-                                                {({
-                                                    blob,
-                                                    url,
-                                                    loading,
-                                                    error,
-                                                }) =>
-                                                    loading
-                                                        ? 'Loading document...'
-                                                        : 'Download PDF'
-                                                }
-                                            </PDFDownloadLink>
-                                        </div>
+                                <PDFDownloadLink
+                                    document={
+                                        <MyDocument
+                                            selectedData={selectedData}
+                                        />
                                     }
-                                />
+                                    fileName="data-karyawan.pdf"
+                                    className="bg-warning-500 text-white"
+                                >
+                                    {({ blob, url, loading, error }) =>
+                                        loading
+                                            ? 'Loading document...'
+                                            : 'Download PDF'
+                                    }
+                                </PDFDownloadLink>
                             )}
                         </div>
                         <div>
