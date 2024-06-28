@@ -193,21 +193,15 @@ const EditEmployeeForm = () => {
             form.append('position_id', parseInt(data.position_id))
             form.append('level_id', parseInt(data.level_id))
             form.append('employee_status', data.employee_status)
-            form.append(
-                'educations',
-                JSON.stringify({ educations: data.educations }, null, 2)
-            )
+            form.append('educations', JSON.stringify(data.educations, null, 2))
             form.append(
                 'work_history',
-                JSON.stringify({ work_history: data.work_history }, null, 2)
+                JSON.stringify(data.work_history, null, 2)
             )
             form.append('urgent_brother', data.urgent_brother)
             form.append('urgent_brother_number', data.urgent_brother_number)
-            form.append('bpjs', JSON.stringify({ bpjs: data.bpjs }, null, 2))
-            form.append(
-                'insurance',
-                JSON.stringify({ insurance: data.insurance }, null, 2)
-            )
+            form.append('bpjs', JSON.stringify(data.bpjs, null, 2))
+            form.append('insurance', JSON.stringify(data.insurance, null, 2))
             form.append('join_date', data.join_date)
             form.append('end_date', data.end_date)
             form.append('bank_name', data.bank_name)
@@ -563,10 +557,10 @@ const EditEmployeeForm = () => {
 
                 const parsedData = {
                     ...data.results,
-                    educations: data.results.educations.educations,
-                    work_history: data.results.work_history.work_history,
-                    bpjs: data.results.bpjs.bpjs,
-                    insurance: data.results.insurance.insurance,
+                    educations: data.results.educations,
+                    work_history: data.results.work_history,
+                    bpjs: data.results.bpjs,
+                    insurance: data.results.insurance,
                     driver_license: data.results.driver_license,
                 }
                 setSelectedDriverLicense(data.results.driver_license)
