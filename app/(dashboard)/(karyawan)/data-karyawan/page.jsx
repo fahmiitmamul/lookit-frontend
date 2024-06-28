@@ -189,7 +189,7 @@ export default function DataKaryawan() {
                             </div>
                         ) : null}
                         <div>
-                            {isClient ? (
+                            {isClient && (
                                 <Button
                                     text="Download PDF"
                                     icon="heroicons-outline:newspaper"
@@ -201,7 +201,7 @@ export default function DataKaryawan() {
                                             )
                                     }}
                                     children={
-                                        selectedData?.length >= 1 ? (
+                                        selectedData?.length >= 1 && (
                                             <div>
                                                 <PDFDownloadLink
                                                     document={
@@ -225,10 +225,10 @@ export default function DataKaryawan() {
                                                     }
                                                 </PDFDownloadLink>
                                             </div>
-                                        ) : null
+                                        )
                                     }
                                 />
-                            ) : null}
+                            )}
                         </div>
                         <div>
                             <Button
