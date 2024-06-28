@@ -193,21 +193,29 @@ export default function DataKaryawan() {
                                 <Button
                                     className="bg-warning-500 text-white"
                                     icon="heroicons-outline:newspaper"
+                                    onClick={() => {
+                                        selectedData?.length == 0 &&
+                                            toast.error(
+                                                'Silahkan ceklis data terlebih dahulu'
+                                            )
+                                    }}
                                 >
-                                    <PDFDownloadLink
-                                        document={
-                                            <MyDocument
-                                                selectedData={selectedData}
-                                            />
-                                        }
-                                        fileName="data-karyawan.pdf"
-                                    >
-                                        {({ blob, url, loading, error }) =>
-                                            loading
-                                                ? 'Loading document...'
-                                                : 'Download PDF'
-                                        }
-                                    </PDFDownloadLink>
+                                    {selectedData.length >= 1 && (
+                                        <PDFDownloadLink
+                                            document={
+                                                <MyDocument
+                                                    selectedData={selectedData}
+                                                />
+                                            }
+                                            fileName="data-karyawan.pdf"
+                                        >
+                                            {({ blob, url, loading, error }) =>
+                                                loading
+                                                    ? 'Loading document...'
+                                                    : 'Download PDF'
+                                            }
+                                        </PDFDownloadLink>
+                                    )}
                                 </Button>
                             )}
                         </div>
