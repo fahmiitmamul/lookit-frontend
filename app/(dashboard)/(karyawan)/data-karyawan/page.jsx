@@ -188,19 +188,16 @@ export default function DataKaryawan() {
                                 />
                             </div>
                         ) : null}
-                        <div>
+                        <div className="btn bg-warning-500 text-white">
                             {isClient && (
-                                <Button
-                                    className="bg-warning-500 text-white"
-                                    icon="heroicons-outline:newspaper"
-                                    onClick={() => {
-                                        selectedData?.length == 0 &&
-                                            toast.error(
-                                                'Silahkan ceklis data terlebih dahulu'
-                                            )
-                                    }}
-                                >
-                                    {selectedData.length >= 1 && (
+                                <div className="flex gap-2 justify-center items-center">
+                                    <div>
+                                        <Icon
+                                            icon="heroicons-outline:document-arrow-down"
+                                            fontSize={20}
+                                        ></Icon>
+                                    </div>
+                                    <div>
                                         <PDFDownloadLink
                                             document={
                                                 <MyDocument
@@ -208,6 +205,7 @@ export default function DataKaryawan() {
                                                 />
                                             }
                                             fileName="data-karyawan.pdf"
+                                            className="bg-warning-500 text-white w-full h-full"
                                         >
                                             {({ blob, url, loading, error }) =>
                                                 loading
@@ -215,8 +213,8 @@ export default function DataKaryawan() {
                                                     : 'Download PDF'
                                             }
                                         </PDFDownloadLink>
-                                    )}
-                                </Button>
+                                    </div>
+                                </div>
                             )}
                         </div>
                         <div>
