@@ -417,36 +417,21 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             form.append('employee_status', employeeContent.employee_status)
             form.append(
                 'educations',
-                JSON.stringify(
-                    { educations: employeeContent.educations },
-                    null,
-                    2
-                )
+                JSON.stringify(employeeContent.educations, null, 2)
             )
             form.append(
                 'work_history',
-                JSON.stringify(
-                    { work_history: employeeContent.work_history },
-                    null,
-                    2
-                )
+                JSON.stringify(employeeContent.work_history, null, 2)
             )
             form.append('urgent_brother', employeeContent.urgent_brother)
             form.append(
                 'urgent_brother_number',
                 employeeContent.urgent_brother_number
             )
-            form.append(
-                'bpjs',
-                JSON.stringify({ bpjs: employeeContent.bpjs }, null, 2)
-            )
+            form.append('bpjs', JSON.stringify(employeeContent.bpjs, null, 2))
             form.append(
                 'insurance',
-                JSON.stringify(
-                    { insurance: employeeContent.insurance },
-                    null,
-                    2
-                )
+                JSON.stringify(employeeContent.insurance, null, 2)
             )
             form.append('join_date', employeeContent.join_date)
             form.append('end_date', employeeContent.end_date)
