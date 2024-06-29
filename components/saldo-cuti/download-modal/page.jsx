@@ -1,8 +1,7 @@
-import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
-import { toast } from 'react-toastify'
 import ExportToExcelLeaveType from '../export-to-excel/page'
-import LeaveTypeDocument from '../download-pdf-saldo-cuti/page'
+import { Icon } from '@iconify/react'
+import MyDocument from '@/components/(karyawan)/data-karyawan/download-pdf-karyawan/page'
 
 const DownloadLeaveTypeModal = ({ selectedLeaveTypeData, isClient }) => {
     return (
@@ -10,46 +9,35 @@ const DownloadLeaveTypeModal = ({ selectedLeaveTypeData, isClient }) => {
             <form>
                 <div className="flex justify-center items-center">
                     <div className="flex gap-5">
-                        {isClient ? (
-                            <Button
-                                text="Download PDF"
-                                icon="heroicons-outline:newspaper"
-                                className="bg-warning-500 text-white"
-                                onClick={() => {
-                                    selectedLeaveTypeData?.length == 0 &&
-                                        toast.error(
-                                            'Silahkan ceklis data terlebih dahulu'
-                                        )
-                                }}
-                                children={
-                                    selectedLeaveTypeData?.length >= 1 ? (
-                                        <div>
-                                            <PDFDownloadLink
-                                                document={
-                                                    <LeaveTypeDocument
-                                                        data={
-                                                            selectedLeaveTypeData
-                                                        }
-                                                    />
+                        {isClient && (
+                            <div className="flex gap-2 justify-center items-center">
+                                <div>
+                                    <Icon
+                                        icon="heroicons-outline:document-arrow-down"
+                                        fontSize={20}
+                                    ></Icon>
+                                </div>
+                                <div>
+                                    <PDFDownloadLink
+                                        document={
+                                            <MyDocument
+                                                selectedData={
+                                                    selectedLeaveTypeData
                                                 }
-                                                fileName="data-saldo-cuti.pdf"
-                                            >
-                                                {({
-                                                    blob,
-                                                    url,
-                                                    loading,
-                                                    error,
-                                                }) =>
-                                                    loading
-                                                        ? 'Loading document...'
-                                                        : 'Download PDF'
-                                                }
-                                            </PDFDownloadLink>
-                                        </div>
-                                    ) : null
-                                }
-                            />
-                        ) : null}
+                                            />
+                                        }
+                                        fileName="data-saldo-cuti.pdf"
+                                        className="bg-warning-500 text-white w-full h-full"
+                                    >
+                                        {({ blob, url, loading, error }) =>
+                                            loading
+                                                ? 'Loading document...'
+                                                : 'Download PDF'
+                                        }
+                                    </PDFDownloadLink>
+                                </div>
+                            </div>
+                        )}
                         <div>
                             <ExportToExcelLeaveType
                                 data={selectedLeaveTypeData}
