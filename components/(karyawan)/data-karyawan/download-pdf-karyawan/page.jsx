@@ -238,6 +238,26 @@ const MyDocument = ({ selectedData }) => (
                                                     <Text
                                                         style={{ fontSize: 9 }}
                                                     >
+                                                        Status Nikah{' '}
+                                                        {'        '}:
+                                                    </Text>
+                                                    <Text
+                                                        style={{ fontSize: 9 }}
+                                                    >
+                                                        {item?.marital_status}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={{
+                                                        display: 'flex',
+                                                        flexDirection: 'row',
+                                                        gap: 8,
+                                                        marginBottom: 8,
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{ fontSize: 9 }}
+                                                    >
                                                         Umur{' '}
                                                         {'                 '}:
                                                     </Text>
@@ -290,21 +310,6 @@ const MyDocument = ({ selectedData }) => (
                                         </View>
                                     </View>
                                     <View style={{ width: '100%' }}>
-                                        <View
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                gap: 8,
-                                                marginBottom: 8,
-                                            }}
-                                        >
-                                            <Text style={{ fontSize: 9 }}>
-                                                Status Nikah {'        '}:
-                                            </Text>
-                                            <Text style={{ fontSize: 9 }}>
-                                                {item?.marital_status}
-                                            </Text>
-                                        </View>
                                         <View
                                             style={{
                                                 display: 'flex',
