@@ -23,7 +23,6 @@ export default function EmployeeBiodataForm({
     styles,
     steps,
     stepNumber,
-    NoDropdownIndicator,
 }) {
     return (
         <div>
@@ -252,9 +251,6 @@ export default function EmployeeBiodataForm({
                                     isMulti
                                     name="driver_license"
                                     placeholder="Silahkan Pilih"
-                                    components={{
-                                        DropdownIndicator: NoDropdownIndicator,
-                                    }}
                                     options={driverLicenseOptions}
                                     className={
                                         errors?.driver_license
