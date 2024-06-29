@@ -747,11 +747,26 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     })
 
     const styles = {
-        option: (provided, state) => ({
+        control: (provided) => ({
             ...provided,
-            fontSize: '14px',
+            padding: '0px',
+            border: 'none',
+            boxShadow: 'none',
+            '&:hover': {
+                border: 'none',
+            },
+        }),
+        indicatorsContainer: (provided) => ({
+            ...provided,
+            display: 'none',
+        }),
+        placeholder: (provided, state) => ({
+            ...provided,
+            padding: '0px',
         }),
     }
+
+    const NoDropdownIndicator = () => null
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]
@@ -968,6 +983,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
                     styles={styles}
                     steps={totalSteps}
                     stepNumber={currentStep}
+                    NoDropdownIndicator={NoDropdownIndicator}
                 />
             )}
             {currentStep === 1 && (

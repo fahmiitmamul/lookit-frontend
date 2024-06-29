@@ -23,6 +23,7 @@ export default function EmployeeBiodataForm({
     styles,
     steps,
     stepNumber,
+    NoDropdownIndicator,
 }) {
     return (
         <div>
@@ -250,11 +251,15 @@ export default function EmployeeBiodataForm({
                                     styles={styles}
                                     isMulti
                                     name="driver_license"
+                                    placeholder="Silahkan Pilih"
+                                    components={{
+                                        DropdownIndicator: NoDropdownIndicator,
+                                    }}
                                     options={driverLicenseOptions}
                                     className={
                                         errors?.driver_license
                                             ? 'border-danger-500 border rounded-md'
-                                            : 'react-select'
+                                            : 'form-control'
                                     }
                                     id="driver_license"
                                     onChange={(selectedOptions) => {
