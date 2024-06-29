@@ -239,7 +239,7 @@ const MyDocument = ({ selectedData }) => (
                                                         style={{ fontSize: 9 }}
                                                     >
                                                         Status Nikah
-                                                        {'        '}:
+                                                        {'   '}:
                                                     </Text>
                                                     <Text
                                                         style={{ fontSize: 9 }}
@@ -1085,7 +1085,7 @@ const MyDocument = ({ selectedData }) => (
                                                         }}
                                                         key={index}
                                                     >
-                                                        {item?.bpjs_name}
+                                                        {item?.bpjs_type}
                                                     </Text>
                                                 )
                                             })}
@@ -1176,7 +1176,7 @@ const MyDocument = ({ selectedData }) => (
                                                             key={index}
                                                         >
                                                             {
-                                                                item?.insurnace_name
+                                                                item?.insurance_name
                                                             }
                                                         </Text>
                                                     )
