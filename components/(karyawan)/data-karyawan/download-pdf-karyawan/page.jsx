@@ -461,7 +461,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Nama Sekolah</Text>
                                         </View>
                                         <View>
-                                            {item?.educations?.educations?.map(
+                                            {item?.educations?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -488,7 +488,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Jenjang</Text>
                                         </View>
                                         <View>
-                                            {item?.educations?.educations?.map(
+                                            {item?.educations?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -515,7 +515,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Waktu Mulai</Text>
                                         </View>
                                         <View>
-                                            {item?.educations?.educations?.map(
+                                            {item?.educations?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -544,7 +544,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Waktu Akhir</Text>
                                         </View>
                                         <View>
-                                            {item?.educations?.educations?.map(
+                                            {item?.educations?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -573,7 +573,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Status Kelulusan</Text>
                                         </View>
                                         <View>
-                                            {item?.educations?.educations?.map(
+                                            {item?.educations?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -624,7 +624,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Nama Perusahaan</Text>
                                         </View>
                                         <View>
-                                            {item?.work_history?.work_history?.map(
+                                            {item?.work_history?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -651,7 +651,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Pilih Jabatan</Text>
                                         </View>
                                         <View>
-                                            {item?.work_history?.work_history?.map(
+                                            {item?.work_history?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -680,7 +680,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Waktu Mulai</Text>
                                         </View>
                                         <View>
-                                            {item?.work_history?.work_history?.map(
+                                            {item?.work_history?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -709,7 +709,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Waktu Akhir</Text>
                                         </View>
                                         <View>
-                                            {item?.work_history?.work_history?.map(
+                                            {item?.work_history?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -738,7 +738,7 @@ const MyDocument = ({ selectedData }) => (
                                             <Text>Status Kerja</Text>
                                         </View>
                                         <View>
-                                            {item?.educations?.educations?.map(
+                                            {item?.educations?.map(
                                                 (item, index) => {
                                                     return (
                                                         <Text
@@ -1077,9 +1077,18 @@ const MyDocument = ({ selectedData }) => (
                                             <Text style={{ fontSize: 9 }}>
                                                 Nama BPJS {'               '}:
                                             </Text>
-                                            <Text style={{ fontSize: 9 }}>
-                                                BPJS Kesehatan
-                                            </Text>
+                                            {item?.bpjs?.map((item, index) => {
+                                                return (
+                                                    <Text
+                                                        style={{
+                                                            fontSize: 9,
+                                                        }}
+                                                        key={index}
+                                                    >
+                                                        {item?.bpjs_name}
+                                                    </Text>
+                                                )
+                                            })}
                                         </View>
                                     </View>
                                     <View
@@ -1100,7 +1109,22 @@ const MyDocument = ({ selectedData }) => (
                                                 Nomor BPJS {'              '}:
                                             </Text>
                                             <Text style={{ fontSize: 9 }}>
-                                                34534534535345
+                                                {item?.bpjs?.map(
+                                                    (item, index) => {
+                                                        return (
+                                                            <Text
+                                                                style={{
+                                                                    fontSize: 9,
+                                                                }}
+                                                                key={index}
+                                                            >
+                                                                {
+                                                                    item?.bpjs_number
+                                                                }
+                                                            </Text>
+                                                        )
+                                                    }
+                                                )}
                                             </Text>
                                         </View>
                                     </View>
@@ -1142,9 +1166,22 @@ const MyDocument = ({ selectedData }) => (
                                             <Text style={{ fontSize: 9 }}>
                                                 Nama Asuransi {'         '}:
                                             </Text>
-                                            <Text style={{ fontSize: 9 }}>
-                                                Manulife
-                                            </Text>
+                                            {item?.insurance?.map(
+                                                (item, index) => {
+                                                    return (
+                                                        <Text
+                                                            style={{
+                                                                fontSize: 9,
+                                                            }}
+                                                            key={index}
+                                                        >
+                                                            {
+                                                                item?.insurnace_name
+                                                            }
+                                                        </Text>
+                                                    )
+                                                }
+                                            )}
                                         </View>
                                     </View>
                                     <View
@@ -1164,9 +1201,22 @@ const MyDocument = ({ selectedData }) => (
                                             <Text style={{ fontSize: 9 }}>
                                                 Nomor Asuransi {'        '}:
                                             </Text>
-                                            <Text style={{ fontSize: 9 }}>
-                                                2342342342334
-                                            </Text>
+                                            {item?.insurance?.map(
+                                                (item, index) => {
+                                                    return (
+                                                        <Text
+                                                            style={{
+                                                                fontSize: 9,
+                                                            }}
+                                                            key={index}
+                                                        >
+                                                            {
+                                                                item?.insurance_number
+                                                            }
+                                                        </Text>
+                                                    )
+                                                }
+                                            )}
                                         </View>
                                     </View>
                                 </View>
