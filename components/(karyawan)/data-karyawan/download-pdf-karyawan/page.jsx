@@ -238,7 +238,7 @@ const MyDocument = ({ selectedData }) => (
                                                     <Text
                                                         style={{ fontSize: 9 }}
                                                     >
-                                                        Status Nikah{''}
+                                                        Status Nikah
                                                         {'        '}:
                                                     </Text>
                                                     <Text
