@@ -239,7 +239,7 @@ const MyDocument = ({ selectedData }) => (
                                                         style={{ fontSize: 9 }}
                                                     >
                                                         Status Nikah
-                                                        {'      '}:
+                                                        {'     '}:
                                                     </Text>
                                                     <Text
                                                         style={{ fontSize: 9 }}
