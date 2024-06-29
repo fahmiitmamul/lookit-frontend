@@ -238,25 +238,6 @@ const MyDocument = ({ selectedData }) => (
                                                     <Text
                                                         style={{ fontSize: 9 }}
                                                     >
-                                                        Tanggal Lahir {'   '}:
-                                                    </Text>
-                                                    <Text
-                                                        style={{ fontSize: 9 }}
-                                                    >
-                                                        {item?.birth_date}
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={{
-                                                        display: 'flex',
-                                                        flexDirection: 'row',
-                                                        gap: 8,
-                                                        marginBottom: 8,
-                                                    }}
-                                                >
-                                                    <Text
-                                                        style={{ fontSize: 9 }}
-                                                    >
                                                         Umur{' '}
                                                         {'                 '}:
                                                     </Text>
