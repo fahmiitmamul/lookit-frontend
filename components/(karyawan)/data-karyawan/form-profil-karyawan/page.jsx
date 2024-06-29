@@ -249,7 +249,6 @@ export default function EmployeeBiodataForm({
                                     {...fieldProps}
                                     styles={styles}
                                     isMulti
-                                    is
                                     name="driver_license"
                                     options={driverLicenseOptions}
                                     className={
