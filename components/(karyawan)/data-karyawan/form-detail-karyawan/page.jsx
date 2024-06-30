@@ -33,6 +33,7 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
     const [selectedPicture, setSelectedPicture] = useState(null)
     const [pictureURI, setPictureURI] = useState('')
     const [employeeContent, setEmployeeContent] = useState({})
+    const [selectedSIM, setSelectedSIM] = useState([])
     const dispatch = useDispatch()
 
     const employeeId = useSelector(
@@ -168,6 +169,7 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
     } = useForm({
         defaultValues: async () => {
             const { data } = await http(token).get(`/employee/${employeeId}`)
+            setSelectedSIM(data.results.driver_license)
             return data.results
         },
         resolver: yupResolver(validateProfile),
@@ -1045,6 +1047,7 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
                     steps={totalSteps}
                     stepNumber={currentStep}
                     isDetail={isDetail}
+                    selectedSIM={selectedSIM}
                 />
             )}
             {currentStep === 1 && (
