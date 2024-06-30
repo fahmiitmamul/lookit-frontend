@@ -823,11 +823,21 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
     })
 
     const styles = {
-        option: (provided, state) => ({
+        control: (provided) => ({
             ...provided,
-            fontSize: '14px',
+            padding: '0px',
+            border: 'none',
+            boxShadow: 'none',
+            '&:hover': {
+                border: 'none',
+            },
+        }),
+        placeholder: (provided, state) => ({
+            ...provided,
+            padding: '0px',
         }),
     }
+
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]
