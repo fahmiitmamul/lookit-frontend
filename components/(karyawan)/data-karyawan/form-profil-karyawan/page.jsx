@@ -272,6 +272,7 @@ export default function EmployeeBiodataForm({
                                     name="driver_license"
                                     placeholder="Silahkan Pilih"
                                     options={driverLicenseOptions}
+                                    defaultValue={selectedSIM }
                                     value={selectedSIM}
                                     isDisabled={isDetail}
                                     className={
