@@ -1022,6 +1022,8 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         }
     }
 
+    const isDetail = true
+
     return (
         <Card>
             {currentStep === 0 && (
@@ -1042,6 +1044,7 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
                     styles={styles}
                     steps={totalSteps}
                     stepNumber={currentStep}
+                    isDetail={isDetail}
                 />
             )}
             {currentStep === 1 && (

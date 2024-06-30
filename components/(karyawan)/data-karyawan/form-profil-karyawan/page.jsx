@@ -23,6 +23,8 @@ export default function EmployeeBiodataForm({
     styles,
     steps,
     stepNumber,
+    isDetail,
+    selectedSIM
 }) {
     return (
         <div>
@@ -80,6 +82,7 @@ export default function EmployeeBiodataForm({
                             name="nik_ktp"
                             register={register}
                             error={errors.nik_ktp}
+                            disabled={isDetail}
                         />
                         <Textinput
                             label="NPWP"
@@ -88,6 +91,7 @@ export default function EmployeeBiodataForm({
                             name="npwp"
                             register={register}
                             error={errors.npwp}
+                            disabled={isDetail}
                         />
 
                         <div>
@@ -102,6 +106,7 @@ export default function EmployeeBiodataForm({
                                 styles={styles}
                                 id="gender"
                                 error={errors.gender}
+                                disabled={isDetail}
                             />
                         </div>
                     </div>
@@ -114,6 +119,7 @@ export default function EmployeeBiodataForm({
                         name="name"
                         register={register}
                         error={errors.name}
+                        disabled={isDetail}
                     />
                     <Textinput
                         label="Tempat Tanggal Lahir"
@@ -122,6 +128,7 @@ export default function EmployeeBiodataForm({
                         name="birth_place"
                         register={register}
                         error={errors.birth_place}
+                        disabled={isDetail}
                     />
                     <div>
                         <label htmlFor="religion" className="form-label">
@@ -135,6 +142,7 @@ export default function EmployeeBiodataForm({
                             styles={styles}
                             id="religion"
                             error={errors.religion}
+                            disabled={isDetail}
                         />
                     </div>
                 </div>
@@ -145,15 +153,19 @@ export default function EmployeeBiodataForm({
                     name="email"
                     register={register}
                     error={errors.email}
+                    disabled={isDetail}
                 />
-                <Textinput
-                    label="Password"
-                    type="text"
-                    placeholder="Masukkan Password"
-                    name="password"
-                    register={register}
-                    error={errors.password}
-                />
+                {!isDetail && (
+                    <Textinput
+                        label="Password"
+                        type="text"
+                        placeholder="Masukkan Password"
+                        name="password"
+                        register={register}
+                        error={errors.password}
+                        disabled={isDetail}
+                    />
+                )}
                 <Textinput
                     label="Berat Badan"
                     type="number"
@@ -161,6 +173,7 @@ export default function EmployeeBiodataForm({
                     name="employee_weight"
                     register={register}
                     error={errors.employee_weight}
+                    disabled={isDetail}
                 />
                 <Textinput
                     label="Tinggi Badan"
@@ -169,6 +182,7 @@ export default function EmployeeBiodataForm({
                     name="employee_height"
                     register={register}
                     error={errors.employee_height}
+                    disabled={isDetail}
                 />
                 <Textinput
                     label="Umur"
@@ -177,6 +191,7 @@ export default function EmployeeBiodataForm({
                     name="age"
                     register={register}
                     error={errors.age}
+                    disabled={isDetail}
                 />
                 <div>
                     <label htmlFor="marital_status" className="form-label">
@@ -190,6 +205,7 @@ export default function EmployeeBiodataForm({
                         styles={styles}
                         id="marital_status"
                         error={errors.marital_status}
+                        disabled={isDetail}
                     />
                 </div>
                 <div>
@@ -204,6 +220,7 @@ export default function EmployeeBiodataForm({
                         styles={styles}
                         id="blood_type"
                         error={errors.blood_type}
+                        disabled={isDetail}
                     />
                 </div>
                 <div>
@@ -223,6 +240,7 @@ export default function EmployeeBiodataForm({
                         styles={styles}
                         id="vaccine_status"
                         error={errors.vaccine_status}
+                        disabled={isDetail}
                     />
                 </div>
                 <Textinput
@@ -232,6 +250,7 @@ export default function EmployeeBiodataForm({
                     name="phone_number"
                     register={register}
                     error={errors.phone_number}
+                    disabled={isDetail}
                 />
                 <div>
                     <div>
@@ -240,6 +259,7 @@ export default function EmployeeBiodataForm({
                         </label>
                         <Controller
                             name="driver_license"
+                            disabled={isDetail}
                             control={control}
                             render={({
                                 field: { onChange },
@@ -252,6 +272,8 @@ export default function EmployeeBiodataForm({
                                     name="driver_license"
                                     placeholder="Silahkan Pilih"
                                     options={driverLicenseOptions}
+                                    value={selectedSIM}
+                                    isDisabled={isDetail}
                                     className={
                                         errors?.driver_license
                                             ? 'border-danger-500 border rounded-md'

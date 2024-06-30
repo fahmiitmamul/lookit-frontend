@@ -178,12 +178,6 @@ export default function ActiveEmployeeTable({
                                                                 row?.employee_status
                                                             }
                                                         </div>
-                                                        <div>
-                                                            <Icon
-                                                                icon="heroicons:battery-100"
-                                                                className="text-4xl"
-                                                            />
-                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td className="table-td">

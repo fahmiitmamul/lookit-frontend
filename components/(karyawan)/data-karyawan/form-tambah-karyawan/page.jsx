@@ -33,6 +33,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const [selectedPicture, setSelectedPicture] = useState(null)
     const [pictureURI, setPictureURI] = useState('')
     const [employeeContent, setEmployeeContent] = useState({})
+    const [selectedSIM, setSelectedSIM] = useState([])
     const dispatch = useDispatch()
 
     const validateProfile = yup.object({
@@ -977,6 +978,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
                     styles={styles}
                     steps={totalSteps}
                     stepNumber={currentStep}
+                    selectedSIM={selectedSIM}
                 />
             )}
             {currentStep === 1 && (
