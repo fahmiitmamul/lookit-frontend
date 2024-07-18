@@ -24,7 +24,7 @@ export default function EmployeeBiodataForm({
     steps,
     stepNumber,
     isDetail,
-    selectedSIM
+    selectedSIM,
 }) {
     return (
         <div>
@@ -272,8 +272,6 @@ export default function EmployeeBiodataForm({
                                     name="driver_license"
                                     placeholder="Silahkan Pilih"
                                     options={driverLicenseOptions}
-                                    defaultValue={selectedSIM }
-                                    value={selectedSIM}
                                     isDisabled={isDetail}
                                     className={
                                         errors?.driver_license
