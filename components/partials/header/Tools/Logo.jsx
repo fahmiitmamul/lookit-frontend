@@ -1,13 +1,16 @@
 'use client'
-
-import React, { Fragment } from 'react'
+import React from 'react'
 import useDarkMode from '@/hooks/useDarkMode'
 import Link from 'next/link'
 import useWidth from '@/hooks/useWidth'
+import useSemiDark from '@/hooks/useSemiDark'
 
 const Logo = () => {
     const [isDark] = useDarkMode()
+    const [isSemiDark] = useSemiDark()
     const { width, breakpoints } = useWidth()
+
+    console.log(isDark)
 
     return (
         <div>
@@ -18,7 +21,9 @@ const Logo = () => {
                             src={
                                 isDark
                                     ? '/assets/images/logo/logo-dark.png'
-                                    : '/assets/images/logo/logo.png'
+                                    : isSemiDark
+                                      ? '/assets/images/logo/logo-dark.svg'
+                                      : '/assets/images/logo/logo.png'
                             }
                             style={{ width: 150 }}
                             alt=""
@@ -28,7 +33,9 @@ const Logo = () => {
                             src={
                                 isDark
                                     ? '/assets/images/logo/logo-dark.png'
-                                    : '/assets/images/logo/logo.png'
+                                    : isSemiDark
+                                      ? '/assets/images/logo/logo-dark.png'
+                                      : '/assets/images/logo/logo.png'
                             }
                             style={{ width: 150 }}
                             alt=""

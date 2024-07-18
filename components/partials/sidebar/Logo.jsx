@@ -3,10 +3,12 @@ import Link from 'next/link'
 import useSidebar from '@/hooks/useSidebar'
 import useSkin from '@/hooks/useSkin'
 import useDarkmode from '@/hooks/useDarkMode'
+import useSemiDark from '@/hooks/useSemiDark'
 
 const SidebarLogo = ({ menuHover }) => {
     const [collapsed, setMenuCollapsed] = useSidebar()
     const [isDark] = useDarkmode()
+    const [isSemiDark] = useSemiDark()
     const [skin] = useSkin()
     return (
         <div
@@ -27,7 +29,9 @@ const SidebarLogo = ({ menuHover }) => {
                             src={
                                 isDark
                                     ? '/assets/images/logo/logo-dark.png'
-                                    : '/assets/images/logo/logo.png'
+                                    : isSemiDark
+                                      ? '/assets/images/logo/logo-dark.png'
+                                      : '/assets/images/logo/logo.png'
                             }
                             alt=""
                             width={130}

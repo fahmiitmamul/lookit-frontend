@@ -9,8 +9,6 @@ import useMenulayout from '@/hooks/useMenulayout'
 import useSkin from '@/hooks/useSkin'
 import Logo from './Tools/Logo'
 import Profile from './Tools/Profile'
-import Notification from './Tools/Notification'
-import Message from './Tools/Message'
 import useRtl from '@/hooks/useRtl'
 import useMobileMenu from '@/hooks/useMobileMenu'
 
