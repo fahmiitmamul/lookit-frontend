@@ -74,7 +74,6 @@ const AddAnnouncementForm = ({ setShowAddAnnouncementModal }) => {
         control,
         register,
         handleSubmit,
-        setError,
         setValue,
         formState: { errors },
     } = useForm({
