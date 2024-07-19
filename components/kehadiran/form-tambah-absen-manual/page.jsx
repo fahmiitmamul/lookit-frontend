@@ -24,8 +24,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const queryClient = useQueryClient()
     const [selectedFileIn, setSelectedFileIn] = useState('')
     const [selectedFileOut, setSelectedFileOut] = useState('')
-    const [checked, setChecked] = useState(false)
-    const [selectedEmployee, setSelectedEmployee] = useState('')
     const presenceId = useSelector(
         (state) => state.presence.presence.presence_id
     )
@@ -75,20 +73,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
         queryFn: () => fetchEmployee(),
     })
 
-    async function fetchBranch() {
-        const { data } = await http(token).get(
-            `/branch/employee/?employee_id=${selectedEmployee}`
-        )
-        return data.results
-    }
-
-    async function fetchPositionOfWork() {
-        const { data } = await http(token).get(
-            `/position-of-work/employee/?employee_id=${selectedEmployee}`
-        )
-        return data.results
-    }
-
     const {
         control,
         register,
@@ -124,20 +108,13 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
         setSelectedFileOut(e.target.files[0])
     }
 
-    useEffect(() => {
-        if (selectedEmployee) {
-            fetchBranch()
-            fetchPositionOfWork()
-        }
-    }, [selectedEmployee])
-
     return (
         <div>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="lg:grid-cols-1 grid gap-5 grid-cols-1"
             >
-                <div className="lg:grid-cols-3 grid-cols-1 grid gap-5">
+                <div className="lg:grid-cols-2 grid-cols-1 grid gap-5">
                     <div>
                         <label className="form-label">Nama Karyawan</label>
                         <Controller
@@ -158,42 +135,32 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                     className="react-select"
                                     onChange={(selectedOptions) => {
                                         onChange(selectedOptions.value)
-                                        setSelectedEmployee(
-                                            selectedOptions.value
-                                        )
                                     }}
                                 />
                             )}
                         />
                     </div>
                     <div>
-                        <label className="form-label">Jabatan</label>
-                        <ReactSelect
+                        <label htmlFor="employee_id" className="form-label ">
+                            Status Kehadiran
+                        </label>
+                        <Select
+                            className="react-select"
+                            name="employee_id"
+                            register={register}
+                            options={[
+                                ...(presenceStatus?.data?.map((item) => ({
+                                    value: item.id,
+                                    label: item.name,
+                                })) || []),
+                            ]}
                             styles={styles}
-                            placeholder=""
-                            // options={positionData?.data?.map((item) => ({
-                            //     value: item.position_name,
-                            //     label: item.position_name,
-                            // }))}
-                            className={'react-select'}
-                            onChange={(selectedOptions) => {}}
-                        />
-                    </div>
-                    <div>
-                        <label className="form-label">Cabang</label>
-                        <ReactSelect
-                            styles={styles}
-                            placeholder=""
-                            // options={branchData?.data?.map((item) => ({
-                            //     value: item.branch_name,
-                            //     label: item.branch_name,
-                            // }))}
-                            className={'react-select'}
-                            onChange={(selectedOptions) => {}}
+                            id="employee_id"
+                            error={errors.employee_id}
                         />
                     </div>
                 </div>
-                <div className="lg:grid-cols-3 grid gap-5 grid-cols-1">
+                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div className="flex flex-col">
                         <label htmlFor="start_time" className=" form-label">
                             Jam Masuk
@@ -271,34 +238,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                 {errors?.end_time?.message}
                             </div>
                         )}
-                    </div>
-                    <div>
-                        <div>
-                            <div>
-                                <label
-                                    htmlFor="employee_id"
-                                    className="form-label "
-                                >
-                                    Status Kehadiran
-                                </label>
-                                <Select
-                                    className="react-select"
-                                    name="employee_id"
-                                    register={register}
-                                    options={[
-                                        ...(presenceStatus?.data?.map(
-                                            (item) => ({
-                                                value: item.id,
-                                                label: item.name,
-                                            })
-                                        ) || []),
-                                    ]}
-                                    styles={styles}
-                                    id="employee_id"
-                                    error={errors.employee_id}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
 
