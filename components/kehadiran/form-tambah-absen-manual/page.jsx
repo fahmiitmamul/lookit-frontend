@@ -48,7 +48,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
             form.append('file_in', selectedFileIn)
             form.append('file_out', selectedFileOut)
             form.append('change_reason', values.change_reason)
-            return http(token).post(`/presence/manual`, data)
+            return http(token).post(`/presence/manual`, form)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['presence'] })
