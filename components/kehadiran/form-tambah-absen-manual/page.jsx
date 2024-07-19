@@ -24,9 +24,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const queryClient = useQueryClient()
     const [selectedFileIn, setSelectedFileIn] = useState('')
     const [selectedFileOut, setSelectedFileOut] = useState('')
-    const presenceId = useSelector(
-        (state) => state.presence.presence.presence_id
-    )
 
     async function fetchPresenceStatus() {
         const { data } = await http(token).get('/presence-status')
@@ -42,8 +39,16 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
 
     const patchPresence = useMutation({
         mutationFn: async (values) => {
-            const data = new URLSearchParams(values).toString()
-            return http(token).patch(`/presence/${presenceId}`, data)
+            const form = new FormData()
+
+            form.append('employee_id', values.employee_id)
+            form.append('presence_status_id', values.presence_status_id)
+            form.append('start_time', values.start_time)
+            form.append('end_time', values.end_time)
+            form.append('file_in', selectedFileIn)
+            form.append('file_out', selectedFileOut)
+            form.append('change_reason', values.change_reason)
+            return http(token).post(`/presence/manual`, data)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['presence'] })
