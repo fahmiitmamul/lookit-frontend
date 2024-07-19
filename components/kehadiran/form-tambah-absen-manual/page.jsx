@@ -126,7 +126,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                 field: { onChange, ...fieldProps },
                             }) => (
                                 <ReactSelect
-                                    {...fieldProps}
                                     styles={styles}
                                     placeholder=""
                                     options={employeeData?.data?.map(
