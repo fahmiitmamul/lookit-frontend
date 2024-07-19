@@ -82,10 +82,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        defaultValues: async () => {
-            const { data } = await http(token).get(`/presence/${presenceId}`)
-            return data.results
-        },
         resolver: yupResolver(validatePresence),
         mode: 'all',
     })
