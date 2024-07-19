@@ -93,7 +93,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const onSubmit = (data) => {
         dispatch(setLoading(true))
         patchPresence.mutate(data)
-        setShowAddAbsentManualModal(false)
+        setShowAddPresenceModal(false)
     }
 
     const styles = {
