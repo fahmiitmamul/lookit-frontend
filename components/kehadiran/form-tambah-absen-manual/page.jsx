@@ -14,7 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import Textarea from '@/components/ui/Textarea'
 import ReactSelect from 'react-select'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Select from '@/components/ui/Select'
 import Fileinput from '@/components/ui/Fileinput'
 
@@ -57,9 +57,12 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     })
 
     const validatePresence = Yup.object({
+        employee_id: Yup.string().required('Harap diisi'),
+        presence_status_id: Yup.string().required('Harap diisi'),
         start_time: Yup.string().required('Harap diisi'),
         end_time: Yup.string().required('Harap diisi'),
-        presence_status_id: Yup.string().required('Harap diisi'),
+        file_in: Yup.string().required('Harap diisi'),
+        file_out: Yup.string().required('Harap diisi'),
         change_reason: Yup.string().required('Harap diisi'),
     })
 
@@ -96,7 +99,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const styles = {
         control: (base, state) => ({
             ...base,
-            border: state.isFocused ? '1px solid #000' : '1px solid #000',
         }),
     }
 
@@ -124,6 +126,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                 field: { onChange, ...fieldProps },
                             }) => (
                                 <ReactSelect
+                                    {...fieldProps}
                                     styles={styles}
                                     placeholder=""
                                     options={employeeData?.data?.map(
@@ -132,21 +135,35 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                             label: `${item.name} / ${item.employee_nik}`,
                                         })
                                     )}
-                                    className="react-select"
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
                                     onChange={(selectedOptions) => {
                                         onChange(selectedOptions.value)
                                     }}
                                 />
                             )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
+                        <label
+                            htmlFor="presence_status_id"
+                            className="form-label"
+                        >
                             Status Kehadiran
                         </label>
                         <Select
                             className="react-select"
-                            name="employee_id"
+                            name="presence_status_id"
                             register={register}
                             options={[
                                 ...(presenceStatus?.data?.map((item) => ({
@@ -155,8 +172,8 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                 })) || []),
                             ]}
                             styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
+                            id="presence_status_id"
+                            error={errors.presence_status_id}
                         />
                     </div>
                 </div>
@@ -244,69 +261,69 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                 <div className="lg:grid-cols-2 grid-cols-1 grid gap-5">
                     <div>
                         <div>
-                            <label htmlFor="file" className=" form-label">
+                            <label htmlFor="file_in" className=" form-label">
                                 Upload File Masuk
                             </label>
                             <Controller
-                                name="file"
+                                name="file_in"
                                 control={control}
                                 render={({
                                     field: { onChange, ...fieldProps },
                                 }) => (
                                     <Fileinput
                                         {...fieldProps}
-                                        name="file"
+                                        name="file_in"
                                         className={
-                                            errors?.file && 'border-red-500'
+                                            errors?.file_in && 'border-red-500'
                                         }
+                                        selectedFile={selectedFileIn}
                                         onChange={(e) => {
                                             handleSelectChangeIn(e)
-                                            onChange(e.target.files[0])
                                         }}
-                                        id="file"
+                                        id="file_in"
                                     />
                                 )}
                             />
                         </div>
-                        {errors?.file && (
+                        {errors?.file_in && (
                             <div
                                 className={'mt-2 text-danger-500 block text-sm'}
                             >
-                                {errors?.file?.message}
+                                {errors?.file_in?.message}
                             </div>
                         )}
                     </div>
                     <div>
                         <div>
-                            <label htmlFor="file" className=" form-label">
+                            <label htmlFor="file_out" className=" form-label">
                                 Upload File Pulang
                             </label>
                             <Controller
-                                name="file"
+                                name="file_out"
                                 control={control}
                                 render={({
                                     field: { onChange, ...fieldProps },
                                 }) => (
                                     <Fileinput
                                         {...fieldProps}
-                                        name="file"
+                                        name="file_out"
                                         className={
-                                            errors?.file && 'border-red-500'
+                                            errors?.file_out && 'border-red-500'
                                         }
+                                        selectedFile={selectedFileOut}
                                         onChange={(e) => {
                                             handleSelectChangeOut(e)
-                                            onChange(e.target.files[0])
                                         }}
-                                        id="file"
+                                        id="file_out"
                                     />
                                 )}
                             />
                         </div>
-                        {errors?.file && (
+                        {errors?.file_out && (
                             <div
                                 className={'mt-2 text-danger-500 block text-sm'}
                             >
-                                {errors?.file?.message}
+                                {errors?.file_out?.message}
                             </div>
                         )}
                     </div>

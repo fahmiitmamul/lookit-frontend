@@ -24,7 +24,6 @@ export default function EmployeeBiodataForm({
     steps,
     stepNumber,
     isDetail,
-    selectedSIM,
 }) {
     return (
         <div>
