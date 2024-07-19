@@ -278,6 +278,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                         selectedFile={selectedFileIn}
                                         onChange={(e) => {
                                             handleSelectChangeIn(e)
+                                            onChange(e.target.files[0])
                                         }}
                                         id="file_in"
                                     />
@@ -312,6 +313,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                         selectedFile={selectedFileOut}
                                         onChange={(e) => {
                                             handleSelectChangeOut(e)
+                                            onChange(e.target.files[0])
                                         }}
                                         id="file_out"
                                     />
