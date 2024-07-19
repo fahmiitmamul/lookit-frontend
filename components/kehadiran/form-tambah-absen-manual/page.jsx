@@ -37,7 +37,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
         cacheTime: 60 * 60 * 1000,
     })
 
-    const patchPresence = useMutation({
+    const postPresence = useMutation({
         mutationFn: async (values) => {
             const form = new FormData()
 
@@ -93,7 +93,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
 
     const onSubmit = (data) => {
         dispatch(setLoading(true))
-        patchPresence.mutate(data)
+        postPresence.mutate(data)
         setShowAddPresenceModal(false)
     }
 
