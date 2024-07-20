@@ -14,7 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import Textarea from '@/components/ui/Textarea'
 import ReactSelect from 'react-select'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Select from '@/components/ui/Select'
 import Fileinput from '@/components/ui/Fileinput'
 
@@ -24,6 +24,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const queryClient = useQueryClient()
     const [selectedFileIn, setSelectedFileIn] = useState('')
     const [selectedFileOut, setSelectedFileOut] = useState('')
+    const [selectedPresence, setSelectedPresence] = useState('')
 
     async function fetchPresenceStatus() {
         const { data } = await http(token).get('/presence-status')
@@ -96,6 +97,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const {
         control,
         register,
+        watch,
         handleSubmit,
         formState: { errors },
     } = useForm({
@@ -122,6 +124,14 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const handleSelectChangeOut = (e) => {
         setSelectedFileOut(e.target.files[0])
     }
+
+    const presenceStatusName = watch('presence_status_id')
+
+    useEffect(() => {
+        if (presenceStatusName) {
+            setSelectedPresence(presenceStatusName)
+        }
+    }, [presenceStatusName])
 
     return (
         <div>
