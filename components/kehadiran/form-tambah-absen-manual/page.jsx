@@ -234,7 +234,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                         )}
                     </div>
                 </div>
-                {selectedPresence !== '9' && (
+                {selectedPresence !== '9' && selectedPresence !== '5' && (
                     <div className="flex flex-col gap-5">
                         <div className="lg:grid-cols-3 grid gap-5 grid-cols-1">
                             <div>
