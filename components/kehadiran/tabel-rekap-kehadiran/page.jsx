@@ -42,8 +42,9 @@ export default function PresenceRecordsTable({
     useEffect(() => {
         async function fetchEmployee() {
             const { data } = await http(token).get(
-                `/presence/employee/${selectedIds}`
+                `/employee/presence/${selectedIds}`
             )
+
             dispatch(setPresenceRecordsData(data.results))
         }
 
