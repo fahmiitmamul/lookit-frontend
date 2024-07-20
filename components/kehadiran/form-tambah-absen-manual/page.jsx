@@ -37,6 +37,18 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
         cacheTime: 60 * 60 * 1000,
     })
 
+    async function fetchShift() {
+        const { data } = await http(token).get('/shift/all')
+        return data.results
+    }
+
+    const { data: shiftData } = useQuery({
+        queryKey: ['shift'],
+        queryFn: fetchShift,
+        staleTime: 10 * 60 * 1000,
+        cacheTime: 60 * 60 * 1000,
+    })
+
     const postPresence = useMutation({
         mutationFn: async (values) => {
             const form = new FormData()
@@ -117,7 +129,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="lg:grid-cols-1 grid gap-5 grid-cols-1"
             >
-                <div className="lg:grid-cols-2 grid-cols-1 grid gap-5">
+                <div className="lg:grid-cols-3 grid-cols-1 grid gap-5">
                     <div>
                         <label className="form-label">Nama Karyawan</label>
                         <Controller
@@ -176,8 +188,59 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                             error={errors.presence_status_id}
                         />
                     </div>
+                    <div>
+                        <label htmlFor="shift_id" className="form-label">
+                            Tanggal Absen
+                        </label>
+                        <Controller
+                            name="absent_date"
+                            control={control}
+                            render={({
+                                field: { onChange, ...fieldProps },
+                            }) => (
+                                <Flatpickr
+                                    {...fieldProps}
+                                    className={
+                                        errors?.absent_date
+                                            ? 'border-danger-500 border date-picker-control py-2'
+                                            : 'date-picker-control py-2'
+                                    }
+                                    placeholder="Tanggal Absen"
+                                    onChange={(selectedDate, dateStr) =>
+                                        onChange(dateStr)
+                                    }
+                                />
+                            )}
+                        />
+                        {errors?.absent_date && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.absent_date?.message}
+                            </div>
+                        )}
+                    </div>
                 </div>
-                <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
+                <div className="lg:grid-cols-3 grid gap-5 grid-cols-1">
+                    <div>
+                        <label htmlFor="shift_id" className="form-label">
+                            Shift
+                        </label>
+                        <Select
+                            className="react-select"
+                            name="shift_id"
+                            register={register}
+                            options={[
+                                ...(shiftData?.data?.map((item) => ({
+                                    value: item.id,
+                                    label: item.shift_name,
+                                })) || []),
+                            ]}
+                            styles={styles}
+                            id="shift_id"
+                            error={errors.shift_id}
+                        />
+                    </div>
                     <div className="flex flex-col">
                         <label htmlFor="start_time" className=" form-label">
                             Jam Masuk
@@ -192,6 +255,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                     {...fieldProps}
                                     id="timepicker"
                                     name="start_time"
+                                    placeholder="HH:MM"
                                     className={
                                         errors?.start_time?.message
                                             ? 'border-danger-500 border date-picker-control py-2'
@@ -230,6 +294,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                                 <Flatpickr
                                     {...fieldProps}
                                     id="timepicker"
+                                    placeholder="HH:MM"
                                     name="end_time"
                                     className={
                                         errors?.end_time?.message
