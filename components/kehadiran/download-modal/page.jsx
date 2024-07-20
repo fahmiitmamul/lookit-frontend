@@ -1,6 +1,8 @@
 import { PDFDownloadLink } from '@react-pdf/renderer'
+import Button from '@/components/ui/Button'
+import { toast } from 'react-toastify'
+import PresencePDF from '../download-pdf-kehadiran/page'
 import ExportToExcelPresence from '../export-excel-kehadiran/page'
-import { Icon } from '@iconify/react'
 
 const DownloadPresenceModal = ({ selectedPresenceData, isClient }) => {
     return (
@@ -8,28 +10,46 @@ const DownloadPresenceModal = ({ selectedPresenceData, isClient }) => {
             <form>
                 <div className="flex justify-center items-center">
                     <div className="flex gap-5">
-                        {isClient && (
-                            <div className="flex gap-2 justify-center items-center">
-                                <div>
-                                    <Icon
-                                        icon="heroicons-outline:document-arrow-down"
-                                        fontSize={20}
-                                    ></Icon>
-                                </div>
-                                <div>
-                                    <PDFDownloadLink
-                                        fileName="data-kehadiran.pdf"
-                                        className="bg-warning-500 text-white w-full h-full"
-                                    >
-                                        {({ blob, url, loading, error }) =>
-                                            loading
-                                                ? 'Loading document...'
-                                                : 'Download PDF'
-                                        }
-                                    </PDFDownloadLink>
-                                </div>
-                            </div>
-                        )}
+                        {isClient ? (
+                            <Button
+                                text="Download PDF"
+                                icon="heroicons-outline:newspaper"
+                                className="bg-warning-500 text-white"
+                                onClick={() => {
+                                    selectedPresenceData?.length == 0 &&
+                                        toast.error(
+                                            'Silahkan ceklis data terlebih dahulu'
+                                        )
+                                }}
+                                children={
+                                    selectedPresenceData?.length >= 1 ? (
+                                        <div>
+                                            <PDFDownloadLink
+                                                document={
+                                                    <PresencePDF
+                                                        data={
+                                                            selectedPresenceData
+                                                        }
+                                                    />
+                                                }
+                                                fileName="data-kehadiran.pdf"
+                                            >
+                                                {({
+                                                    blob,
+                                                    url,
+                                                    loading,
+                                                    error,
+                                                }) =>
+                                                    loading
+                                                        ? 'Loading document...'
+                                                        : 'Download PDF'
+                                                }
+                                            </PDFDownloadLink>
+                                        </div>
+                                    ) : null
+                                }
+                            />
+                        ) : null}
                         <div>
                             <ExportToExcelPresence
                                 data={selectedPresenceData}

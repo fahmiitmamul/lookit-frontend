@@ -8,7 +8,6 @@ const DownloadPresenceRecordsModal = ({
     selectedPresenceRecordsData,
     isClient,
 }) => {
-    console.log(selectedPresenceRecordsData)
     return (
         <>
             <form>
