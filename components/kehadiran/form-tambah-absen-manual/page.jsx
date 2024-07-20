@@ -26,18 +26,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const [selectedFileOut, setSelectedFileOut] = useState('')
     const [selectedPresence, setSelectedPresence] = useState('')
 
-    async function fetchPresenceStatus() {
-        const { data } = await http(token).get('/presence-status')
-        return data.results
-    }
-
-    const { data: presenceStatus } = useQuery({
-        queryKey: ['presence-status'],
-        queryFn: fetchPresenceStatus,
-        staleTime: 10 * 60 * 1000,
-        cacheTime: 60 * 60 * 1000,
-    })
-
     async function fetchShift() {
         const { data } = await http(token).get('/shift')
         return data.results
@@ -133,6 +121,21 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
         }
     }, [presenceStatusName])
 
+    const presenceStatusData = [
+        {
+            value: '1',
+            label: 'Hadir',
+        },
+        {
+            value: '5',
+            label: 'Alpha',
+        },
+        {
+            value: '9',
+            label: 'Libur',
+        },
+    ]
+
     return (
         <div>
             <form
@@ -188,9 +191,9 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                             name="presence_status_id"
                             register={register}
                             options={[
-                                ...(presenceStatus?.data?.map((item) => ({
+                                ...(presenceStatusData?.map((item) => ({
                                     value: item.id,
-                                    label: item.name,
+                                    label: item.label,
                                 })) || []),
                             ]}
                             styles={styles}
