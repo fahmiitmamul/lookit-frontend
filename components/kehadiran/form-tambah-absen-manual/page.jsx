@@ -51,9 +51,9 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
             return http(token).post(`/presence/manual`, form)
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['presence'] })
+            queryClient.invalidateQueries({ queryKey: ['present'] })
             dispatch(setLoading(false))
-            toast.success('Berhasil mengedit kehadiran')
+            toast.success('Berhasil menambah kehadiran')
         },
         onError: (err) => {
             toast.error(err?.response?.data?.message)
