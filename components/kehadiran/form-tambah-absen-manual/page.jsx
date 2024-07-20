@@ -130,6 +130,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     useEffect(() => {
         if (presenceStatusName) {
             setSelectedPresence(presenceStatusName)
+            console.log(presenceStatusName)
         }
     }, [presenceStatusName])
 
@@ -231,192 +232,221 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                         )}
                     </div>
                 </div>
-                <div className="lg:grid-cols-3 grid gap-5 grid-cols-1">
-                    <div>
-                        <label htmlFor="shift_id" className="form-label">
-                            Shift
-                        </label>
-                        <Select
-                            className="react-select"
-                            name="shift_id"
-                            register={register}
-                            options={[
-                                ...(shiftData?.data?.map((item) => ({
-                                    value: item.id,
-                                    label: item.shift_name,
-                                })) || []),
-                            ]}
-                            styles={styles}
-                            id="shift_id"
-                            error={errors.shift_id}
-                        />
-                    </div>
-                    <div className="flex flex-col">
-                        <label htmlFor="start_time" className=" form-label">
-                            Jam Masuk
-                        </label>
-                        <Controller
-                            name="start_time"
-                            control={control}
-                            render={({
-                                field: { onChange, ...fieldProps },
-                            }) => (
-                                <Flatpickr
-                                    {...fieldProps}
-                                    id="timepicker"
+                {selectedPresence !== '9' && (
+                    <div className="flex flex-col gap-5">
+                        <div className="lg:grid-cols-3 grid gap-5 grid-cols-1">
+                            <div>
+                                <label
+                                    htmlFor="shift_id"
+                                    className="form-label"
+                                >
+                                    Shift
+                                </label>
+                                <Select
+                                    className="react-select"
+                                    name="shift_id"
+                                    register={register}
+                                    options={[
+                                        ...(shiftData?.data?.map((item) => ({
+                                            value: item.id,
+                                            label: item.shift_name,
+                                        })) || []),
+                                    ]}
+                                    styles={styles}
+                                    id="shift_id"
+                                    error={errors.shift_id}
+                                />
+                            </div>
+                            <div className="flex flex-col">
+                                <label
+                                    htmlFor="start_time"
+                                    className=" form-label"
+                                >
+                                    Jam Masuk
+                                </label>
+                                <Controller
                                     name="start_time"
-                                    placeholder="HH:MM"
-                                    className={
-                                        errors?.start_time?.message
-                                            ? 'border-danger-500 border date-picker-control py-2'
-                                            : 'date-picker-control date-picker-control py-2'
-                                    }
-                                    onChange={(selectedDate, dateStr) =>
-                                        onChange(dateStr)
-                                    }
-                                    options={{
-                                        enableTime: true,
-                                        noCalendar: true,
-                                        dateFormat: 'H:i',
-                                        time_24hr: true,
-                                    }}
+                                    control={control}
+                                    render={({
+                                        field: { onChange, ...fieldProps },
+                                    }) => (
+                                        <Flatpickr
+                                            {...fieldProps}
+                                            id="timepicker"
+                                            name="start_time"
+                                            placeholder="HH:MM"
+                                            className={
+                                                errors?.start_time?.message
+                                                    ? 'border-danger-500 border date-picker-control py-2'
+                                                    : 'date-picker-control date-picker-control py-2'
+                                            }
+                                            onChange={(selectedDate, dateStr) =>
+                                                onChange(dateStr)
+                                            }
+                                            options={{
+                                                enableTime: true,
+                                                noCalendar: true,
+                                                dateFormat: 'H:i',
+                                                time_24hr: true,
+                                            }}
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
-                        {errors?.start_time?.message && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.start_time?.message}
+                                {errors?.start_time?.message && (
+                                    <div
+                                        className={
+                                            'mt-2 text-danger-500 block text-sm'
+                                        }
+                                    >
+                                        {errors?.start_time?.message}
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
-                    <div className="flex flex-col">
-                        <label htmlFor="end_time" className=" form-label">
-                            Jam Pulang
-                        </label>
-                        <Controller
-                            name="end_time"
-                            control={control}
-                            render={({
-                                field: { onChange, ...fieldProps },
-                            }) => (
-                                <Flatpickr
-                                    {...fieldProps}
-                                    id="timepicker"
-                                    placeholder="HH:MM"
+                            <div className="flex flex-col">
+                                <label
+                                    htmlFor="end_time"
+                                    className=" form-label"
+                                >
+                                    Jam Pulang
+                                </label>
+                                <Controller
                                     name="end_time"
-                                    className={
-                                        errors?.end_time?.message
-                                            ? 'border-danger-500 border date-picker-control py-2'
-                                            : 'date-picker-control date-picker-control py-2'
-                                    }
-                                    onChange={(selectedDate, dateStr) =>
-                                        onChange(dateStr)
-                                    }
-                                    options={{
-                                        enableTime: true,
-                                        noCalendar: true,
-                                        dateFormat: 'H:i',
-                                        time_24hr: true,
-                                    }}
+                                    control={control}
+                                    render={({
+                                        field: { onChange, ...fieldProps },
+                                    }) => (
+                                        <Flatpickr
+                                            {...fieldProps}
+                                            id="timepicker"
+                                            placeholder="HH:MM"
+                                            name="end_time"
+                                            className={
+                                                errors?.end_time?.message
+                                                    ? 'border-danger-500 border date-picker-control py-2'
+                                                    : 'date-picker-control date-picker-control py-2'
+                                            }
+                                            onChange={(selectedDate, dateStr) =>
+                                                onChange(dateStr)
+                                            }
+                                            options={{
+                                                enableTime: true,
+                                                noCalendar: true,
+                                                dateFormat: 'H:i',
+                                                time_24hr: true,
+                                            }}
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
-                        {errors?.end_time?.message && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.end_time?.message}
+                                {errors?.end_time?.message && (
+                                    <div
+                                        className={
+                                            'mt-2 text-danger-500 block text-sm'
+                                        }
+                                    >
+                                        {errors?.end_time?.message}
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
-                </div>
+                        </div>
 
-                <div className="lg:grid-cols-2 grid-cols-1 grid gap-5">
-                    <div>
-                        <div>
-                            <label htmlFor="file_in" className=" form-label">
-                                Upload File Masuk
-                            </label>
-                            <Controller
-                                name="file_in"
-                                control={control}
-                                render={({
-                                    field: { onChange, ...fieldProps },
-                                }) => (
-                                    <Fileinput
-                                        {...fieldProps}
+                        <div className="lg:grid-cols-2 grid-cols-1 grid gap-5">
+                            <div>
+                                <div>
+                                    <label
+                                        htmlFor="file_in"
+                                        className=" form-label"
+                                    >
+                                        Upload File Masuk
+                                    </label>
+                                    <Controller
                                         name="file_in"
-                                        className={
-                                            errors?.file_in && 'border-red-500'
-                                        }
-                                        selectedFile={selectedFileIn}
-                                        onChange={(e) => {
-                                            handleSelectChangeIn(e)
-                                            onChange(e.target.files[0])
-                                        }}
-                                        id="file_in"
+                                        control={control}
+                                        render={({
+                                            field: { onChange, ...fieldProps },
+                                        }) => (
+                                            <Fileinput
+                                                {...fieldProps}
+                                                name="file_in"
+                                                className={
+                                                    errors?.file_in &&
+                                                    'border-red-500'
+                                                }
+                                                selectedFile={selectedFileIn}
+                                                onChange={(e) => {
+                                                    handleSelectChangeIn(e)
+                                                    onChange(e.target.files[0])
+                                                }}
+                                                id="file_in"
+                                            />
+                                        )}
                                     />
+                                </div>
+                                {errors?.file_in && (
+                                    <div
+                                        className={
+                                            'mt-2 text-danger-500 block text-sm'
+                                        }
+                                    >
+                                        {errors?.file_in?.message}
+                                    </div>
                                 )}
-                            />
-                        </div>
-                        {errors?.file_in && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.file_in?.message}
                             </div>
-                        )}
-                    </div>
-                    <div>
-                        <div>
-                            <label htmlFor="file_out" className=" form-label">
-                                Upload File Pulang
-                            </label>
-                            <Controller
-                                name="file_out"
-                                control={control}
-                                render={({
-                                    field: { onChange, ...fieldProps },
-                                }) => (
-                                    <Fileinput
-                                        {...fieldProps}
+                            <div>
+                                <div>
+                                    <label
+                                        htmlFor="file_out"
+                                        className=" form-label"
+                                    >
+                                        Upload File Pulang
+                                    </label>
+                                    <Controller
                                         name="file_out"
-                                        className={
-                                            errors?.file_out && 'border-red-500'
-                                        }
-                                        selectedFile={selectedFileOut}
-                                        onChange={(e) => {
-                                            handleSelectChangeOut(e)
-                                            onChange(e.target.files[0])
-                                        }}
-                                        id="file_out"
+                                        control={control}
+                                        render={({
+                                            field: { onChange, ...fieldProps },
+                                        }) => (
+                                            <Fileinput
+                                                {...fieldProps}
+                                                name="file_out"
+                                                className={
+                                                    errors?.file_out &&
+                                                    'border-red-500'
+                                                }
+                                                selectedFile={selectedFileOut}
+                                                onChange={(e) => {
+                                                    handleSelectChangeOut(e)
+                                                    onChange(e.target.files[0])
+                                                }}
+                                                id="file_out"
+                                            />
+                                        )}
                                     />
+                                </div>
+                                {errors?.file_out && (
+                                    <div
+                                        className={
+                                            'mt-2 text-danger-500 block text-sm'
+                                        }
+                                    >
+                                        {errors?.file_out?.message}
+                                    </div>
                                 )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <Textarea
+                                label="Keterangan"
+                                type="text"
+                                name="change_reason"
+                                register={register}
+                                id="df"
+                                placeholder="Keterangan"
+                                error={errors.change_reason}
                             />
                         </div>
-                        {errors?.file_out && (
-                            <div
-                                className={'mt-2 text-danger-500 block text-sm'}
-                            >
-                                {errors?.file_out?.message}
-                            </div>
-                        )}
                     </div>
-                </div>
-
-                <div>
-                    <Textarea
-                        label="Keterangan"
-                        type="text"
-                        name="change_reason"
-                        register={register}
-                        id="df"
-                        placeholder="Keterangan"
-                        error={errors.change_reason}
-                    />
-                </div>
+                )}
 
                 <div className="flex gap-5 justify-end">
                     <Button
