@@ -130,7 +130,6 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     useEffect(() => {
         if (presenceStatusName) {
             setSelectedPresence(presenceStatusName)
-            console.log(presenceStatusName)
         }
     }, [presenceStatusName])
 
