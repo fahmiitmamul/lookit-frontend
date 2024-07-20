@@ -192,7 +192,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
                             register={register}
                             options={[
                                 ...(presenceStatusData?.map((item) => ({
-                                    value: item.id,
+                                    value: item.value,
                                     label: item.label,
                                 })) || []),
                             ]}
