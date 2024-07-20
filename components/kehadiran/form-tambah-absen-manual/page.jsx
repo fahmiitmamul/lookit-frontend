@@ -38,7 +38,7 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     })
 
     async function fetchShift() {
-        const { data } = await http(token).get('/shift/all')
+        const { data } = await http(token).get('/shift')
         return data.results
     }
 
