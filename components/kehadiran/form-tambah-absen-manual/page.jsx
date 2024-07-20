@@ -44,6 +44,8 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
 
             form.append('employee_id', values.employee_id)
             form.append('presence_status_id', values.presence_status_id)
+            form.append('start', values.absent_date)
+            form.append('shift_id', values.shift_id)
             form.append('start_time', values.start_time)
             form.append('end_time', values.end_time)
             form.append('file_in', selectedFileIn)
@@ -65,6 +67,8 @@ const AddPresenceRecordForm = ({ setShowAddPresenceModal }) => {
     const validatePresence = Yup.object({
         employee_id: Yup.string().required('Harap diisi'),
         presence_status_id: Yup.string().required('Harap diisi'),
+        absent_date: Yup.string().required('Harap diisi'),
+        shift_id: Yup.string().required('Harap diisi'),
         start_time: Yup.string().required('Harap diisi'),
         end_time: Yup.string().required('Harap diisi'),
         file_in: Yup.string().required('Harap diisi'),
