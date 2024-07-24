@@ -3,11 +3,16 @@ import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
 import PresenceRecordPDF from '../download-pdf-kehadiran/page'
 import ExportToExcelPresenceRecords from '../export-excel-rekap-kehadiran/page'
+import { useSelector } from 'react-redux'
 
 const DownloadPresenceRecordsModal = ({
     selectedPresenceRecordsData,
     isClient,
 }) => {
+    const selectedMonth = useSelector(
+        (state) => state.presence.presence_records.selectedMonth
+    )
+
     return (
         <>
             <form>
@@ -56,6 +61,7 @@ const DownloadPresenceRecordsModal = ({
                         <div>
                             <ExportToExcelPresenceRecords
                                 data={selectedPresenceRecordsData}
+                                selectedMonth={selectedMonth}
                             />
                         </div>
                     </div>

@@ -2,10 +2,12 @@ import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import Button from '@/components/ui/Button'
 
-const ExportToExcelPresenceRecords = ({ data }) => {
+const ExportToExcelPresenceRecords = ({ data, selectedMonth }) => {
     const fileType =
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
     const fileExtension = '.xlsx'
+
+    const days = dayjs(selectedMonth).daysInMonth()
 
     const exportToExcel = () => {
         const formattedData = data.map((item) => ({
