@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import Button from '@/components/ui/Button'
+import dayjs from 'dayjs'
 
 const ExportToExcelPresenceRecords = ({ data, selectedMonth }) => {
     const fileType =
@@ -10,22 +11,17 @@ const ExportToExcelPresenceRecords = ({ data, selectedMonth }) => {
     const days = dayjs(selectedMonth).daysInMonth()
 
     const exportToExcel = () => {
-        const formattedData = data.map((item) => ({
-            No: item.id,
-            NIK: item.employee.employee_nik,
-            Nama: item.employee.name,
-            Jadwal: item.shift.shift_name,
-            Tanggal: item.start,
-            H: '',
-            HT: '',
-            PC: '',
-            TP: '',
-            A: '',
-            S: '',
-            I: '',
-            C: '',
-            L: '',
-        }))
+        const formattedData = data.flatMap((item) => {
+            return Array.from({ length: days }, (_, i) => {
+                const date = dayjs(selectedMonth)
+                    .date(i + 1)
+                    .format('YYYY-MM-DD')
+                return {
+                    ...item,
+                    Tanggal: date,
+                }
+            })
+        })
 
         const ws = XLSX.utils.json_to_sheet(formattedData)
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
