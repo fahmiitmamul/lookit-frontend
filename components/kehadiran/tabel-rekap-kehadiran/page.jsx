@@ -123,11 +123,7 @@ export default function PresenceRecordsTable({
                                             dateInfo.start.getFullYear()
                                         setCurrentMonth(`${monthName} ${year}`)
                                         dispatch(
-                                            setSelectedMonth(
-                                                dayjs(dateInfo.startStr).format(
-                                                    'DD-MM-YYYY'
-                                                )
-                                            )
+                                            setSelectedMonth(dateInfo.startStr)
                                         )
                                     }}
                                     headerToolbar={false}

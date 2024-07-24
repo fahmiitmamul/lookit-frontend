@@ -8,17 +8,33 @@ const ExportToExcelPresenceRecords = ({ data, selectedMonth }) => {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
     const fileExtension = '.xlsx'
 
-    const days = dayjs(selectedMonth).daysInMonth()
+    const month = dayjs(selectedMonth).month()
+    const year = dayjs(selectedMonth).year()
+    const days = dayjs().year(year).month(month).daysInMonth()
 
     const exportToExcel = () => {
         const formattedData = data.flatMap((item) => {
             return Array.from({ length: days }, (_, i) => {
-                const date = dayjs(selectedMonth)
+                const date = dayjs()
+                    .year(year)
+                    .month(month)
                     .date(i + 1)
-                    .format('YYYY-MM-DD')
+                    .format('DD-MM-YYYY')
+
                 return {
-                    ...item,
+                    No: i + 1,
+                    NIK: item.employee_nik,
+                    Nama: item.name,
                     Tanggal: date,
+                    H: '',
+                    HT: '',
+                    PC: '',
+                    TP: '',
+                    A: '',
+                    S: '',
+                    I: '',
+                    C: '',
+                    L: '',
                 }
             })
         })
