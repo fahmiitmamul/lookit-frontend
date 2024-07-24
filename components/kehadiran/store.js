@@ -9,6 +9,7 @@ const initialState = {
     presence_records: {
         presence_records_id: '',
         presence_records_data: [],
+        selectedMonth: '',
     },
 }
 
@@ -31,6 +32,9 @@ const presenceSlice = createSlice({
         setPresenceRecordsData: (state, action) => {
             state.presence_records.presence_records_data = action.payload
         },
+        setSelectedMonth: (state, action) => {
+            state.presence_records.selectedMonth = action.payload
+        },
     },
 })
 
@@ -40,6 +44,7 @@ export const {
     setPresenceId,
     setPresenceRecordsId,
     setPresenceRecordsData,
+    setSelectedMonth,
 } = presenceSlice.actions
 
 export default presenceSlice.reducer

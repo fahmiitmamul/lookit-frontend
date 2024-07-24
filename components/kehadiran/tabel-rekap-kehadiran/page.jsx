@@ -7,10 +7,12 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import {
     setPresenceId,
     setPresenceRecordsData,
+    setSelectedMonth,
 } from '@/components/kehadiran/store'
 import Checkbox from '@/components/ui/Checkbox'
 import http from '@/app/helpers/http.helper'
 import { getCookie } from 'cookies-next'
+import dayjs from 'dayjs'
 
 export default function PresenceRecordsTable({
     presenceData,
@@ -120,6 +122,13 @@ export default function PresenceRecordsTable({
                                         const year =
                                             dateInfo.start.getFullYear()
                                         setCurrentMonth(`${monthName} ${year}`)
+                                        dispatch(
+                                            setSelectedMonth(
+                                                dayjs(dateInfo.startStr).format(
+                                                    'MMMM YYYY'
+                                                )
+                                            )
+                                        )
                                     }}
                                     headerToolbar={false}
                                     events={presenceData?.data?.map((item) => ({
