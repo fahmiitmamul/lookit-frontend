@@ -125,7 +125,7 @@ export default function PresenceRecordsTable({
                                         dispatch(
                                             setSelectedMonth(
                                                 dayjs(dateInfo.startStr).format(
-                                                    'MMMM YYYY'
+                                                    'DD-MM-YYYY'
                                                 )
                                             )
                                         )
