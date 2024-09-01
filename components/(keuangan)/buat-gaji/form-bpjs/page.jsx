@@ -249,9 +249,7 @@ export const BPJSForm = ({ control, setValue }) => {
             <div className="flex flex-col gap-4">
                 <h6>Konfigurasi BPJS</h6>
 
-                {bpjs?.bpjs?.find(
-                    (bpjs) => bpjs.bpjs_type === 'BPJS Kesehatan'
-                ) && (
+                {bpjs?.find((bpjs) => bpjs.bpjs_type === 'BPJS Kesehatan') && (
                     <div className="flex flex-col gap-5">
                         <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                             <div>BPJS Kesehatan</div>
@@ -699,7 +697,7 @@ export const BPJSForm = ({ control, setValue }) => {
                     </div>
                 )}
 
-                {bpjs?.bpjs?.find(
+                {bpjs?.find(
                     (bpjs) => bpjs.bpjs_type === 'BPJS Ketenagakerjaan'
                 ) && (
                     <div>
@@ -1822,7 +1820,7 @@ export const BPJSForm = ({ control, setValue }) => {
                 <h6>Master BPJS</h6>
 
                 <div className="lg:grid-cols-2 gap-5 grid grid-cols-1">
-                    {bpjs?.bpjs?.find(
+                    {bpjs?.find(
                         (bpjs) => bpjs.bpjs_type === 'BPJS Kesehatan'
                     ) ? (
                         <div className="flex flex-col gap-3">
@@ -1833,7 +1831,7 @@ export const BPJSForm = ({ control, setValue }) => {
                                 </div>
                                 <div className="text-sm">
                                     {
-                                        bpjs.bpjs.find(
+                                        bpjs?.find(
                                             (bpjs) =>
                                                 bpjs.bpjs_type ===
                                                 'BPJS Kesehatan'
@@ -1901,7 +1899,7 @@ export const BPJSForm = ({ control, setValue }) => {
                             </div>
                         </div>
                     ) : null}
-                    {bpjs?.bpjs?.find(
+                    {bpjs?.find(
                         (bpjs) => bpjs.bpjs_type === 'BPJS Ketenagakerjaan'
                     ) ? (
                         <div className="flex flex-col gap-3">
@@ -1910,7 +1908,7 @@ export const BPJSForm = ({ control, setValue }) => {
                                 <div className="text-sm"> Nomor BPJS TK</div>
                                 <div className="text-sm">
                                     {
-                                        bpjs.bpjs.find(
+                                        bpjs?.find(
                                             (bpjs) =>
                                                 bpjs.bpjs_type ===
                                                 'BPJS Ketenagakerjaan'
