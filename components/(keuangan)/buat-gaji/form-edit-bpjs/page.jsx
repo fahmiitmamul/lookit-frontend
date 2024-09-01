@@ -215,6 +215,29 @@ export const EditBPJSModal = ({ setShowEditBpjsModal }) => {
             setToggledBpjsKesehatan(
                 data.results.main_salary_bpjs_value[0].kesehatan.isActive
             )
+            setToggledBpjsKetenagakerjaan(
+                data.results.main_salary_bpjs_value[0].ketenagakerjaan.isActive
+            )
+            setToggledJHT(
+                data.results.main_salary_bpjs_value[0].ketenagakerjaan
+                    .isJhtActive
+            )
+            setToggledJKK(
+                data.results.main_salary_bpjs_value[0].ketenagakerjaan
+                    .isJkkActive
+            )
+            setToggledJKM(
+                data.results.main_salary_bpjs_value[0].ketenagakerjaan
+                    .isJkmActive
+            )
+            setToggledJP(
+                data.results.main_salary_bpjs_value[0].ketenagakerjaan
+                    .isJpActive
+            )
+            setBpjsKesehatanTunjanganPerusahaanValue(
+                data.results.main_salary_bpjs_value[0].kesehatan
+                    .tunjangan_perusahaan
+            )
             dispatch(
                 setMainSalary(main_salary_data?.data?.results?.main_salary)
             )
