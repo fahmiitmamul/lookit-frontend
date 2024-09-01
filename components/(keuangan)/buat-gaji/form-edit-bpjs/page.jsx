@@ -258,9 +258,7 @@ export const EditBPJSModal = ({ setShowEditBpjsModal }) => {
             <div className="flex flex-col gap-4">
                 <h6>Konfigurasi BPJS</h6>
 
-                {bpjs?.bpjs?.find(
-                    (bpjs) => bpjs.bpjs_type === 'BPJS Kesehatan'
-                ) && (
+                {bpjs?.find((bpjs) => bpjs.bpjs_type === 'BPJS Kesehatan') && (
                     <div className="flex flex-col gap-5">
                         <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                             <div>BPJS Kesehatan</div>
@@ -768,7 +766,7 @@ export const EditBPJSModal = ({ setShowEditBpjsModal }) => {
                     </div>
                 )}
 
-                {bpjs?.bpjs?.find(
+                {bpjs?.find(
                     (bpjs) => bpjs.bpjs_type === 'BPJS Ketenagakerjaan'
                 ) && (
                     <div>
@@ -1891,7 +1889,7 @@ export const EditBPJSModal = ({ setShowEditBpjsModal }) => {
                 <h6>Master BPJS</h6>
 
                 <div className="lg:grid-cols-2 gap-5 grid grid-cols-1">
-                    {bpjs?.bpjs?.find(
+                    {bpjs?.find(
                         (bpjs) => bpjs.bpjs_type === 'BPJS Kesehatan'
                     ) ? (
                         <div className="flex flex-col gap-3">
@@ -1998,7 +1996,7 @@ export const EditBPJSModal = ({ setShowEditBpjsModal }) => {
                             </div>
                         </div>
                     ) : null}
-                    {bpjs?.bpjs?.find(
+                    {bpjs?.find(
                         (bpjs) => bpjs.bpjs_type === 'BPJS Ketenagakerjaan'
                     ) ? (
                         <div className="flex flex-col gap-3">
