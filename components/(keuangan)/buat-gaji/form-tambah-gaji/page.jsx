@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import http from '@/app/helpers/http.helper'
 import { getCookie } from 'cookies-next'
@@ -363,69 +363,79 @@ const MainSalaryForm = ({
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 1))
     }
 
+    useEffect(() => {
+        if (currentStep === 1) {
+            dispatch(setSelectedItem('Gaji Pokok'))
+        } else if (currentStep === 2) {
+            dispatch(setSelectedItem('Tambahan'))
+        } else if (currentStep === 3) {
+            dispatch(setSelectedItem('Potongan'))
+        } else if (currentStep === 4) {
+            dispatch(setSelectedItem('BPJS'))
+        } else if (currentStep === 5) {
+            dispatch(setSelectedItem('Asuransi'))
+        } else if (currentStep === 6) {
+            dispatch(setSelectedItem('Pajak'))
+        }
+    }, [currentStep])
+
     return (
         <div>
             <div className="lg:grid-cols-1 grid gap-5 grid-cols-1">
                 <div className="modal">
                     <div className="content">
-                        {currentStep === 1 &&
-                            dispatch(setSelectedItem('Gaji Pokok')) && (
-                                <MainSalary
-                                    watch={watchMainSalary}
-                                    control={controlMainSalary}
-                                    register={registerMainSalary}
-                                    errors={errorsMainSalary}
-                                />
-                            )}
-                        {currentStep === 2 &&
-                            dispatch(setSelectedItem('Tambahan')) && (
-                                <AdditionalSalary
-                                    control={controlAdditionalSalary}
-                                    register={registerAdditionalSalary}
-                                    errors={errorsAdditionalSalary}
-                                    setValue={setValueAdditionalSalary}
-                                    clearErrors={clearErrorsAdditionalSalary}
-                                />
-                            )}
-                        {currentStep === 3 &&
-                            dispatch(setSelectedItem('Potongan')) && (
-                                <SalaryCuts
-                                    control={controlSalaryCuts}
-                                    register={registerSalaryCuts}
-                                    errors={errorsSalaryCuts}
-                                    setValue={setValueSalaryCuts}
-                                    clearErrors={clearErrorsSalaryCuts}
-                                />
-                            )}
-                        {currentStep === 4 &&
-                            dispatch(setSelectedItem('BPJS')) && (
-                                <BPJSForm
-                                    control={bpjsControl}
-                                    register={bpjsRegister}
-                                    errors={bpjsErrors}
-                                    setValue={setValueBpjs}
-                                />
-                            )}
-                        {currentStep === 5 &&
-                            dispatch(setSelectedItem('Asuransi')) && (
-                                <InsuranceForm
-                                    control={insuranceControl}
-                                    register={insuranceRegister}
-                                    errors={insuranceErrors}
-                                    setValue={insuranceSetValue}
-                                    clearErrors={clearErrorsInsurance}
-                                />
-                            )}
-                        {currentStep === 6 &&
-                            dispatch(setSelectedItem('Pajak')) && (
-                                <TaxForm
-                                    control={taxControl}
-                                    register={taxRegister}
-                                    errors={taxErrors}
-                                    setValue={taxSetValue}
-                                    clearErrors={clearErrorsTax}
-                                />
-                            )}
+                        {currentStep === 1 && (
+                            <MainSalary
+                                watch={watchMainSalary}
+                                control={controlMainSalary}
+                                register={registerMainSalary}
+                                errors={errorsMainSalary}
+                            />
+                        )}
+                        {currentStep === 2 && (
+                            <AdditionalSalary
+                                control={controlAdditionalSalary}
+                                register={registerAdditionalSalary}
+                                errors={errorsAdditionalSalary}
+                                setValue={setValueAdditionalSalary}
+                                clearErrors={clearErrorsAdditionalSalary}
+                            />
+                        )}
+                        {currentStep === 3 && (
+                            <SalaryCuts
+                                control={controlSalaryCuts}
+                                register={registerSalaryCuts}
+                                errors={errorsSalaryCuts}
+                                setValue={setValueSalaryCuts}
+                                clearErrors={clearErrorsSalaryCuts}
+                            />
+                        )}
+                        {currentStep === 4 && (
+                            <BPJSForm
+                                control={bpjsControl}
+                                register={bpjsRegister}
+                                errors={bpjsErrors}
+                                setValue={setValueBpjs}
+                            />
+                        )}
+                        {currentStep === 5 && (
+                            <InsuranceForm
+                                control={insuranceControl}
+                                register={insuranceRegister}
+                                errors={insuranceErrors}
+                                setValue={insuranceSetValue}
+                                clearErrors={clearErrorsInsurance}
+                            />
+                        )}
+                        {currentStep === 6 && (
+                            <TaxForm
+                                control={taxControl}
+                                register={taxRegister}
+                                errors={taxErrors}
+                                setValue={taxSetValue}
+                                clearErrors={clearErrorsTax}
+                            />
+                        )}
                     </div>
                     <div className="w-full flex gap-5 mt-5 justify-end">
                         <button
