@@ -1900,7 +1900,7 @@ export const EditBPJSModal = ({ setShowEditBpjsModal }) => {
                                 </div>
                                 <div className="text-sm">
                                     {
-                                        bpjs.bpjs.find(
+                                        bpjs.find(
                                             (bpjs) =>
                                                 bpjs.bpjs_type ===
                                                 'BPJS Kesehatan'
@@ -2005,7 +2005,7 @@ export const EditBPJSModal = ({ setShowEditBpjsModal }) => {
                                 <div className="text-sm"> Nomor BPJS TK</div>
                                 <div className="text-sm">
                                     {
-                                        bpjs.bpjs.find(
+                                        bpjs.find(
                                             (bpjs) =>
                                                 bpjs.bpjs_type ===
                                                 'BPJS Ketenagakerjaan'
