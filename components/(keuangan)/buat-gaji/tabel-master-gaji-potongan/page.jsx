@@ -54,7 +54,10 @@ export default function MasterSalaryPotonganTable({
                                     {masterSalaryPotonganData?.data?.map(
                                         (item, index) => {
                                             return (
-                                                <tr className="hover:bg-slate-200 dark:hover:bg-slate-700">
+                                                <tr
+                                                    className="hover:bg-slate-200 dark:hover:bg-slate-700"
+                                                    key={index}
+                                                >
                                                     <td className="table-td">
                                                         {index + 1}
                                                     </td>
