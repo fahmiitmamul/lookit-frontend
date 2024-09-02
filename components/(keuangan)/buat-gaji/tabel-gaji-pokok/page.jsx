@@ -96,7 +96,10 @@ export default function MainSalaryTable({
                                 <tbody className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                     {mainSalaryData?.data?.map(
                                         (item, index) => (
-                                            <tr className="hover:bg-slate-200 dark:hover:bg-slate-700">
+                                            <tr
+                                                className="hover:bg-slate-200 dark:hover:bg-slate-700"
+                                                key={index}
+                                            >
                                                 <td className="table-td">
                                                     <Checkbox
                                                         value={selectAll}

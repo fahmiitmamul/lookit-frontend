@@ -1062,9 +1062,14 @@ export default function BuatGaji() {
                                 }
                             }}
                             className="form-control py-2 w-max"
+                            defaultValue=""
                         >
                             {[10, 25, 50].map((pageSize) => (
-                                <option key={pageSize} value={pageSize}>
+                                <option
+                                    key={pageSize}
+                                    defaultValue=""
+                                    value={pageSize}
+                                >
                                     Show {pageSize}
                                 </option>
                             ))}
