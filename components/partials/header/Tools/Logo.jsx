@@ -10,8 +10,6 @@ const Logo = () => {
     const [isSemiDark] = useSemiDark()
     const { width, breakpoints } = useWidth()
 
-    console.log(isDark)
-
     return (
         <div>
             <Link href="/dashboard">
