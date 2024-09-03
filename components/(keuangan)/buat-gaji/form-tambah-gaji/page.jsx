@@ -56,6 +56,12 @@ const MainSalaryForm = ({
     taxRegister,
     taxErrors,
     taxSetValue,
+    resetMainSalary,
+    resetAdditionalSalary,
+    resetSalaryCuts,
+    resetBpjs,
+    resetInsurance,
+    resetTax,
 }) => {
     const token = getCookie('token')
     const bpjsData = useSelector((state) => state.finance.finance.bpjs)
@@ -350,6 +356,12 @@ const MainSalaryForm = ({
                     handleSubmitBpjs(onSubmitBpjs)()
                     handleSubmitInsurance(onSubmitInsurance)()
                     handleSubmitTax(onSubmitTax)()
+                    resetMainSalary()
+                    resetAdditionalSalary()
+                    resetSalaryCuts()
+                    resetBpjs()
+                    resetInsurance()
+                    resetTax()
                 } else {
                     setCurrentStep((prevStep) =>
                         Math.min(prevStep + 1, totalSteps)
@@ -390,6 +402,12 @@ const MainSalaryForm = ({
                                 control={controlMainSalary}
                                 register={registerMainSalary}
                                 errors={errorsMainSalary}
+                                resetMainSalary={resetMainSalary}
+                                resetAdditionalSalary={resetAdditionalSalary}
+                                resetSalaryCuts={resetSalaryCuts}
+                                resetBpjs={resetBpjs}
+                                resetInsurance={resetInsurance}
+                                resetTax={resetTax}
                             />
                         )}
                         {currentStep === 2 && (

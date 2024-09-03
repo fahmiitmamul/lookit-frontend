@@ -219,17 +219,9 @@ export default function BuatGaji() {
         trigger: triggerMainSalary,
         handleSubmit: handleSubmitMainSalary,
         watch: watchMainSalary,
-        reset,
+        reset: resetMainSalary,
         formState: { errors: errorsMainSalary },
     } = useForm({
-        defaultValues: async () => {
-            if (mainSalaryId) {
-                const { data } = await http(token).get(
-                    `/main-salary/${mainSalaryId}`
-                )
-                return data.results
-            }
-        },
         resolver: yupResolver(validateMainSalary),
         mode: 'all',
     })
@@ -242,26 +234,18 @@ export default function BuatGaji() {
         trigger: triggerAdditionalSalary,
         setValue: setValueAdditionalSalary,
         handleSubmit: handleSubmitAdditionalSalary,
+        reset: resetAdditionalSalary,
     } = useForm({
-        defaultValues: async () => {
-            if (emp_id) {
-                const { data } = await http(token).get(
-                    `/main-salary-addition/employee/${emp_id}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          main_salary_addition_value: [
-                              {
-                                  additional_salary_name: '',
-                                  additional_salary_value: '',
-                                  additional_salary_percentage: '',
-                                  additional_salary_fixed_value: '',
-                                  additional_salary_calculation: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            main_salary_addition_value: [
+                {
+                    additional_salary_name: '',
+                    additional_salary_value: '',
+                    additional_salary_percentage: '',
+                    additional_salary_fixed_value: '',
+                    additional_salary_calculation: '',
+                },
+            ],
         },
         resolver: yupResolver(validateAdditionalSalary),
         mode: 'all',
@@ -275,26 +259,18 @@ export default function BuatGaji() {
         trigger: triggerSalaryCuts,
         clearErrors: clearErrorsSalaryCuts,
         handleSubmit: handleSubmitSalaryCuts,
+        reset: resetSalaryCuts,
     } = useForm({
-        defaultValues: async () => {
-            if (emp_id) {
-                const { data } = await http(token).get(
-                    `/main-salary-deduction/employee/${emp_id}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          main_salary_deduction_value: [
-                              {
-                                  salary_cuts_name: '',
-                                  salary_cuts_value: '',
-                                  salary_cuts_percentage: '',
-                                  salary_cuts_fixed_value: '',
-                                  salary_cuts_calculation: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            main_salary_deduction_value: [
+                {
+                    salary_cuts_name: '',
+                    salary_cuts_value: '',
+                    salary_cuts_percentage: '',
+                    salary_cuts_fixed_value: '',
+                    salary_cuts_calculation: '',
+                },
+            ],
         },
         resolver: yupResolver(validateSalaryCuts),
         mode: 'all',
@@ -306,15 +282,8 @@ export default function BuatGaji() {
         formState: { errors: errorsBpjs },
         setValue: setValueBpjs,
         handleSubmit: handleSubmitBpjs,
+        reset: resetBpjs,
     } = useForm({
-        defaultValues: async () => {
-            if (emp_id) {
-                const { data } = await http(token).get(
-                    `/main-salary-bpjs/employee/${emp_id}`
-                )
-                return data.results
-            }
-        },
         mode: 'all',
     })
 
@@ -326,25 +295,17 @@ export default function BuatGaji() {
         trigger: triggerInsurance,
         handleSubmit: handleSubmitInsurance,
         clearErrors: clearErrorsInsurance,
+        reset: resetInsurance,
     } = useForm({
-        defaultValues: async () => {
-            if (emp_id) {
-                const { data } = await http(token).get(
-                    `/main-salary-insurance/employee/${emp_id}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          main_salary_insurance_value: [
-                              {
-                                  insurance_name: '',
-                                  insurance_value: '',
-                                  insurance_percentage: '',
-                                  insurance_fixed_value: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            main_salary_insurance_value: [
+                {
+                    insurance_name: '',
+                    insurance_value: '',
+                    insurance_percentage: '',
+                    insurance_fixed_value: '',
+                },
+            ],
         },
         resolver: yupResolver(validateInsurance),
         mode: 'all',
@@ -358,25 +319,17 @@ export default function BuatGaji() {
         trigger: triggerTax,
         handleSubmit: handleSubmitTax,
         clearErrors: clearErrorsTax,
+        reset: resetTax,
     } = useForm({
-        defaultValues: async () => {
-            if (emp_id) {
-                const { data } = await http(token).get(
-                    `/main-salary-tax/employee/${emp_id}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          main_salary_tax_value: [
-                              {
-                                  tax_name: '',
-                                  tax_value: '',
-                                  tax_percentage: '',
-                                  tax_fixed_value: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            main_salary_tax_value: [
+                {
+                    tax_name: '',
+                    tax_value: '',
+                    tax_percentage: '',
+                    tax_fixed_value: '',
+                },
+            ],
         },
         resolver: yupResolver(validateTax),
         mode: 'all',
@@ -767,7 +720,6 @@ export default function BuatGaji() {
                                         )
                                         dispatch(setInitialState())
                                         setCurrentStep(1)
-                                        reset()
                                     }}
                                     className="btn-success"
                                     text="Buat Gaji Pokok"
@@ -1205,6 +1157,12 @@ export default function BuatGaji() {
                         taxRegister={taxRegister}
                         taxErrors={errorsTax}
                         taxSetValue={setValueTax}
+                        resetMainSalary={resetMainSalary}
+                        resetAdditionalSalary={resetAdditionalSalary}
+                        resetSalaryCuts={resetSalaryCuts}
+                        resetBpjs={resetBpjs}
+                        resetInsurance={resetInsurance}
+                        resetTax={resetTax}
                     />
                 </Modal>
                 <Modal

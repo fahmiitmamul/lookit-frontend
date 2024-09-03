@@ -16,7 +16,18 @@ import {
 } from '../../store'
 import { fetchEmployee as fetchEmployeeData } from '../../action'
 
-export const MainSalary = ({ watch, control, register, errors }) => {
+export const MainSalary = ({
+    watch,
+    control,
+    register,
+    errors,
+    resetMainSalary,
+    resetAdditionalSalary,
+    resetSalaryCuts,
+    resetBpjs,
+    resetInsurance,
+    resetTax,
+}) => {
     const token = getCookie('token')
     const dispatch = useDispatch()
 
@@ -38,6 +49,55 @@ export const MainSalary = ({ watch, control, register, errors }) => {
         if (employee_id) {
             dispatch(fetchEmployeeData(employee_id))
             dispatch(setEmployeeId(employee_id))
+
+            async function fetchMainSalary() {
+                const { data } = await http(token).get(
+                    `/main-salary/employee/${employee_id}`
+                )
+                const main_salary_addition_data = await http(token).get(
+                    `/main-salary-addition/employee/${employee_id}`
+                )
+                const main_salary_deduction_data = await http(token).get(
+                    `/main-salary-deduction/employee/${employee_id}`
+                )
+                const bpjs_data = await http(token).get(
+                    `/main-salary-bpjs/employee/${employee_id}`
+                )
+                const insurance_data = await http(token).get(
+                    `/main-salary-insurance/employee/${employee_id}`
+                )
+                const tax_data = await http(token).get(
+                    `/main-salary-tax/employee/${employee_id}`
+                )
+
+                if (data.results) {
+                    resetMainSalary(data.results)
+                }
+
+                if (main_salary_addition_data.data.results) {
+                    resetAdditionalSalary(
+                        main_salary_addition_data.data.results
+                    )
+                }
+
+                if (main_salary_deduction_data.data.results) {
+                    resetSalaryCuts(main_salary_deduction_data.data.results)
+                }
+
+                if (bpjs_data.data.results) {
+                    resetBpjs(bpjs_data.data.results)
+                }
+
+                if (insurance_data.data.results) {
+                    resetInsurance(insurance_data.data.results)
+                }
+
+                if (tax_data.data.results) {
+                    resetTax(tax_data.data.results)
+                }
+            }
+
+            fetchMainSalary()
 
             async function fetchEmployee() {
                 const { data } = await http(token).get(
