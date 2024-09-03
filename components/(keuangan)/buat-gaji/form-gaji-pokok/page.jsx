@@ -72,16 +72,46 @@ export const MainSalary = ({
 
                 if (data.results) {
                     resetMainSalary(data.results)
+                } else {
+                    resetMainSalary({
+                        employee_id: employee_id,
+                        main_salary: '',
+                        main_salary_count: null,
+                    })
                 }
 
                 if (main_salary_addition_data.data.results) {
                     resetAdditionalSalary(
                         main_salary_addition_data.data.results
                     )
+                } else {
+                    resetAdditionalSalary({
+                        main_salary_addition_value: [
+                            {
+                                additional_salary_name: '',
+                                additional_salary_value: '',
+                                additional_salary_percentage: '',
+                                additional_salary_fixed_value: '',
+                                additional_salary_calculation: '',
+                            },
+                        ],
+                    })
                 }
 
                 if (main_salary_deduction_data.data.results) {
                     resetSalaryCuts(main_salary_deduction_data.data.results)
+                } else {
+                    resetSalaryCuts({
+                        main_salary_deduction_value: [
+                            {
+                                salary_cuts_name: '',
+                                salary_cuts_value: '',
+                                salary_cuts_percentage: '',
+                                salary_cuts_fixed_value: '',
+                                salary_cuts_calculation: '',
+                            },
+                        ],
+                    })
                 }
 
                 if (bpjs_data.data.results) {
@@ -90,10 +120,32 @@ export const MainSalary = ({
 
                 if (insurance_data.data.results) {
                     resetInsurance(insurance_data.data.results)
+                } else {
+                    resetInsurance({
+                        main_salary_insurance_value: [
+                            {
+                                insurance_name: '',
+                                insurance_value: '',
+                                insurance_percentage: '',
+                                insurance_fixed_value: '',
+                            },
+                        ],
+                    })
                 }
 
                 if (tax_data.data.results) {
                     resetTax(tax_data.data.results)
+                } else {
+                    resetTax({
+                        main_salary_tax_value: [
+                            {
+                                tax_name: '',
+                                tax_value: '',
+                                tax_percentage: '',
+                                tax_fixed_value: '',
+                            },
+                        ],
+                    })
                 }
             }
 
