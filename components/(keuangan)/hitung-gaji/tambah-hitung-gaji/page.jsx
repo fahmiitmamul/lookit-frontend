@@ -3,69 +3,58 @@ import { useForm } from 'react-hook-form'
 import Flatpickr from 'react-flatpickr'
 import Select from '@/components/ui/Select'
 import Button from '@/components/ui/Button'
-import Textarea from '@/components/ui/Textarea'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import http from '@/app/helpers/http.helper'
 import { getCookie } from 'cookies-next'
 import * as Yup from 'yup'
 import { Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useDispatch } from 'react-redux'
-import { toast } from 'react-toastify'
 import { setLoading } from '@/store/loadingReducer'
 import Checkbox from '@/components/ui/Checkbox'
+import { toast } from 'react-toastify'
+import { useMutation } from '@tanstack/react-query'
 
 const SalaryCountForm = ({ setShowSalaryCountModal }) => {
-    const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(5)
-    const [searchData, setSearchData] = useState('')
-    const [leaveType, setLeaveType] = useState(0)
+    const [selectedEmployee, setSelectedEmployee] = useState([])
+    const [selectedEmployees, setSelectedEmployees] = useState([])
     const [checked, setChecked] = useState(false)
-    const [value, setValue] = useState('')
     const token = getCookie('token')
 
-    async function fetchEmployee(
-        pageData = page,
-        search = searchData,
-        limitData = limit
-    ) {
-        const { data } = await http(token).get(
-            '/employee/active?page=' +
-                pageData +
-                '&search=' +
-                search +
-                '&limit=' +
-                limitData
+    const handleSelectChange = (event) => {
+        const selectedValue = event.target.value
+        const selectedEmp = employeeData?.data?.find(
+            (emp) => emp.name === selectedValue
         )
+
+        if (
+            selectedEmp &&
+            !selectedEmployees.some((emp) => emp.name === selectedEmp.name)
+        ) {
+            setSelectedEmployees([...selectedEmployees, selectedEmp])
+            setSelectedEmployee([...selectedEmployee, selectedEmp.id])
+        }
+    }
+
+    const handleDeleteEmployee = (value) => {
+        const updatedEmployees = selectedEmployees.filter(
+            (emp) => emp.name !== value.name
+        )
+        const updatedEmployeesId = selectedEmployee.filter(
+            (emp) => emp !== value.id
+        )
+        setSelectedEmployees(updatedEmployees)
+        setSelectedEmployee(updatedEmployeesId)
+    }
+
+    async function fetchEmployee() {
+        const { data } = await http(token).get('/employee/active')
         return data.results
     }
 
     const { data: employeeData } = useQuery({
-        queryKey: ['active-employee', page, searchData, limit],
-        queryFn: () => fetchEmployee(page, searchData, limit),
-    })
-
-    async function fetchLeaveType(
-        pageData = page,
-        search = searchData,
-        limitData = limit
-    ) {
-        const { data } = await http(token).get(
-            '/leave-type-master?page=' +
-                pageData +
-                '&search=' +
-                search +
-                '&limit=' +
-                limitData
-        )
-        return data.results
-    }
-
-    const { data: leaveTypeData } = useQuery({
-        queryKey: ['leave-type-master', page, searchData, limit],
-        queryFn: () => fetchLeaveType(page, searchData, limit),
-        staleTime: 10 * 60 * 1000,
-        cacheTime: 60 * 60 * 1000,
+        queryKey: ['active-employee'],
+        queryFn: () => fetchEmployee(),
     })
 
     const styles = {
@@ -75,50 +64,32 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
         }),
     }
 
-    const validateLeaveType = Yup.object({
+    const validateSalaryCount = Yup.object({
         employee_id: Yup.string().required('Harap diisi'),
-        leave_type_id: Yup.string().required('Harap diisi'),
-        initial_estimate: Yup.string().required('Harap diisi'),
-        final_estimate: Yup.string().required('Harap diisi'),
-        leave_type_description: Yup.string().required('Harap diisi'),
+        salary_period: Yup.string().required('Harap diisi'),
     })
 
     const {
         control,
-        watch,
-        register,
+        setValue,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(validateLeaveType),
+        resolver: yupResolver(validateSalaryCount),
         mode: 'all',
     })
-
-    const selectedLeaveType = watch('leave_type_id')
-
-    async function fetchLeaveTypeById() {
-        const { data } = await http(token).get(
-            `/leave-type-master/${parseInt(selectedLeaveType)}`
-        )
-        setLeaveType(data.results.maximum_leave_type)
-    }
-
-    if (selectedLeaveType) {
-        fetchLeaveTypeById()
-    }
 
     const queryClient = useQueryClient()
     const dispatch = useDispatch()
 
-    const postLeaveType = useMutation({
+    const postSalaryCount = useMutation({
         mutationFn: async (values) => {
-            const data = new URLSearchParams(values).toString()
-            return http(token).post(`/leave-type`, data)
+            return http(token).post('/salary_count', data)
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['leave'] })
+            queryClient.invalidateQueries({ queryKey: ['salary_count'] })
             dispatch(setLoading(false))
-            toast.success('Berhasil menambah saldo cuti')
+            toast.success('Berhasil menambah acara')
         },
         onError: (err) => {
             toast.error(err?.response?.data?.message)
@@ -127,8 +98,8 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
     })
 
     const onSubmit = (data) => {
-        setShowAddLeaveTypeModal(false)
-        postLeaveType.mutate(data)
+        setShowSalaryCountModal(false)
+        postSalaryCount.mutate(data)
         dispatch(setLoading(false))
     }
 
@@ -138,29 +109,42 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="lg:grid-cols-1 grid gap-5 grid-cols-1"
             >
-                <div>
+                <div className="flex gap-2">
                     <Checkbox
-                        label="Pilih Semua Karyawan"
                         value={checked}
-                        onChange={() => setChecked(!checked)}
+                        onChange={() => {
+                            if (!checked) {
+                                const allEmployee = employeeData?.data?.map(
+                                    (employee) => employee.id
+                                )
+                                setSelectedEmployee(allEmployee)
+                            } else {
+                                setSelectedEmployee([])
+                            }
+                            setChecked(!checked)
+                        }}
                     />
+                    Pilih Semua Karyawan
                 </div>
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
                         <label htmlFor="employee_id" className="form-label ">
-                            Silakan Pilih Karyawan
+                            Silahkan Pilih Karyawan
                         </label>
                         <Select
                             className="react-select"
-                            name="employee_id"
-                            register={register}
-                            options={employeeData?.data?.map((item) => ({
-                                value: item.id,
-                                label: item.name,
+                            options={employeeData?.data?.map((employee) => ({
+                                value: employee.name,
+                                label: employee.name,
                             }))}
                             styles={styles}
                             id="employee_id"
                             error={errors.employee_id}
+                            disabled={checked}
+                            onChange={(e) => {
+                                setValue('employee_id', 'Has a value')
+                                handleSelectChange(e)
+                            }}
                         />
                     </div>
                     <div>
@@ -169,7 +153,7 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
                         </label>
 
                         <Controller
-                            name="initial_estimate"
+                            name="salary_period"
                             control={control}
                             render={({
                                 field: { onChange, ...fieldProps },
@@ -178,23 +162,46 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
                                     {...fieldProps}
                                     placeholder="Pilih Periode"
                                     className={
-                                        errors?.initial_estimate
+                                        errors?.salary_period
                                             ? 'border-danger-500 border date-picker-control py-2'
                                             : 'date-picker-control py-2'
                                     }
                                     onChange={(selectedDate, dateStr) =>
                                         onChange(dateStr)
                                     }
+                                    options={{
+                                        mode: 'range',
+                                    }}
                                 />
                             )}
                         />
-                        {errors?.initial_estimate && (
+                        {errors?.salary_period && (
                             <div
                                 className={'mt-2 text-danger-500 block text-sm'}
                             >
-                                {errors?.initial_estimate?.message}
+                                {errors?.salary_period?.message}
                             </div>
                         )}
+                    </div>
+                </div>
+
+                <div>
+                    List Karyawan :
+                    <div className="flex flex-wrap gap-5 mt-2">
+                        {selectedEmployees?.map((emp) => (
+                            <div className="flex justify-center items-center bg-gray-200 text-sm rounded-xl p-2 gap-2">
+                                <div>{emp?.name}</div>
+                                <div className="pt-1">
+                                    <Button
+                                        onClick={() => {
+                                            handleDeleteEmployee(emp)
+                                        }}
+                                        className="bg-none p-0"
+                                        icon="heroicons:x-mark"
+                                    ></Button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
