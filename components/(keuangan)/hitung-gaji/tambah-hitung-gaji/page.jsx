@@ -215,7 +215,7 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
                         }}
                     />
                     <Button
-                        text="Simpan"
+                        text="Hitung"
                         type="submit"
                         className="btn-success"
                     />
