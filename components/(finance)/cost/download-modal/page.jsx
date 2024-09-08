@@ -1,8 +1,8 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import CostPDF from '../download-pdf-biaya/page'
-import ExportToExcelCost from '../export-excel-biaya/page'
+import CostPDF from '../download-pdf-cost/page'
+import ExportToExcelCost from '../export-excel-cost/page'
 
 const DownloadCostModal = ({ selectedCostData, isClient }) => {
     return (

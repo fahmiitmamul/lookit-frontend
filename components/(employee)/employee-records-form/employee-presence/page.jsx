@@ -45,7 +45,7 @@ import DeleteHolidayForm from '@/components/kehadiran/form-hapus-kehadiran-l/pag
 import EditLeaveTypeForm from '@/components/kehadiran/form-edit-kehadiran-c/page'
 import EditPresenceRecordForm from '@/components/kehadiran/form-edit-rekap-kehadiran/page'
 import DownloadPresenceModal from '@/components/kehadiran/download-modal/page'
-import IndividualPresenceRecordsTable from './tabel-rekap-kehadiran/page'
+import IndividualPresenceRecordsTable from './employee-presence-table/page'
 
 export default function Kehadiran() {
     const [isClient, setIsClient] = useState(false)
