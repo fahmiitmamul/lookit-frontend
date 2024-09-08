@@ -1,4 +1,4 @@
-import { setEmployeeId, setSelectedData } from '@/components/(karyawan)/store'
+import { setEmployeeId, setSelectedData } from '@/components/(employee)/store'
 import Checkbox from '@/components/ui/Checkbox'
 import Icon from '@/components/ui/Icon'
 import Tooltip from '@/components/ui/Tooltip'

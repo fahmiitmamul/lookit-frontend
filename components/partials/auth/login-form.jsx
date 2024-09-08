@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux'
 import { handleLogin } from './store'
 import http from '@/app/helpers/http.helper'
 import { handleMenuHidden } from '@/store/layoutReducer'
-import { setEmployeeId } from '@/components/(karyawan)/store'
+import { setEmployeeId } from '@/components/(employee)/store'
 
 const schema = yup.object({
     email: yup.string().required('Harap diisi'),

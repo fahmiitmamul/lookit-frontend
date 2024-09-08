@@ -1,7 +1,7 @@
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import ExportToExcelLeaveType from '../export-to-excel/page'
 import { Icon } from '@iconify/react'
-import MyDocument from '@/components/(karyawan)/data-karyawan/download-pdf-karyawan/page'
+import MyDocument from '@/components/(employee)/employee-data/download-pdf-employee/page'
 
 const DownloadLeaveTypeModal = ({ selectedLeaveTypeData, isClient }) => {
     return (
