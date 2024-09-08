@@ -1,6 +1,6 @@
 'use client'
-import AddLoanForm from '@/components/(finance)/loan/form-tambah-pinjaman/page'
-import AddLoan from '@/components/(finance)/loan/tabel-tambah-pinjaman/page'
+import AddLoanForm from '@/components/(finance)/loan/add-loan-form/page'
+import AddLoan from '@/components/(finance)/loan/add-loan-table/page'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import InputGroup from '@/components/ui/InputGroup'
