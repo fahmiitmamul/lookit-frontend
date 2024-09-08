@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import TasksPDF from '../download-pdf-tugas/page'
+import TasksPDF from '../download-pdf-tasks/page'
 import ExportToExcelTasks from '../export-excel-tasks/page'
 
 const DownloadTasksModal = ({ selectedTasksData, isClient }) => {

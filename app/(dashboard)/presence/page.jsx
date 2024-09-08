@@ -47,7 +47,7 @@ import EditPresenceRecordForm from '@/components/kehadiran/form-edit-rekap-kehad
 import DownloadPresenceModal from '@/components/kehadiran/download-modal/page'
 import DownloadPresenceRecordsModal from '@/components/kehadiran/download-modal-rekap/page'
 import AddPresenceRecordForm from '@/components/kehadiran/form-tambah-absen-manual/page'
-import ExportToExcelAssets from '@/components/aset/template-aset/page'
+import ExportToExcelAssets from '@/components/assets/template-aset/page'
 
 export default function Kehadiran() {
     const [isClient, setIsClient] = useState(false)
