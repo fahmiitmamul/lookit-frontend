@@ -10,16 +10,16 @@ import { useMutation } from '@tanstack/react-query'
 import { setLoading } from '@/store/loadingReducer'
 import { toast } from 'react-toastify'
 import Card from '@/components/ui/Card'
-import EmployeeBiodataForm from '../form-profil-karyawan/page'
-import FormKontakDarurat from '../form-kontak-darurat/page'
-import FormAlamat from '../form-alamat-sesuai-ktp/page'
-import FormPendidikan from '../form-pendidikan/page'
-import FormInfoKaryawan from '../form-info-karyawan/page'
-import FormSosialMedia from '../form-sosial-media/page'
-import FormPengalamanKerja from '../form-input-perusahaan/page'
-import FormInputBank from '../form-input-bank/page'
-import FormInputBpjs from '../form-input-bpjs/page'
-import FormInputAsuransi from '../form-input-asuransi/page'
+import EmployeeBiodataForm from '../employee-profile-form/page'
+import FormKontakDarurat from '../employee-emergency-contact-form/page'
+import FormAlamat from '../address-form-id-card/page'
+import FormPendidikan from '../employee-education-form/page'
+import FormInfoKaryawan from '../employee-information-form/page'
+import FormSosialMedia from '../social-media-form/page'
+import FormPengalamanKerja from '../input-company-form/page'
+import FormInputBank from '../bank-input-form/page'
+import FormInputBpjs from '../input-bpjs-form/page'
+import FormInputAsuransi from '../insurance-input-form/page'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const EditEmployeeForm = ({ setShowEditModal }) => {
@@ -837,7 +837,6 @@ const EditEmployeeForm = ({ setShowEditModal }) => {
             padding: '0px',
         }),
     }
-
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]

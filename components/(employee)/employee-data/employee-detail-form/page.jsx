@@ -5,24 +5,24 @@ import http from '@/app/helpers/http.helper'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getCookie } from 'cookies-next'
 import * as yup from 'yup'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@tanstack/react-query'
 import { setLoading } from '@/store/loadingReducer'
 import { toast } from 'react-toastify'
 import Card from '@/components/ui/Card'
-import EmployeeBiodataForm from '../form-profil-karyawan/page'
-import FormKontakDarurat from '../form-kontak-darurat/page'
-import FormAlamat from '../form-alamat-sesuai-ktp/page'
-import FormPendidikan from '../form-pendidikan/page'
-import FormInfoKaryawan from '../form-info-karyawan/page'
-import FormSosialMedia from '../form-sosial-media/page'
-import FormPengalamanKerja from '../form-input-perusahaan/page'
-import FormInputBank from '../form-input-bank/page'
-import FormInputBpjs from '../form-input-bpjs/page'
-import FormInputAsuransi from '../form-input-asuransi/page'
+import EmployeeBiodataForm from '../employee-profile-form/page'
+import FormKontakDarurat from '../employee-emergency-contact-form/page'
+import FormAlamat from '../address-form-id-card/page'
+import FormPendidikan from '../employee-education-form/page'
+import FormInfoKaryawan from '../employee-information-form/page'
+import FormSosialMedia from '../social-media-form/page'
+import FormPengalamanKerja from '../input-company-form/page'
+import FormInputBank from '../bank-input-form/page'
+import FormInputBpjs from '../input-bpjs-form/page'
+import FormInputAsuransi from '../insurance-input-form/page'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-const AddEmployeeForm = ({ setShowAddModal }) => {
+const DetailEmployeeForm = ({ setShowViewModal }) => {
     const token = getCookie('token')
     const [regencyValue, setRegencyData] = useState([])
     const [districtValue, setDistrictData] = useState([])
@@ -35,6 +35,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     const [employeeContent, setEmployeeContent] = useState({})
     const [selectedSIM, setSelectedSIM] = useState([])
     const dispatch = useDispatch()
+
+    const employeeId = useSelector(
+        (state) => state.employee.employee.employee_id
+    )
 
     const validateProfile = yup.object({
         profile_photo: yup.string().required('Harap diisi'),
@@ -163,6 +167,11 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         clearErrors: clearErrorsProfile,
         formState: { errors: errorsProfile },
     } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            setSelectedSIM(data.results.driver_license)
+            return data.results
+        },
         resolver: yupResolver(validateProfile),
         mode: 'all',
     })
@@ -175,6 +184,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         getValues: getValuesEmployeeProfile,
         formState: { errors: errorsEmployeeProfile },
     } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
         resolver: yupResolver(validateEmployeeProfile),
         mode: 'all',
     })
@@ -187,6 +200,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         handleSubmit: handleSubmitEmergency,
         formState: { errors: errorsEmergency },
     } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
         resolver: yupResolver(validateEmergency),
         mode: 'all',
     })
@@ -198,6 +215,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         watch: watchAddress,
         formState: { errors: errorsAddress },
     } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
         resolver: yupResolver(validateAddress),
         mode: 'all',
     })
@@ -208,6 +229,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         handleSubmit: handleSubmitSocialMedia,
         formState: { errors: errorsSocialMedia },
     } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
         resolver: yupResolver(validateSocialMedia),
         mode: 'all',
     })
@@ -218,6 +243,10 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         handleSubmit: handleSubmitBankAccount,
         formState: { errors: errorsBankAccount },
     } = useForm({
+        defaultValues: async () => {
+            const { data } = await http(token).get(`/employee/${employeeId}`)
+            return data.results
+        },
         resolver: yupResolver(validateBankAccount),
         mode: 'all',
     })
@@ -229,15 +258,24 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         handleSubmit: handleSubmitEducation,
         formState: { errors: errorsEducation },
     } = useForm({
-        defaultValues: {
-            educations: [
-                {
-                    school_name: '',
-                    school_level: '',
-                    education_start_date: '',
-                    education_end_date: '',
-                },
-            ],
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          educations: [
+                              {
+                                  school_name: '',
+                                  school_level: '',
+                                  education_start_date: '',
+                                  education_end_date: '',
+                              },
+                          ],
+                      }
+            }
         },
         resolver: yupResolver(validateEducation),
         mode: 'all',
@@ -250,15 +288,24 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         handleSubmit: handleSubmitWorkHistory,
         formState: { errors: errorsWorkHistory },
     } = useForm({
-        defaultValues: {
-            work_history: [
-                {
-                    company_name: '',
-                    position_name: '',
-                    work_history_start_date: '',
-                    work_history_end_date: '',
-                },
-            ],
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          work_history: [
+                              {
+                                  company_name: '',
+                                  position_name: '',
+                                  work_history_start_date: '',
+                                  work_history_end_date: '',
+                              },
+                          ],
+                      }
+            }
         },
         resolver: yupResolver(validateWorkHistory),
         mode: 'all',
@@ -271,8 +318,22 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         handleSubmit: handleSubmitBpjs,
         formState: { errors: errorsBpjs },
     } = useForm({
-        defaultValues: {
-            bpjs: [{ bpjs_name: '', bpjs_number: '' }],
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          bpjs: [
+                              {
+                                  bpjs_name: '',
+                                  bpjs_number: '',
+                              },
+                          ],
+                      }
+            }
         },
         resolver: yupResolver(validateBPJS),
         mode: 'all',
@@ -285,8 +346,22 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         handleSubmit: handleSubmitInsurance,
         formState: { errors: errorsInsurance },
     } = useForm({
-        defaultValues: {
-            insurance: [{ insurance_name: '', insurance_number: '' }],
+        defaultValues: async () => {
+            if (employeeId) {
+                const { data } = await http(token).get(
+                    `/employee/${employeeId}`
+                )
+                return data.results
+                    ? data.results
+                    : {
+                          insurance: [
+                              {
+                                  insurance_name: '',
+                                  insurance_number: '',
+                              },
+                          ],
+                      }
+            }
         },
         resolver: yupResolver(validateInsurance),
         mode: 'all',
@@ -330,7 +405,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
 
     const queryClient = useQueryClient()
 
-    const postEmployee = useMutation({
+    const editEmployee = useMutation({
         mutationFn: () => {
             const form = new FormData()
             if (selectedPicture) {
@@ -455,7 +530,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
             form.append('linkedin', employeeContent.linkedin)
             form.append('tiktok', employeeContent.tiktok)
             form.append('isEmployeeActive', 1)
-            return http(token).post('/employee', form)
+            return http(token).patch(`/employee/${employeeId}`, form)
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['active-employee'] })
@@ -859,9 +934,9 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     }
     const onSubmitInsurance = (data) => {
         setEmployeeContent((prevData) => ({ ...prevData, ...data }))
-        setShowAddModal(false)
+        setShowViewModal(false)
         dispatch(setLoading(true))
-        postEmployee.mutate()
+        editEmployee.mutate()
     }
 
     const nextStep = async () => {
@@ -958,6 +1033,8 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
         }
     }
 
+    const isDetail = true
+
     return (
         <Card>
             {currentStep === 0 && (
@@ -978,6 +1055,7 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
                     styles={styles}
                     steps={totalSteps}
                     stepNumber={currentStep}
+                    isDetail={isDetail}
                     selectedSIM={selectedSIM}
                 />
             )}
@@ -1116,4 +1194,4 @@ const AddEmployeeForm = ({ setShowAddModal }) => {
     )
 }
 
-export default AddEmployeeForm
+export default DetailEmployeeForm

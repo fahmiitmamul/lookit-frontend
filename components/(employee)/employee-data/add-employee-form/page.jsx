@@ -5,24 +5,24 @@ import http from '@/app/helpers/http.helper'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getCookie } from 'cookies-next'
 import * as yup from 'yup'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useMutation } from '@tanstack/react-query'
 import { setLoading } from '@/store/loadingReducer'
 import { toast } from 'react-toastify'
 import Card from '@/components/ui/Card'
-import EmployeeBiodataForm from '../form-profil-karyawan/page'
-import FormKontakDarurat from '../form-kontak-darurat/page'
-import FormAlamat from '../form-alamat-sesuai-ktp/page'
-import FormPendidikan from '../form-pendidikan/page'
-import FormInfoKaryawan from '../form-info-karyawan/page'
-import FormSosialMedia from '../form-sosial-media/page'
-import FormPengalamanKerja from '../form-input-perusahaan/page'
-import FormInputBank from '../form-input-bank/page'
-import FormInputBpjs from '../form-input-bpjs/page'
-import FormInputAsuransi from '../form-input-asuransi/page'
+import EmployeeBiodataForm from '../employee-profile-form/page'
+import FormKontakDarurat from '../employee-emergency-contact-form/page'
+import FormAlamat from '../address-form-id-card/page'
+import FormPendidikan from '../employee-education-form/page'
+import FormInfoKaryawan from '../employee-information-form/page'
+import FormSosialMedia from '../social-media-form/page'
+import FormPengalamanKerja from '../input-company-form/page'
+import FormInputBank from '../bank-input-form/page'
+import FormInputBpjs from '../input-bpjs-form/page'
+import FormInputAsuransi from '../insurance-input-form/page'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-const DetailEmployeeForm = ({ setShowViewModal }) => {
+const AddEmployeeForm = ({ setShowAddModal }) => {
     const token = getCookie('token')
     const [regencyValue, setRegencyData] = useState([])
     const [districtValue, setDistrictData] = useState([])
@@ -35,10 +35,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
     const [employeeContent, setEmployeeContent] = useState({})
     const [selectedSIM, setSelectedSIM] = useState([])
     const dispatch = useDispatch()
-
-    const employeeId = useSelector(
-        (state) => state.employee.employee.employee_id
-    )
 
     const validateProfile = yup.object({
         profile_photo: yup.string().required('Harap diisi'),
@@ -167,11 +163,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         clearErrors: clearErrorsProfile,
         formState: { errors: errorsProfile },
     } = useForm({
-        defaultValues: async () => {
-            const { data } = await http(token).get(`/employee/${employeeId}`)
-            setSelectedSIM(data.results.driver_license)
-            return data.results
-        },
         resolver: yupResolver(validateProfile),
         mode: 'all',
     })
@@ -184,10 +175,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         getValues: getValuesEmployeeProfile,
         formState: { errors: errorsEmployeeProfile },
     } = useForm({
-        defaultValues: async () => {
-            const { data } = await http(token).get(`/employee/${employeeId}`)
-            return data.results
-        },
         resolver: yupResolver(validateEmployeeProfile),
         mode: 'all',
     })
@@ -200,10 +187,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         handleSubmit: handleSubmitEmergency,
         formState: { errors: errorsEmergency },
     } = useForm({
-        defaultValues: async () => {
-            const { data } = await http(token).get(`/employee/${employeeId}`)
-            return data.results
-        },
         resolver: yupResolver(validateEmergency),
         mode: 'all',
     })
@@ -215,10 +198,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         watch: watchAddress,
         formState: { errors: errorsAddress },
     } = useForm({
-        defaultValues: async () => {
-            const { data } = await http(token).get(`/employee/${employeeId}`)
-            return data.results
-        },
         resolver: yupResolver(validateAddress),
         mode: 'all',
     })
@@ -229,10 +208,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         handleSubmit: handleSubmitSocialMedia,
         formState: { errors: errorsSocialMedia },
     } = useForm({
-        defaultValues: async () => {
-            const { data } = await http(token).get(`/employee/${employeeId}`)
-            return data.results
-        },
         resolver: yupResolver(validateSocialMedia),
         mode: 'all',
     })
@@ -243,10 +218,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         handleSubmit: handleSubmitBankAccount,
         formState: { errors: errorsBankAccount },
     } = useForm({
-        defaultValues: async () => {
-            const { data } = await http(token).get(`/employee/${employeeId}`)
-            return data.results
-        },
         resolver: yupResolver(validateBankAccount),
         mode: 'all',
     })
@@ -258,24 +229,15 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         handleSubmit: handleSubmitEducation,
         formState: { errors: errorsEducation },
     } = useForm({
-        defaultValues: async () => {
-            if (employeeId) {
-                const { data } = await http(token).get(
-                    `/employee/${employeeId}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          educations: [
-                              {
-                                  school_name: '',
-                                  school_level: '',
-                                  education_start_date: '',
-                                  education_end_date: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            educations: [
+                {
+                    school_name: '',
+                    school_level: '',
+                    education_start_date: '',
+                    education_end_date: '',
+                },
+            ],
         },
         resolver: yupResolver(validateEducation),
         mode: 'all',
@@ -288,24 +250,15 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         handleSubmit: handleSubmitWorkHistory,
         formState: { errors: errorsWorkHistory },
     } = useForm({
-        defaultValues: async () => {
-            if (employeeId) {
-                const { data } = await http(token).get(
-                    `/employee/${employeeId}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          work_history: [
-                              {
-                                  company_name: '',
-                                  position_name: '',
-                                  work_history_start_date: '',
-                                  work_history_end_date: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            work_history: [
+                {
+                    company_name: '',
+                    position_name: '',
+                    work_history_start_date: '',
+                    work_history_end_date: '',
+                },
+            ],
         },
         resolver: yupResolver(validateWorkHistory),
         mode: 'all',
@@ -318,22 +271,8 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         handleSubmit: handleSubmitBpjs,
         formState: { errors: errorsBpjs },
     } = useForm({
-        defaultValues: async () => {
-            if (employeeId) {
-                const { data } = await http(token).get(
-                    `/employee/${employeeId}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          bpjs: [
-                              {
-                                  bpjs_name: '',
-                                  bpjs_number: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            bpjs: [{ bpjs_name: '', bpjs_number: '' }],
         },
         resolver: yupResolver(validateBPJS),
         mode: 'all',
@@ -346,22 +285,8 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         handleSubmit: handleSubmitInsurance,
         formState: { errors: errorsInsurance },
     } = useForm({
-        defaultValues: async () => {
-            if (employeeId) {
-                const { data } = await http(token).get(
-                    `/employee/${employeeId}`
-                )
-                return data.results
-                    ? data.results
-                    : {
-                          insurance: [
-                              {
-                                  insurance_name: '',
-                                  insurance_number: '',
-                              },
-                          ],
-                      }
-            }
+        defaultValues: {
+            insurance: [{ insurance_name: '', insurance_number: '' }],
         },
         resolver: yupResolver(validateInsurance),
         mode: 'all',
@@ -405,7 +330,7 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
 
     const queryClient = useQueryClient()
 
-    const editEmployee = useMutation({
+    const postEmployee = useMutation({
         mutationFn: () => {
             const form = new FormData()
             if (selectedPicture) {
@@ -530,7 +455,7 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
             form.append('linkedin', employeeContent.linkedin)
             form.append('tiktok', employeeContent.tiktok)
             form.append('isEmployeeActive', 1)
-            return http(token).patch(`/employee/${employeeId}`, form)
+            return http(token).post('/employee', form)
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['active-employee'] })
@@ -838,7 +763,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         }),
     }
 
-
     const handleFileChange = (e) => {
         const file = e.target.files[0]
         setSelectedPicture(file)
@@ -935,9 +859,9 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
     }
     const onSubmitInsurance = (data) => {
         setEmployeeContent((prevData) => ({ ...prevData, ...data }))
-        setShowViewModal(false)
+        setShowAddModal(false)
         dispatch(setLoading(true))
-        editEmployee.mutate()
+        postEmployee.mutate()
     }
 
     const nextStep = async () => {
@@ -1034,8 +958,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
         }
     }
 
-    const isDetail = true
-
     return (
         <Card>
             {currentStep === 0 && (
@@ -1056,7 +978,6 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
                     styles={styles}
                     steps={totalSteps}
                     stepNumber={currentStep}
-                    isDetail={isDetail}
                     selectedSIM={selectedSIM}
                 />
             )}
@@ -1195,4 +1116,4 @@ const DetailEmployeeForm = ({ setShowViewModal }) => {
     )
 }
 
-export default DetailEmployeeForm
+export default AddEmployeeForm

@@ -9,8 +9,8 @@ import http from '@/app/helpers/http.helper'
 import { getCookie } from 'cookies-next'
 import { useQuery } from '@tanstack/react-query'
 import { Tab } from '@headlessui/react'
-import EmployeeRecordsTable from '@/components/(employee)/rekam-karyawan/tabel-rekam-karyawan/page'
-import NonactiveEmployeeRecordsTable from '@/components/(employee)/rekam-karyawan/tabel-rekam-karyawan-nonaktif/page'
+import EmployeeRecordsTable from '@/components/(employee)/employee-records-form/active-employee-records-table/page'
+import NonactiveEmployeeRecordsTable from '@/components/(employee)/employee-records-form/nonactive-employee-records/page'
 import Flatpickr from 'react-flatpickr'
 
 export default function EmployeeRecordsData() {
