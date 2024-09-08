@@ -4,7 +4,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { Icon } from '@iconify/react'
 import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setScheduleId, setStartDate } from '@/components/jadwal/store'
+import { setScheduleId, setStartDate } from '@/components/schedule/store'
 
 export default function ScheduleRecordTable({
     scheduleData,
