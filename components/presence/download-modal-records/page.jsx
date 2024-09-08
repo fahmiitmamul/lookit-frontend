@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import PresenceRecordPDF from '../download-pdf-kehadiran/page'
+import PresenceRecordPDF from '../download-pdf-presence/page'
 import ExportToExcelPresenceRecords from '../export-excel-rekap-kehadiran/page'
 import { useSelector } from 'react-redux'
 

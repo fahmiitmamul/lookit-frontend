@@ -1,8 +1,8 @@
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import Button from '@/components/ui/Button'
 import { toast } from 'react-toastify'
-import PresencePDF from '../download-pdf-kehadiran/page'
-import ExportToExcelPresence from '../export-excel-kehadiran/page'
+import PresencePDF from '../download-pdf-presence/page'
+import ExportToExcelPresence from '../export-excel-presence/page'
 
 const DownloadPresenceModal = ({ selectedPresenceData, isClient }) => {
     return (
