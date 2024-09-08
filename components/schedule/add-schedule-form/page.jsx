@@ -22,7 +22,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import Card from '@/components/ui/Card'
 import { Icon } from '@iconify/react'
 import Modal from '@/components/ui/Modal'
-import SelectShift from '../form-pilih-shift/page'
+import SelectShift from '../select-shift-form/page'
 import { setScheduleId, setStartDate } from '../store'
 
 const AddScheduleForm = ({

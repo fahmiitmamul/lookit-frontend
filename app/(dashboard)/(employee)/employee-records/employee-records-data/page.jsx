@@ -19,7 +19,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import http from '@/app/helpers/http.helper'
 import { getCookie } from 'cookies-next'
-import EditScheduleForm from '@/components/schedule/form-edit-jadwal/page'
+import EditScheduleForm from '@/components/schedule/edit-schedule-form/page'
 import Modal from '@/components/ui/Modal'
 
 const EmployeeProfileTab = () => {
