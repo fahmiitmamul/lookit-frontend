@@ -22,7 +22,7 @@ import { getCookie } from 'cookies-next'
 import EditScheduleForm from '@/components/jadwal/form-edit-jadwal/page'
 import Modal from '@/components/ui/Modal'
 
-const ProfileEmployeeRecords = () => {
+const EmployeeProfileTab = () => {
     const [showEditScheduleModal, setShowEditScheduleModal] = useState(false)
     const employee_id = useSelector(
         (state) => state.employee.employee.employee_id
@@ -229,4 +229,4 @@ const ProfileEmployeeRecords = () => {
     )
 }
 
-export default ProfileEmployeeRecords
+export default EmployeeProfileTab

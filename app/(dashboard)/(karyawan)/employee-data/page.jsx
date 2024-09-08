@@ -25,7 +25,7 @@ import ExportToExcel from '@/components/(karyawan)/data-karyawan/export-excel-ka
 import ImportEmployeeForm from '@/components/(karyawan)/data-karyawan/form-import-karyawan/page'
 import Flatpickr from 'react-flatpickr'
 
-export default function DataKaryawan() {
+export default function EmployeeData() {
     const [showAddModal, setShowAddModal] = useState(false)
     const [showViewModal, setShowViewModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)

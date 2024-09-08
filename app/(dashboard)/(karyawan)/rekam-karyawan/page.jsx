@@ -13,7 +13,7 @@ import EmployeeRecordsTable from '@/components/(karyawan)/rekam-karyawan/tabel-r
 import NonactiveEmployeeRecordsTable from '@/components/(karyawan)/rekam-karyawan/tabel-rekam-karyawan-nonaktif/page'
 import Flatpickr from 'react-flatpickr'
 
-export default function DataKaryawan() {
+export default function EmployeeRecordsData() {
     const [activeEmployeePage, setActiveEmployeePage] = useState(1)
     const [activeEmployeeLimit, setActiveEmployeeLimit] = useState(5)
     const [activeEmployeeSearchData, setActiveEmployeeSearchData] = useState('')

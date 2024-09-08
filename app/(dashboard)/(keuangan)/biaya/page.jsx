@@ -19,7 +19,7 @@ import DownloadCostModal from '@/components/(keuangan)/biaya/download-modal/page
 import Flatpickr from 'react-flatpickr'
 import Card from '@/components/ui/Card'
 
-export default function Biaya() {
+export default function Cost() {
     const [showViewCostModal, setShowViewCostModal] = useState(false)
     const [showAddCostModal, setShowAddCostModal] = useState(false)
     const [showEditCostModal, setShowEditCostModal] = useState(false)

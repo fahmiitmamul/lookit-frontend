@@ -55,7 +55,7 @@ import { DetailBpjsModal } from '@/components/(keuangan)/buat-gaji/form-detail-b
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-export default function BuatGaji() {
+export default function MakeSalary() {
     const [showAddSalaryModal, setShowAddSalaryModal] = useState(false)
     const [showViewMainSalaryModal, setShowViewMainSalaryModal] =
         useState(false)

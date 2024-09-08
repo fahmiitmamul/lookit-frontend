@@ -15,7 +15,7 @@ import Checkbox from '@/components/ui/Checkbox'
 import { toast } from 'react-toastify'
 import { useMutation } from '@tanstack/react-query'
 
-const SalaryCountForm = ({ setShowSalaryCountModal }) => {
+const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
     const [selectedEmployee, setSelectedEmployee] = useState([])
     const [selectedEmployees, setSelectedEmployees] = useState([])
     const [checked, setChecked] = useState(false)
@@ -64,7 +64,7 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
         }),
     }
 
-    const validateSalaryCount = Yup.object({
+    const validateTotalSalary = Yup.object({
         employee_id: Yup.string().required('Harap diisi'),
         salary_period: Yup.string().required('Harap diisi'),
     })
@@ -75,16 +75,16 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(validateSalaryCount),
+        resolver: yupResolver(validateTotalSalary),
         mode: 'all',
     })
 
     const queryClient = useQueryClient()
     const dispatch = useDispatch()
 
-    const postSalaryCount = useMutation({
+    const postTotalSalary = useMutation({
         mutationFn: async (values) => {
-            return http(token).post('/salary_count', data)
+            return http(token).post('/total-salary', data)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['salary_count'] })
@@ -98,8 +98,8 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
     })
 
     const onSubmit = (data) => {
-        setShowSalaryCountModal(false)
-        postSalaryCount.mutate(data)
+        setShowTotalSalaryModal(false)
+        postTotalSalary.mutate(data)
         dispatch(setLoading(false))
     }
 
@@ -211,7 +211,7 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
                         className="btn-danger"
                         type="button"
                         onClick={() => {
-                            setShowSalaryCountModal(false)
+                            setShowTotalSalaryModal(false)
                         }}
                     />
                     <Button
@@ -225,4 +225,4 @@ const SalaryCountForm = ({ setShowSalaryCountModal }) => {
     )
 }
 
-export default SalaryCountForm
+export default TotalSalaryForm

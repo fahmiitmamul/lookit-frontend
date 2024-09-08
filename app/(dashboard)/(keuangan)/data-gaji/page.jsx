@@ -1,5 +1,6 @@
 'use client'
 import SalaryCount from '@/components/(keuangan)/hitung-gaji/tabel-hitung-gaji/page'
+import TotalSalaryForm from '@/components/(keuangan)/hitung-gaji/tambah-hitung-gaji/page'
 import SalaryCountForm from '@/components/(keuangan)/hitung-gaji/tambah-hitung-gaji/page'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
@@ -89,8 +90,8 @@ export default function BuatGaji() {
                         setShowAddSalaryCountModal(!showAddSalaryCountModal)
                     }}
                 >
-                    <SalaryCountForm
-                        setShowSalaryCountModal={setShowAddSalaryCountModal}
+                    <TotalSalaryForm
+                        setShowTotalSalaryModal={setShowAddSalaryCountModal}
                     />
                 </Modal>
                 <Modal
