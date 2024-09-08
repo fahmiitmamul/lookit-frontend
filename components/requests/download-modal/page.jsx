@@ -1,8 +1,8 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import RequestPDF from '../download-pdf-permintaan/page'
-import ExportToExcelRequests from '../export-excel-permintaan/page'
+import RequestPDF from '../download-pdf-request/page'
+import ExportToExcelRequests from '../export-excel-request/page'
 
 const DownloadRequestsModal = ({ selectedRequestsData, isClient }) => {
     return (
