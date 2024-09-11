@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import MutationDocument from '../download-pdf-mutasi/page'
+import MutationDocument from '../download-pdf-mutation/page'
 import ExportToExcelMutation from '../export-excel-mutation/page'
 
 const DownloadMutation = ({ selectedMutationData, isClient }) => {
