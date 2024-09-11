@@ -26,7 +26,6 @@ import AddOutgoingAssetsForm from '@/components/assets/add-outgoing-assets-form/
 import EditOutgoingAssetsForm from '@/components/assets/edit-outgoing-assets-form/page'
 import DetailOutgoingAssetsForm from '@/components/assets/detail-outgoing-assets-form/page'
 import DeleteOutgoingAssetForm from '@/components/assets/delete-outgoing-assets-form/page'
-import Dropdown from '@/components/ui/Dropdown'
 import { useSelector } from 'react-redux'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import AssetsDocument from '@/components/assets/download-pdf-assets/page'

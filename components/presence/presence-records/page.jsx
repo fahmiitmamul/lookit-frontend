@@ -2,7 +2,7 @@ import { Tab } from '@headlessui/react'
 import Tooltip from '@/components/ui/Tooltip'
 import { setSelectedPresenceButton } from '../store'
 import { useDispatch, useSelector } from 'react-redux'
-import PresenceRecordsTable from '../tabel-rekap-kehadiran/page'
+import PresenceRecordsTable from '../presence-records-table/page'
 
 export default function PresenceData({
     presenceData,
