@@ -13,11 +13,11 @@ export const menuItems = [
         child: [
             {
                 childtitle: 'Data Karyawan',
-                childlink: 'data-karyawan',
+                childlink: 'employee-data',
             },
             {
                 childtitle: 'Rekam Karyawan',
-                childlink: 'rekam-karyawan',
+                childlink: 'employee-records',
             },
         ],
     },
@@ -26,46 +26,46 @@ export const menuItems = [
         title: 'Jadwal',
         isHide: true,
         icon: 'heroicons-outline:calendar-days',
-        link: 'jadwal',
+        link: 'schedule',
     },
 
     {
         title: 'Kehadiran',
         isHide: true,
         icon: 'heroicons-outline:map-pin',
-        link: 'kehadiran',
+        link: 'presence',
     },
     {
         title: 'Lembur',
         isHide: true,
         icon: 'heroicons-outline:clock',
-        link: 'lembur',
+        link: 'overtime',
     },
     {
         title: 'Saldo Cuti',
         isHide: true,
         icon: 'heroicons-outline:shopping-bag',
-        link: 'saldo-cuti',
+        link: 'leave-balance',
     },
 
     {
         title: 'Permintaan',
         isHide: true,
         icon: 'heroicons-outline:bell',
-        link: 'permintaan',
+        link: 'request',
     },
 
     {
         title: 'Tugas',
         icon: 'heroicons-outline:rectangle-stack',
         isHide: true,
-        link: 'tugas',
+        link: 'task',
     },
     {
         title: 'Aktivitas',
         icon: 'heroicons-outline:presentation-chart-line',
         isHide: true,
-        link: 'aktifitas',
+        link: 'activity',
     },
     {
         title: 'KPI',
@@ -77,43 +77,43 @@ export const menuItems = [
         title: 'Mutasi',
         icon: 'heroicons-outline:arrows-right-left',
         isHide: true,
-        link: 'mutasi',
+        link: 'mutation',
     },
     {
         title: 'Inventaris',
         icon: 'heroicons-outline:squares-2x2',
         isHide: true,
-        link: 'inventaris',
+        link: 'inventory',
     },
     {
         title: 'Kontrak',
         icon: 'heroicons-outline:document',
         isHide: true,
-        link: 'kontrak',
+        link: 'contracts',
     },
     {
         title: 'Garansi',
         icon: 'heroicons-outline:shield-check',
         isHide: true,
-        link: 'garansi',
+        link: 'guarantee',
     },
     {
         title: 'Pengumuman',
         icon: 'heroicons-outline:megaphone',
         isHide: true,
-        link: 'pengumuman',
+        link: 'announcement',
     },
     {
         title: 'Pesan',
         icon: 'heroicons-outline:chat-bubble-bottom-center',
         isHide: true,
-        link: 'pesan',
+        link: 'message',
     },
     {
         title: 'Tiket',
         icon: 'heroicons-outline:ticket',
         isHide: true,
-        link: 'tiket',
+        link: 'ticket',
     },
     {
         title: 'Keuangan',
@@ -122,23 +122,23 @@ export const menuItems = [
         child: [
             {
                 childtitle: 'Buat Gaji',
-                childlink: 'buat-gaji',
+                childlink: 'make-salary',
             },
             {
                 childtitle: 'Data Gaji',
-                childlink: 'data-gaji',
+                childlink: 'salary-data',
             },
             {
                 childtitle: 'Laporan',
-                childlink: 'laporan',
+                childlink: 'salary-data',
             },
             {
                 childtitle: 'Pinjaman',
-                childlink: 'pinjaman',
+                childlink: 'loan',
             },
             {
                 childtitle: 'Biaya',
-                childlink: 'biaya',
+                childlink: 'cost',
             },
         ],
     },
@@ -146,13 +146,13 @@ export const menuItems = [
         title: 'Dokumen',
         icon: 'heroicons-outline:document-duplicate',
         isHide: true,
-        link: 'dokumen',
+        link: 'document',
     },
     {
         title: 'Acara',
         icon: 'heroicons-outline:calendar',
         isHide: true,
-        link: 'acara',
+        link: 'events',
     },
     {
         title: 'Pengaturan',
@@ -161,7 +161,7 @@ export const menuItems = [
         child: [
             {
                 childtitle: 'Perusahaan',
-                childlink: 'perusahaan',
+                childlink: 'company',
             },
             {
                 childtitle: 'Master Data',
@@ -169,7 +169,7 @@ export const menuItems = [
             },
             {
                 childtitle: 'Hak Akses',
-                childlink: 'hak-akses',
+                childlink: 'access-rights',
             },
         ],
     },
