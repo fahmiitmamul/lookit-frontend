@@ -1,13 +1,10 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import IncomingGuaranteeDocument from '../download-pdf-garansi-masuk/page'
-import ExportToExcelIncomingGuarantee from '../export-excel-garansi-masuk/page'
+import GuaranteeDocument from '../download-pdf-guarantee/page'
+import ExportToExcelGuarantee from '../export-excel-guarantee/page'
 
-const DownloadIncomingGuaranteeModal = ({
-    selectedGuaranteeData,
-    isClient,
-}) => {
+const DownloadGuaranteeModal = ({ selectedGuaranteeData, isClient }) => {
     return (
         <>
             <form>
@@ -29,7 +26,7 @@ const DownloadIncomingGuaranteeModal = ({
                                         <div>
                                             <PDFDownloadLink
                                                 document={
-                                                    <IncomingGuaranteeDocument
+                                                    <GuaranteeDocument
                                                         data={
                                                             selectedGuaranteeData
                                                         }
@@ -54,7 +51,7 @@ const DownloadIncomingGuaranteeModal = ({
                             />
                         ) : null}
                         <div>
-                            <ExportToExcelIncomingGuarantee
+                            <ExportToExcelGuarantee
                                 data={selectedGuaranteeData}
                             />
                         </div>
@@ -65,4 +62,4 @@ const DownloadIncomingGuaranteeModal = ({
     )
 }
 
-export default DownloadIncomingGuaranteeModal
+export default DownloadGuaranteeModal

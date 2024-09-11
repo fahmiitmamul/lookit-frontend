@@ -1,10 +1,13 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import GuaranteeDocument from '../download-pdf-garansi/page'
-import ExportToExcelGuarantee from '../export-excel-garansi/page'
+import OutgoingGuaranteeDocument from '../download-pdf-outgoing-guarantee/page'
+import ExportToExcelOutgoingGuarantee from '../export-excel-outgoing-guarantee/page'
 
-const DownloadGuaranteeModal = ({ selectedGuaranteeData, isClient }) => {
+const DownloadOutgoingGuaranteeModal = ({
+    selectedOutgoingGuaranteeData,
+    isClient,
+}) => {
     return (
         <>
             <form>
@@ -16,19 +19,21 @@ const DownloadGuaranteeModal = ({ selectedGuaranteeData, isClient }) => {
                                 icon="heroicons-outline:newspaper"
                                 className="bg-warning-500 text-white"
                                 onClick={() => {
-                                    selectedGuaranteeData?.length == 0 &&
+                                    selectedOutgoingGuaranteeData?.length ==
+                                        0 &&
                                         toast.error(
                                             'Silahkan ceklis data terlebih dahulu'
                                         )
                                 }}
                                 children={
-                                    selectedGuaranteeData?.length >= 1 ? (
+                                    selectedOutgoingGuaranteeData?.length >=
+                                    1 ? (
                                         <div>
                                             <PDFDownloadLink
                                                 document={
-                                                    <GuaranteeDocument
+                                                    <OutgoingGuaranteeDocument
                                                         data={
-                                                            selectedGuaranteeData
+                                                            selectedOutgoingGuaranteeData
                                                         }
                                                     />
                                                 }
@@ -51,8 +56,8 @@ const DownloadGuaranteeModal = ({ selectedGuaranteeData, isClient }) => {
                             />
                         ) : null}
                         <div>
-                            <ExportToExcelGuarantee
-                                data={selectedGuaranteeData}
+                            <ExportToExcelOutgoingGuarantee
+                                data={selectedOutgoingGuaranteeData}
                             />
                         </div>
                     </div>
@@ -62,4 +67,4 @@ const DownloadGuaranteeModal = ({ selectedGuaranteeData, isClient }) => {
     )
 }
 
-export default DownloadGuaranteeModal
+export default DownloadOutgoingGuaranteeModal
