@@ -1,8 +1,8 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import OvertimePDF from '../form-pdf-lembur/page'
-import ExportToExcelOvertime from '../form-excel-lembur/page'
+import OvertimePDF from '../overtime-pdf-form/page'
+import ExportToExcelOvertime from '../excel-overtime-form/page'
 
 const DownloadOvertimeForm = ({ selectedOvertimeData, isClient }) => {
     return (
