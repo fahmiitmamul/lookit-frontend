@@ -58,7 +58,6 @@ const AddLeaveTypeDataForm = ({ setShowAddLeaveTypeModal }) => {
 
     const {
         control,
-        watch,
         register,
         handleSubmit,
         formState: { errors },
