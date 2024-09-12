@@ -14,7 +14,6 @@ import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { setLoading } from '@/store/loadingReducer'
 import Textinput from '@/components/ui/Textinput'
-import { useEffect } from 'react'
 import ReactSelect from 'react-select'
 
 const AddLeaveTypeDataForm = ({ setShowAddLeaveTypeModal }) => {
