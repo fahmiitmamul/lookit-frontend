@@ -3,7 +3,7 @@ import DetailCostForm from '@/components/(finance)/cost/detail-cost-form/page'
 import EditCostForm from '@/components/(finance)/cost/edit-cost-form/page'
 import DeleteCostForm from '@/components/(finance)/cost/delete-cost-form/page'
 import AddCostForm from '@/components/(finance)/cost/add-cost-form/page'
-import Cost from '@/components/(finance)/cost/cost-table/page'
+import CostTable from '@/components/(finance)/cost/cost-table/page'
 import Button from '@/components/ui/Button'
 import InputGroup from '@/components/ui/InputGroup'
 import Modal from '@/components/ui/Modal'
@@ -164,7 +164,7 @@ export default function Cost() {
                         </div>
                     }
                 >
-                    <Cost
+                    <CostTable
                         setShowViewCostModal={setShowViewCostModal}
                         setShowEditCostModal={setShowEditCostModal}
                         setShowDeleteCostModal={setShowDeleteCostModal}
