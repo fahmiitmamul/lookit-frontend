@@ -74,7 +74,7 @@ const AddIncomingAssetsForm = ({ setShowAddIncomingAssetsModal }) => {
     }
 
     const validateAssets = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         file: Yup.string().required('Harap diisi'),
         outgoing_asset_id: Yup.string().required('Harap diisi'),
         start_date: Yup.string().required('Harap diisi'),

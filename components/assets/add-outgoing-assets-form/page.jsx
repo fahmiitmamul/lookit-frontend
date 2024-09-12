@@ -74,7 +74,7 @@ const AddOutgoingAssetsForm = ({ setShowAddOutgoingAssetsModal }) => {
     }
 
     const validateAssets = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         file: Yup.string().required('Harap diisi'),
         asset_id: Yup.string().required('Harap diisi'),
         out_date: Yup.string().required('Harap diisi'),
