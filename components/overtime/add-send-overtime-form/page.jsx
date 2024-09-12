@@ -128,9 +128,9 @@ const AddOvertimeForm = ({ setShowAddSendOvertimeModal }) => {
     }
 
     const styles = {
-        control: (base, state) => ({
-            ...base,
-            border: state.isFocused ? '1px solid #000' : '1px solid #000',
+        option: (provided, state) => ({
+            ...provided,
+            fontSize: '14px',
         }),
     }
 
@@ -198,7 +198,11 @@ const AddOvertimeForm = ({ setShowAddSendOvertimeModal }) => {
                                 value: item.name,
                                 label: item.name,
                             }))}
-                            className={'react-select'}
+                            className={
+                                errors?.employee_id
+                                    ? 'border-danger-500 border rounded-md'
+                                    : 'react-select'
+                            }
                             onChange={(selectedOptions) => {
                                 handleSelectChange(selectedOptions.value)
                             }}
