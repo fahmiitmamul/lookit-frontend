@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { toast } from 'react-toastify'
-import TicketDocument from '../download-pdf-tiket/page'
+import TicketDocument from '../download-pdf-ticket/page'
 import ExportToExcelTicket from '../download-excel-ticket/page'
 
 const DownloadTicketModal = ({ selectedTicketData, isClient }) => {
