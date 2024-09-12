@@ -21,11 +21,8 @@ import DetailMutationLocationForm from '@/components/mutation/detail-location-mu
 import AddMutationPositionForm from '@/components/mutation/add-position-mutation-form/page'
 import EditMutationPositionForm from '@/components/mutation/edit-position-mutation-form/page'
 import DeleteMutationPositionForm from '@/components/mutation/delete-position-mutation-form/page'
-import Dropdown from '@/components/ui/Dropdown'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { PDFDownloadLink } from '@react-pdf/renderer'
-import MutationDocument from '@/components/mutation/pdf-mutation-download/page'
 import DownloadMutation from '@/components/mutation/download-modal/page'
 
 export default function Mutasi() {
