@@ -11,7 +11,6 @@ import FinishedTasks from '@/components/tasks/completed-tasks-table/page'
 import CanceledTasks from '@/components/tasks/canceled-tasks-table/page'
 import Modal from '@/components/ui/Modal'
 import Flatpickr from 'react-flatpickr'
-import AddFinishedTasksForm from '@/components/tasks/add-completed-tasks-form/page'
 import AddProcessedTaskForm from '@/components/tasks/add-processed-tasks-form/page'
 import EditProcessedTaskForm from '@/components/tasks/edit-processed-tasks-form/page'
 import DeleteProcessedTaskForm from '@/components/tasks/delete-processed-tasks-form/page'
@@ -19,7 +18,6 @@ import DetailProcessedTaskForm from '@/components/tasks/detail-processed-tasks-f
 import EditFinishedTaskForm from '@/components/tasks/edit-finished-tasks-form/page'
 import DetailFinishedTaskForm from '@/components/tasks/detail-completed-tasks-form/page'
 import DeleteFinishedTaskForm from '@/components/tasks/delete-completed-tasks-form/page'
-import AddCanceledTaskForm from '@/components/tasks/add-canceled-tasks-form/page'
 import EditCanceledTasksForm from '@/components/tasks/edit-canceled-tasks-form/page'
 import DetailCanceledTaskForm from '@/components/tasks/detail-canceled-tasks-form/page'
 import DeleteCanceledTaskForm from '@/components/tasks/delete-canceled-tasks-form/page'
@@ -42,15 +40,11 @@ export default function TaskRecordsTable() {
         useState(false)
     const [showDeleteProcessedTaskModal, setShowDeleteProcessedTaskModal] =
         useState(false)
-    const [showAddCanceledTaskModal, setShowAddCanceledTaskModal] =
-        useState(false)
     const [showViewCanceledTaskModal, setShowViewCanceledTaskModal] =
         useState(false)
     const [showEditCanceledTaskModal, setShowEditCanceledTaskModal] =
         useState(false)
     const [showDeleteCanceledTaskModal, setShowDeleteCanceledTaskModal] =
-        useState(false)
-    const [showAddFinishedTaskModal, setShowAddFinishedTaskModal] =
         useState(false)
     const [showViewFinishedTaskModal, setShowViewFinishedTaskModal] =
         useState(false)
@@ -592,20 +586,6 @@ export default function TaskRecordsTable() {
                     />
                 </Modal>
                 <Modal
-                    title="Tambah Tugas"
-                    label="Tambah Tugas"
-                    className="max-w-5xl"
-                    labelClass="btn-outline-dark"
-                    activeModal={showAddFinishedTaskModal}
-                    onClose={() => {
-                        setShowAddFinishedTaskModal(!showAddFinishedTaskModal)
-                    }}
-                >
-                    <AddFinishedTasksForm
-                        showAddFinishedTasksModal={setShowAddFinishedTaskModal}
-                    />
-                </Modal>
-                <Modal
                     title="Edit Tugas"
                     label="Edit Tugas"
                     className="max-w-5xl"
@@ -652,20 +632,6 @@ export default function TaskRecordsTable() {
                         showDeleteFinishedTasksModal={
                             setShowDeleteFinishedTaskModal
                         }
-                    />
-                </Modal>
-                <Modal
-                    title="Tambah Tugas"
-                    label="Tambah Tugas"
-                    className="max-w-5xl"
-                    labelClass="btn-outline-dark"
-                    activeModal={showAddCanceledTaskModal}
-                    onClose={() => {
-                        setShowAddCanceledTaskModal(!showAddCanceledTaskModal)
-                    }}
-                >
-                    <AddCanceledTaskForm
-                        showAddCanceledTasksModal={setShowAddCanceledTaskModal}
                     />
                 </Modal>
                 <Modal
