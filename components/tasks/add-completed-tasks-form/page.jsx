@@ -17,6 +17,7 @@ import { useMutation } from '@tanstack/react-query'
 import http from '@/app/helpers/http.helper'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
+import ReactSelect from 'react-select'
 
 const AddFinishedTasksForm = ({ showAddFinishedTasksModal }) => {
     const token = getCookie('token')
@@ -51,7 +52,7 @@ const AddFinishedTasksForm = ({ showAddFinishedTasksModal }) => {
     const postTasks = useMutation({
         mutationFn: async (values) => {
             const form = new FormData()
-            form.append('employee_id', values.employee_id)
+            form.append('employee_id', values.employee_id.value)
             form.append('task_name', values.task_name)
             form.append('task_start_date', values.task_start_date)
             form.append('task_end_date', values.task_end_date)
@@ -123,23 +124,44 @@ const AddFinishedTasksForm = ({ showAddFinishedTasksModal }) => {
             >
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silakan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
+                        <Controller
                             name="employee_id"
-                            register={register}
-                            options={[
-                                ...(employeeData?.data?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name,
-                                })) || []),
-                            ]}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.id,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        onChange(selectedOptions)
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <Textinput
