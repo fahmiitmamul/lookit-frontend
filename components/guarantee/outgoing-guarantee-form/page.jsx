@@ -6,7 +6,6 @@ import Select from '@/components/ui/Select'
 import { getCookie } from 'cookies-next'
 import Button from '@/components/ui/Button'
 import Textarea from '@/components/ui/Textarea'
-import Textinput from '@/components/ui/Textinput'
 import Fileinput from '@/components/ui/Fileinput'
 import { useQueryClient } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
@@ -61,7 +60,7 @@ const AddOutgoingGuaranteeForm = ({ setShowAddOutgoingGuaranteeModal }) => {
     const postOutgoingGuarantee = useMutation({
         mutationFn: async (values) => {
             const form = new FormData()
-            form.append('employee_id', values.employee_id)
+            form.append('employee_id', values.employee_id.value)
             form.append('file', selectedFile)
             form.append('guarantee_id', values.guarantee_id)
             form.append('end_date', values.end_date)
@@ -82,7 +81,7 @@ const AddOutgoingGuaranteeForm = ({ setShowAddOutgoingGuaranteeModal }) => {
     })
 
     const validateGuarantee = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         file: Yup.string().required('Harap diisi'),
         guarantee_id: Yup.string().required('Harap diisi'),
         end_date: Yup.string().required('Harap diisi'),
@@ -126,23 +125,44 @@ const AddOutgoingGuaranteeForm = ({ setShowAddOutgoingGuaranteeModal }) => {
             >
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silakan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
+                        <Controller
                             name="employee_id"
-                            register={register}
-                            options={[
-                                ...(employeeData?.data?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name,
-                                })) || []),
-                            ]}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.id,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        onChange(selectedOptions)
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="end_date" className=" form-label">
