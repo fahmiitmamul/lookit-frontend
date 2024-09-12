@@ -22,7 +22,7 @@ import DeleteGuaranteeForm from '@/components/guarantee/delete-guarantee-form/pa
 import EditOutgoingGuaranteeForm from '@/components/guarantee/edit-outgoing-guarantee-form/page'
 import DetailIncomingGuaranteeForm from '@/components/guarantee/detail-incoming-guarantee-form/page'
 import DeleteOutgoingGuaranteeForm from '@/components/guarantee/delete-outgoing-guarantee-table/page'
-import AddOutgoingGuaranteeForm from '@/components/guarantee/outgoing-guarantee-from/page'
+import AddOutgoingGuaranteeForm from '@/components/guarantee/outgoing-guarantee-form/page'
 import DetailOutgoingGuaranteeForm from '@/components/guarantee/detail-outgoing-guarantee-form/page'
 import { useDispatch } from 'react-redux'
 import { setLoading } from '@/store/loadingReducer'

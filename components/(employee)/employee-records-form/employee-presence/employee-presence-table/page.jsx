@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import SimpleBar from 'simplebar-react'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import { setPresenceId } from '@/components/kehadiran/store'
+import { setPresenceId } from '@/components/presence/store'
 
 export default function IndividualPresenceRecordsTable({
     presenceData,

@@ -25,7 +25,7 @@ import Dropdown from '@/components/ui/Dropdown'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { PDFDownloadLink } from '@react-pdf/renderer'
-import MutationDocument from '@/components/mutation/pdf-mutation-download/page'
+import MutationDocument from '@/components/mutation/download-pdf-mutation/page'
 
 export default function Mutasi() {
     const [showAddMutationPositionModal, setShowAddMutationPositionModal] =
