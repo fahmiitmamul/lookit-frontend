@@ -103,7 +103,7 @@ export default function EmployeeRecordsTable({ activeEmployeeData }) {
                                                 className="hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
                                                 onClick={() => {
                                                     router.replace(
-                                                        '/rekam-karyawan/tab-rekam-karyawan'
+                                                        '/employee-records/employee-records-data'
                                                     )
                                                     dispatch(
                                                         setEmployeeId(row.id)

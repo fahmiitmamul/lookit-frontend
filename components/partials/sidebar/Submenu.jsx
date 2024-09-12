@@ -9,7 +9,7 @@ const Submenu = ({ activeSubmenu, item, i, locationName }) => {
     const [activeMultiMenu, setMultiMenu] = useState(null)
     const path = usePathname()
 
-    const isRekam = path.includes('rekam-karyawan')
+    const isEmployeeRecords = path.includes('employee-records')
 
     const toggleMultiMenu = (j) => {
         if (activeMultiMenu === j) {
@@ -68,7 +68,7 @@ const Submenu = ({ activeSubmenu, item, i, locationName }) => {
                         ) : (
                             <Link
                                 href={
-                                    isRekam
+                                    isEmployeeRecords
                                         ? `/${subItem.childlink}`
                                         : subItem.childlink
                                 }

@@ -104,8 +104,8 @@ export default function NonactiveEmployeeRecordsTable({
                                                 key={index}
                                                 className="hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
                                                 onClick={() => {
-                                                    router.push(
-                                                        '/rekam-karyawan/tab-rekam-karyawan'
+                                                    router.replace(
+                                                        '/employee-records/employee-records-data'
                                                     )
                                                     dispatch(
                                                         setEmployeeId(row.id)

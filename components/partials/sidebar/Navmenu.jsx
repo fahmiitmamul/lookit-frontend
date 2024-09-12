@@ -1,7 +1,6 @@
 import { useRouter, usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Collapse } from 'react-collapse'
 import Icon from '@/components/ui/Icon'
 import { toggleActiveChat } from '@/components/partials/app/chat/store'
 import { useDispatch } from 'react-redux'
@@ -11,7 +10,7 @@ const Navmenu = ({ menus }) => {
     const router = useRouter()
     const path = usePathname()
 
-    const isRekam = path.includes('rekam-karyawan')
+    const isEmployeeRecords = path.includes('employee-records')
     const [activeSubmenu, setActiveSubmenu] = useState(null)
 
     const toggleSubmenu = (i) => {
@@ -63,7 +62,7 @@ const Navmenu = ({ menus }) => {
               ${locationName === item.link ? 'menu-item-active' : ''}`}
                     >
                         {/* single menu with no childred*/}
-                        {!item.child && !item.isHeadr && isRekam && (
+                        {!item.child && !item.isHeadr && isEmployeeRecords && (
                             <Link className="menu-link" href={`/${item.link}`}>
                                 <span className="menu-icon flex-grow-0">
                                     <Icon icon={item.icon} />
@@ -78,7 +77,7 @@ const Navmenu = ({ menus }) => {
                                 )}
                             </Link>
                         )}
-                        {!item.child && !item.isHeadr && !isRekam && (
+                        {!item.child && !item.isHeadr && !isEmployeeRecords && (
                             <Link className="menu-link" href={item.link}>
                                 <span className="menu-icon flex-grow-0">
                                     <Icon icon={item.icon} />
