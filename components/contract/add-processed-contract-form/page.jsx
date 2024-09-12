@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import Flatpickr from 'react-flatpickr'
-import Select from '@/components/ui/Select'
 import { getCookie } from 'cookies-next'
 import Button from '@/components/ui/Button'
 import Textarea from '@/components/ui/Textarea'
@@ -19,6 +18,7 @@ import { toast } from 'react-toastify'
 import { DocusealBuilder } from '@docuseal/react'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import ReactSelect from 'react-select'
 
 const AddProcessedContractForm = ({ showAddProcessedContractModal }) => {
     const token = getCookie('token')
@@ -53,7 +53,7 @@ const AddProcessedContractForm = ({ showAddProcessedContractModal }) => {
     const postContract = useMutation({
         mutationFn: async (values) => {
             const { data } = await http(token).get(
-                `/employee/${values.employee_id}`
+                `/employee/${values.employee_id.value}`
             )
 
             const docusealDocument = {
@@ -115,7 +115,7 @@ const AddProcessedContractForm = ({ showAddProcessedContractModal }) => {
     })
 
     const validateContract = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         contract_name: Yup.string().required('Harap diisi'),
         start_date: Yup.string().required('Harap diisi'),
         end_date: Yup.string().required('Harap diisi'),
@@ -165,23 +165,44 @@ const AddProcessedContractForm = ({ showAddProcessedContractModal }) => {
             >
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silakan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
+                        <Controller
                             name="employee_id"
-                            register={register}
-                            options={[
-                                ...(employeeData?.data?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name,
-                                })) || []),
-                            ]}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.id,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        onChange(selectedOptions)
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <div>
