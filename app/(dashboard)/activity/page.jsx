@@ -1,7 +1,5 @@
 'use client'
 import ActivityData from '@/components/activity/activity-table/page'
-import Button from '@/components/ui/Button'
-import Dropdown from '@/components/ui/Dropdown'
 import InputGroup from '@/components/ui/InputGroup'
 import Modal from '@/components/ui/Modal'
 import Pagination from '@/components/ui/Pagination'

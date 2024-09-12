@@ -13,7 +13,6 @@ import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getCookie } from 'cookies-next'
 import http from '@/app/helpers/http.helper'
-import Dropdown from '@/components/ui/Dropdown'
 import Card from '@/components/ui/Card'
 
 export default function Pengumuman() {
