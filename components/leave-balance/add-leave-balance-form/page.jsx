@@ -14,6 +14,8 @@ import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { setLoading } from '@/store/loadingReducer'
 import Textinput from '@/components/ui/Textinput'
+import { useEffect } from 'react'
+import ReactSelect from 'react-select'
 
 const AddLeaveTypeDataForm = ({ setShowAddLeaveTypeModal }) => {
     const token = getCookie('token')
@@ -48,7 +50,7 @@ const AddLeaveTypeDataForm = ({ setShowAddLeaveTypeModal }) => {
     }
 
     const validateLeaveType = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         leave_type_id: Yup.string().required('Harap diisi'),
         leave_type: Yup.string().required('Harap diisi'),
         initial_estimate: Yup.string().required('Harap diisi'),
@@ -59,6 +61,7 @@ const AddLeaveTypeDataForm = ({ setShowAddLeaveTypeModal }) => {
     const {
         control,
         register,
+        watch,
         handleSubmit,
         formState: { errors },
     } = useForm({
@@ -73,6 +76,7 @@ const AddLeaveTypeDataForm = ({ setShowAddLeaveTypeModal }) => {
         mutationFn: async (values) => {
             const data = new URLSearchParams({
                 ...values,
+                employee_id: values.employee_id.value,
                 used_leave_type: 0,
                 remaining_leave_type: 0,
                 leave_type_code: values.leave_type_id,
@@ -104,21 +108,44 @@ const AddLeaveTypeDataForm = ({ setShowAddLeaveTypeModal }) => {
             >
                 <div className="lg:grid-cols-3 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silakan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
+                        <Controller
                             name="employee_id"
-                            register={register}
-                            options={employeeData?.data?.map((item) => ({
-                                value: item.id,
-                                label: item.name,
-                            }))}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.id,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        onChange(selectedOptions)
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="leave_type_id" className="form-label ">
