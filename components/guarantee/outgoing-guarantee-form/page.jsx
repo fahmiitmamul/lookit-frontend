@@ -16,6 +16,7 @@ import http from '@/app/helpers/http.helper'
 import * as Yup from 'yup'
 import { toast } from 'react-toastify'
 import { setLoading } from '@/store/loadingReducer'
+import ReactSelect from 'react-select'
 
 const AddOutgoingGuaranteeForm = ({ setShowAddOutgoingGuaranteeModal }) => {
     const token = getCookie('token')
