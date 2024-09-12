@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import Select from '@/components/ui/Select'
+import React from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/ui/Button'
 import Textarea from '@/components/ui/Textarea'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -15,33 +14,20 @@ import { useDispatch } from 'react-redux'
 import { setLoading } from '@/store/loadingReducer'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import ReactSelect from 'react-select'
 
 const AddKPIForm = ({ setShowAddKPIModal }) => {
-    const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(5)
-    const [searchData, setSearchData] = useState('')
     const token = getCookie('token')
     const dispatch = useDispatch()
 
-    async function fetchEmployee(
-        pageData = page,
-        search = searchData,
-        limitData = limit
-    ) {
-        const { data } = await http(token).get(
-            '/employee/active?page=' +
-                pageData +
-                '&search=' +
-                search +
-                '&limit=' +
-                limitData
-        )
+    async function fetchEmployee() {
+        const { data } = await http(token).get('/employee/active')
         return data.results
     }
 
     const { data: employeeData } = useQuery({
-        queryKey: ['active-employee', page, searchData, limit],
-        queryFn: () => fetchEmployee(page, searchData, limit),
+        queryKey: ['active-employee'],
+        queryFn: () => fetchEmployee(),
     })
 
     const styles = {
@@ -57,6 +43,7 @@ const AddKPIForm = ({ setShowAddKPIModal }) => {
         mutationFn: async (values) => {
             const data = new URLSearchParams({
                 ...values,
+                employee_id: values.employee_id.value,
                 indicators: JSON.stringify(values.indicators),
             }).toString()
             return http(token).post(`/kpi`, data)
@@ -79,7 +66,7 @@ const AddKPIForm = ({ setShowAddKPIModal }) => {
     }
 
     const validateKPI = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         indicators: Yup.array().of(
             Yup.object().shape({
                 indicator_name: Yup.string().required('Harap diisi'),
@@ -126,21 +113,44 @@ const AddKPIForm = ({ setShowAddKPIModal }) => {
             >
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silakan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
+                        <Controller
                             name="employee_id"
-                            register={register}
-                            options={employeeData?.data?.map((item) => ({
-                                value: item.id,
-                                label: item.name,
-                            }))}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.id,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        onChange(selectedOptions)
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div></div>
                 </div>
