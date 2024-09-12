@@ -1,7 +1,6 @@
 'use client'
 import SalaryCount from '@/components/(finance)/salary-count/salary-count-table/page'
 import TotalSalaryForm from '@/components/(finance)/salary-count/add-salary-count-form/page'
-import SalaryCountForm from '@/components/(finance)/salary-count/add-salary-count-form/page'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import InputGroup from '@/components/ui/InputGroup'

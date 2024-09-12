@@ -10,7 +10,7 @@ import { getCookie } from 'cookies-next'
 import { useQuery } from '@tanstack/react-query'
 import { Tab } from '@headlessui/react'
 import EmployeeRecordsTable from '@/components/(employee)/employee-records-form/active-employee-records-table/page'
-import NonactiveEmployeeRecordsTable from '@/components/(employee)/employee-records-form/nonactive-employee-records/page'
+import NonactiveEmployeeRecordsTable from '@/components/(employee)/employee-records-form/nonactive-employee-records-table/page'
 import Flatpickr from 'react-flatpickr'
 
 export default function EmployeeRecordsData() {

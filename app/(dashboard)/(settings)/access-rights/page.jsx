@@ -1,6 +1,6 @@
 'use client'
 import http from '@/app/helpers/http.helper'
-import TabelHakAkses from '@/components/(pengaturan)/hak-akses/tabel-hak-akses/page'
+import TabelHakAkses from '@/components/(settings)/access-rights/access-rights-table/page'
 import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
 import Textinput from '@/components/ui/Textinput'

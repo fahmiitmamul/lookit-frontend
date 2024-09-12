@@ -3,7 +3,7 @@ import ActivityRecordTable from '@/components/(employee)/employee-records-form/e
 import AssetRecordTable from '@/components/(employee)/employee-records-form/employee-assets/page'
 import SalaryRecordsTable from '@/components/(employee)/employee-records-form/employee-salary/page'
 import GuaranteeRecordTable from '@/components/(employee)/employee-records-form/employee-guarantee/page'
-import ScheduleRecordTable from '@/components/(employee)/employee-records-form/employee-schedu;e/page'
+import ScheduleRecordTable from '@/components/(employee)/employee-records-form/employee-schedule/page'
 import PresenceRecordsTable from '@/components/(employee)/employee-records-form/employee-presence/page'
 import ContractRecordsTable from '@/components/(employee)/employee-records-form/employee-contract/page'
 import MutationRecordTable from '@/components/(employee)/employee-records-form/employee-mutation/page'
