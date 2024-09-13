@@ -176,7 +176,6 @@ const AddOutgoingGuaranteeForm = ({ setShowAddOutgoingGuaranteeModal }) => {
                                 field: { onChange, ...fieldProps },
                             }) => (
                                 <Flatpickr
-                                    {...fieldProps}
                                     className={
                                         errors?.end_date
                                             ? 'border-danger-500 border date-picker-control py-2'
