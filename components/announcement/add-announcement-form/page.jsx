@@ -16,6 +16,7 @@ import { setLoading } from '@/store/loadingReducer'
 import { toast } from 'react-toastify'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import ReactSelect from 'react-select'
 
 const AddAnnouncementForm = ({ setShowAddAnnouncementModal }) => {
     const [selectedPicture, setSelectedPicture] = useState(null)
@@ -36,10 +37,9 @@ const AddAnnouncementForm = ({ setShowAddAnnouncementModal }) => {
         cacheTime: 60 * 60 * 1000,
     })
 
-    const handleSelectChange = (event) => {
-        const selectedValue = event.target.value
+    const handleSelectChange = (value) => {
         const selectedEmp = employeeData?.data?.find(
-            (emp) => emp.name === selectedValue
+            (emp) => emp.name === value
         )
 
         if (
@@ -155,24 +155,46 @@ const AddAnnouncementForm = ({ setShowAddAnnouncementModal }) => {
                 </div>
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silahkan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
-                            options={employeeData?.data?.map((employee) => ({
-                                value: employee.name,
-                                label: employee.name,
-                            }))}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
-                            disabled={checked}
-                            onChange={(e) => {
-                                setValue('employee_id', 'Has a value')
-                                handleSelectChange(e)
-                            }}
+                        <Controller
+                            name="employee_id"
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.name,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        handleSelectChange(
+                                            selectedOptions.value
+                                        )
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="file" className=" form-label">
