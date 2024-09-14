@@ -14,6 +14,7 @@ import { setLoading } from '@/store/loadingReducer'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { yupResolver } from '@hookform/resolvers/yup'
+import ReactSelect from 'react-select'
 
 const AddTicketForm = ({ showAddTicketModal }) => {
     const [selectedFile, setSelectedFile] = useState(null)
@@ -78,7 +79,7 @@ const AddTicketForm = ({ showAddTicketModal }) => {
     const postTicket = useMutation({
         mutationFn: async (values) => {
             const form = new FormData()
-            form.append('employee_id', values.employee_id)
+            form.append('employee_id', values.employee_id.value)
             form.append('ticket_code', values.ticket_code)
             form.append('ticket_title', values.ticket_title)
             form.append('ticket_description', values.ticket_description)
@@ -101,7 +102,7 @@ const AddTicketForm = ({ showAddTicketModal }) => {
     })
 
     const validateTicket = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         ticket_code: Yup.string().required('Harap diisi'),
         ticket_title: Yup.string().required('Harap diisi'),
         ticket_description: Yup.string().required('Harap diisi'),
@@ -134,23 +135,44 @@ const AddTicketForm = ({ showAddTicketModal }) => {
             >
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silakan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
+                        <Controller
                             name="employee_id"
-                            register={register}
-                            options={[
-                                ...(employeeData?.data?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name,
-                                })) || []),
-                            ]}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.id,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        onChange(selectedOptions)
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <Textinput
