@@ -89,7 +89,7 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['salary_count'] })
             dispatch(setLoading(false))
-            toast.success('Berhasil menambah acara')
+            toast.success('Berhasil menghitung gaji')
         },
         onError: (err) => {
             toast.error(err?.response?.data?.message)
