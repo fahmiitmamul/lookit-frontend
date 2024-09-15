@@ -84,6 +84,10 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
 
     const postTotalSalary = useMutation({
         mutationFn: async (values) => {
+            const data = new URLSearchParams({
+                employee: selectedEmployee,
+                period: values.salary_period,
+            }).toString()
             return http(token).post('/total-salary', data)
         },
         onSuccess: () => {
