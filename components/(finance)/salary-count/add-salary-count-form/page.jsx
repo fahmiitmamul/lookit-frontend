@@ -14,6 +14,9 @@ import { setLoading } from '@/store/loadingReducer'
 import Checkbox from '@/components/ui/Checkbox'
 import { toast } from 'react-toastify'
 import { useMutation } from '@tanstack/react-query'
+import 'flatpickr/dist/flatpickr.min.css'
+import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect'
+import 'flatpickr/dist/plugins/monthSelect/style.css'
 
 const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
     const [selectedEmployee, setSelectedEmployee] = useState([])
@@ -175,6 +178,14 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
                                     }
                                     options={{
                                         mode: 'range',
+                                        plugins: [
+                                            new monthSelectPlugin({
+                                                shorthand: true,
+                                                dateFormat: 'm.y',
+                                                altFormat: 'F Y',
+                                                theme: 'light',
+                                            }),
+                                        ],
                                     }}
                                 />
                             )}
