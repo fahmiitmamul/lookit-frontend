@@ -26,11 +26,12 @@ export const EditSalaryCutsForm = ({ setShowEditSalaryCutsModal }) => {
     }
 
     const countOptions = [
-        { label: 'Menit', value: 'menit' },
-        { label: 'Jam', value: 'jam' },
-        { label: 'Hari', value: 'hari' },
-        { label: 'Bulan', value: 'bulan' },
+        { label: 'Menit', value: 'minutes' },
+        { label: 'Jam', value: 'hours' },
+        { label: 'Hari', value: 'days' },
+        { label: 'Bulan', value: 'months' },
     ]
+
     const token = getCookie('token')
 
     async function fetchMasterGajiPotongan() {
