@@ -38,13 +38,12 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
     }
 
     const validateTotalSalary = Yup.object({
-        employee_id: Yup.string().required('Harap diisi'),
+        employee_id: Yup.object().required('Harap diisi'),
         salary_period: Yup.string().required('Harap diisi'),
     })
 
     const {
         control,
-        setValue,
         handleSubmit,
         formState: { errors },
     } = useForm({
@@ -61,7 +60,7 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
             return http(token).post('/total-salary', data)
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['salary_count'] })
+            queryClient.invalidateQueries({ queryKey: ['total-salary'] })
             dispatch(setLoading(false))
             toast.success('Berhasil menghitung gaji')
         },
