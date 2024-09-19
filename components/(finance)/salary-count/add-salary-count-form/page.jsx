@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import Flatpickr from 'react-flatpickr'
-import Select from '@/components/ui/Select'
 import Button from '@/components/ui/Button'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import http from '@/app/helpers/http.helper'
@@ -11,44 +10,15 @@ import { Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useDispatch } from 'react-redux'
 import { setLoading } from '@/store/loadingReducer'
-import Checkbox from '@/components/ui/Checkbox'
 import { toast } from 'react-toastify'
 import { useMutation } from '@tanstack/react-query'
 import 'flatpickr/dist/flatpickr.min.css'
 import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect'
 import 'flatpickr/dist/plugins/monthSelect/style.css'
+import ReactSelect from 'react-select'
 
 const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
-    const [selectedEmployee, setSelectedEmployee] = useState([])
-    const [selectedEmployees, setSelectedEmployees] = useState([])
-    const [checked, setChecked] = useState(false)
     const token = getCookie('token')
-
-    const handleSelectChange = (event) => {
-        const selectedValue = event.target.value
-        const selectedEmp = employeeData?.data?.find(
-            (emp) => emp.name === selectedValue
-        )
-
-        if (
-            selectedEmp &&
-            !selectedEmployees.some((emp) => emp.name === selectedEmp.name)
-        ) {
-            setSelectedEmployees([...selectedEmployees, selectedEmp])
-            setSelectedEmployee([...selectedEmployee, selectedEmp.id])
-        }
-    }
-
-    const handleDeleteEmployee = (value) => {
-        const updatedEmployees = selectedEmployees.filter(
-            (emp) => emp.name !== value.name
-        )
-        const updatedEmployeesId = selectedEmployee.filter(
-            (emp) => emp !== value.id
-        )
-        setSelectedEmployees(updatedEmployees)
-        setSelectedEmployee(updatedEmployeesId)
-    }
 
     async function fetchEmployee() {
         const { data } = await http(token).get('/employee/active')
@@ -87,10 +57,7 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
 
     const postTotalSalary = useMutation({
         mutationFn: async (values) => {
-            const data = new URLSearchParams({
-                employee: selectedEmployee,
-                period: values.salary_period,
-            }).toString()
+            const data = new URLSearchParams(values).toString()
             return http(token).post('/total-salary', data)
         },
         onSuccess: () => {
@@ -116,43 +83,46 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="lg:grid-cols-1 grid gap-5 grid-cols-1"
             >
-                <div className="flex gap-2">
-                    <Checkbox
-                        value={checked}
-                        onChange={() => {
-                            if (!checked) {
-                                const allEmployee = employeeData?.data?.map(
-                                    (employee) => employee.id
-                                )
-                                setSelectedEmployee(allEmployee)
-                            } else {
-                                setSelectedEmployee([])
-                            }
-                            setChecked(!checked)
-                        }}
-                    />
-                    Pilih Semua Karyawan
-                </div>
                 <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
                     <div>
-                        <label htmlFor="employee_id" className="form-label ">
-                            Silahkan Pilih Karyawan
+                        <label className="form-label">
+                            Silahkan Pilih Nama Karyawan
                         </label>
-                        <Select
-                            className="react-select"
-                            options={employeeData?.data?.map((employee) => ({
-                                value: employee.name,
-                                label: employee.name,
-                            }))}
-                            styles={styles}
-                            id="employee_id"
-                            error={errors.employee_id}
-                            disabled={checked}
-                            onChange={(e) => {
-                                setValue('employee_id', 'Has a value')
-                                handleSelectChange(e)
-                            }}
+                        <Controller
+                            name="employee_id"
+                            control={control}
+                            render={({
+                                field: { onChange },
+                                ...fieldProps
+                            }) => (
+                                <ReactSelect
+                                    {...fieldProps}
+                                    styles={styles}
+                                    placeholder=""
+                                    options={employeeData?.data?.map(
+                                        (item) => ({
+                                            value: item.id,
+                                            label: item.name,
+                                        })
+                                    )}
+                                    className={
+                                        errors?.employee_id
+                                            ? 'border-danger-500 border rounded-md'
+                                            : 'react-select'
+                                    }
+                                    onChange={(selectedOptions) => {
+                                        onChange(selectedOptions)
+                                    }}
+                                />
+                            )}
                         />
+                        {errors?.employee_id && (
+                            <div
+                                className={'mt-2 text-danger-500 block text-sm'}
+                            >
+                                {errors?.employee_id?.message}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="default-picker" className=" form-label">
@@ -197,26 +167,6 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
                                 {errors?.salary_period?.message}
                             </div>
                         )}
-                    </div>
-                </div>
-
-                <div>
-                    List Karyawan :
-                    <div className="flex flex-wrap gap-5 mt-2">
-                        {selectedEmployees?.map((emp) => (
-                            <div className="flex justify-center items-center bg-gray-200 text-sm rounded-xl p-2 gap-2">
-                                <div>{emp?.name}</div>
-                                <div className="pt-1">
-                                    <Button
-                                        onClick={() => {
-                                            handleDeleteEmployee(emp)
-                                        }}
-                                        className="bg-none p-0"
-                                        icon="heroicons:x-mark"
-                                    ></Button>
-                                </div>
-                            </div>
-                        ))}
                     </div>
                 </div>
 
