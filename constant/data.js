@@ -129,10 +129,6 @@ export const menuItems = [
                 childlink: 'salary-data',
             },
             {
-                childtitle: 'Laporan',
-                childlink: 'salary-data',
-            },
-            {
                 childtitle: 'Pinjaman',
                 childlink: 'loan',
             },
