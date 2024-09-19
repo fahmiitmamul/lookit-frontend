@@ -65,10 +65,6 @@ export default function BPJSTable({
             field: 'branch',
         },
         {
-            label: 'Nomor',
-            field: 'no',
-        },
-        {
             label: 'Jumlah Anak',
             field: 'child_name',
         },
@@ -129,7 +125,7 @@ export default function BPJSTable({
                                                 <div>
                                                     {item?.employee?.name}
                                                 </div>
-                                                <div>
+                                                <div className="text-xs">
                                                     {
                                                         item?.employee
                                                             ?.employee_nik
@@ -149,27 +145,6 @@ export default function BPJSTable({
                                                 }
                                             </td>
                                             <td className="table-td">
-                                                {item?.employee?.bpjs?.bpjs?.map(
-                                                    (bpjsItem, index) => (
-                                                        <div
-                                                            key={index}
-                                                            className="flex flex-col"
-                                                        >
-                                                            <span className="table-span">
-                                                                {
-                                                                    bpjsItem?.bpjs_type
-                                                                }
-                                                            </span>
-                                                            <span className="table-span">
-                                                                {
-                                                                    bpjsItem?.bpjs_number
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                    )
-                                                )}
-                                            </td>
-                                            <td className="table-td">
                                                 {item?.main_salary_bpjs_value?.map(
                                                     (item) => {
                                                         if (item.kesehatan) {
@@ -183,13 +158,13 @@ export default function BPJSTable({
                                             <td className="table-td">
                                                 {item?.main_salary_bpjs_value?.map(
                                                     (item) =>
-                                                        `Rp${item.kesehatan.after_potongan_karyawan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+                                                        `Rp${item.total_potongan_karyawan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
                                                 )}
                                             </td>
                                             <td className="table-td">
                                                 {item?.main_salary_bpjs_value?.map(
                                                     (item) =>
-                                                        `Rp${item.kesehatan.tunjangan_perusahaan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+                                                        `Rp${item.total_tunjangan_dibiayai_perusahaan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
                                                 )}
                                             </td>
                                             <td className="table-td">
