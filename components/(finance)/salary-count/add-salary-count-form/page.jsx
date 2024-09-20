@@ -112,7 +112,7 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
                                             : 'react-select'
                                     }
                                     onChange={(selectedOptions) => {
-                                        onChange(selectedOptions)
+                                        onChange(selectedOptions.value)
                                     }}
                                 />
                             )}
