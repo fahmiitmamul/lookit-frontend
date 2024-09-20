@@ -59,7 +59,7 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
     })
 
     const validateTotalSalary = Yup.object({
-        employee_id: Yup.object().required('Harap diisi'),
+        employee_id: Yup.strring().required('Harap diisi'),
         salary_period: Yup.string().required('Harap diisi'),
     })
 
