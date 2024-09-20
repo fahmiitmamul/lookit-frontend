@@ -1,17 +1,17 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import Flatpickr from 'react-flatpickr'
-import Button from '@/components/ui/Button'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import http from '@/app/helpers/http.helper'
 import { getCookie } from 'cookies-next'
-import * as Yup from 'yup'
-import { Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import Button from '@/components/ui/Button'
+import { useQueryClient } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
-import { setLoading } from '@/store/loadingReducer'
-import { toast } from 'react-toastify'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useQuery } from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
+import http from '@/app/helpers/http.helper'
+import * as Yup from 'yup'
+import { toast } from 'react-toastify'
+import { setLoading } from '@/store/loadingReducer'
 import 'flatpickr/dist/flatpickr.min.css'
 import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect'
 import 'flatpickr/dist/plugins/monthSelect/style.css'
@@ -19,6 +19,14 @@ import ReactSelect from 'react-select'
 
 const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
     const token = getCookie('token')
+    const dispatch = useDispatch()
+
+    const styles = {
+        option: (provided, state) => ({
+            ...provided,
+            fontSize: '14px',
+        }),
+    }
 
     async function fetchEmployee() {
         const { data } = await http(token).get('/employee/active')
@@ -28,14 +36,27 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
     const { data: employeeData } = useQuery({
         queryKey: ['active-employee'],
         queryFn: () => fetchEmployee(),
+        staleTime: 10 * 60 * 1000,
+        cacheTime: 60 * 60 * 1000,
     })
 
-    const styles = {
-        option: (provided, state) => ({
-            ...provided,
-            fontSize: '14px',
-        }),
-    }
+    const queryClient = useQueryClient()
+
+    const postTotalSalary = useMutation({
+        mutationFn: async (values) => {
+            const data = new URLSearchParams(values).toString()
+            return http(token).post(`/total-salary`, data)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['total-salary'] })
+            dispatch(setLoading(false))
+            toast.success('Berhasil menghitung gaji')
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.message)
+            dispatch(setLoading(false))
+        },
+    })
 
     const validateTotalSalary = Yup.object({
         employee_id: Yup.object().required('Harap diisi'),
@@ -51,29 +72,10 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
         mode: 'all',
     })
 
-    const queryClient = useQueryClient()
-    const dispatch = useDispatch()
-
-    const postTotalSalary = useMutation({
-        mutationFn: async (values) => {
-            const data = new URLSearchParams(values).toString()
-            return http(token).post('/total-salary', data)
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['total-salary'] })
-            dispatch(setLoading(false))
-            toast.success('Berhasil menghitung gaji')
-        },
-        onError: (err) => {
-            toast.error(err?.response?.data?.message)
-            dispatch(setLoading(false))
-        },
-    })
-
     const onSubmit = (data) => {
         setShowTotalSalaryModal(false)
         postTotalSalary.mutate(data)
-        dispatch(setLoading(false))
+        dispatch(setLoading(true))
     }
 
     return (
@@ -131,11 +133,8 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
                         <Controller
                             name="salary_period"
                             control={control}
-                            render={({
-                                field: { onChange, ...fieldProps },
-                            }) => (
+                            render={({ field: { onChange } }) => (
                                 <Flatpickr
-                                    {...fieldProps}
                                     placeholder="Pilih Periode"
                                     className={
                                         errors?.salary_period
@@ -179,7 +178,7 @@ const TotalSalaryForm = ({ setShowTotalSalaryModal }) => {
                         }}
                     />
                     <Button
-                        text="Hitung"
+                        text="Simpan"
                         type="submit"
                         className="btn-success"
                     />
