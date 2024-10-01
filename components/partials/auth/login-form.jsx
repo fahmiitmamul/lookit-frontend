@@ -87,6 +87,8 @@ const LoginForm = () => {
             <button className="btn btn-dark block w-full text-center">
                 Masuk
             </button>
+            <p className="text-red-500">Email : admin</p>
+            <p className="text-red-500">Password : aksesadmin</p>
         </form>
     )
 }
